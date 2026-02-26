@@ -18,7 +18,7 @@ This repository shows how to build and understand a complete somatic DNA-NGS ana
 The focus is educational clarity, reproducibility, and transparency.
 The workflow implements tumor-only variant calling without matched normal samples.
 
-## Workflow Overview
+## 🔬 Workflow Overview
 Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository.
 
 <p align="center">
