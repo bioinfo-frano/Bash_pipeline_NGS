@@ -21,7 +21,11 @@ The workflow implements tumor-only variant calling without matched normal sample
 ## Workflow Overview
 Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository.
 
-![Tumor-only somatic DNA-NGS workflow](images/Gemini_Generated_Image_2hszdp2hszdp2hsz.png)
+<p align="center">
+  <img src="images/Gemini_Generated_Image_2hszdp2hszdp2hsz.png" 
+       alt="Tumor-only somatic DNA-NGS workflow" 
+       width="75%">
+</p>
 
 ---
 
