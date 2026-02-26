@@ -2,11 +2,25 @@
 
 Welcome to my **DNA-NGS tutorial** 👋  
 
-This repository shows you how to analyze **DNA sequencing datasets**  
-using **Bash script pipelines**, starting from raw FASTQ data  
-and running everything on a **home workstation or laptop**.
+This repository provides a step-by-step guide to analyzing **DNA sequencing datasets** using primarily **Bash script pipelines**, starting from raw FASTQ data and executing the complete workflow on a **standard workstation or laptop**.
 
-You can follow the tutorial step by step, or jump directly to the analysis part.
+The tutorial can be followed sequentially for learning purposes or modularly depending on your goals.
+
+This repository shows how to build and understand a complete somatic DNA-NGS analysis workflow, including:
+
+- Data acquisition from public repositories
+- Quality control and preprocessing
+- Alignment and BAM processing
+- Somatic variant calling (tumor-only)
+- Filtering and biological post-processing
+- Visualization and interpretation
+
+The focus is educational clarity, reproducibility, and transparency.
+The workflow focuses on tumor-only variant calling without matched normal samples.
+
+## Workflow Overview
+
+![Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository.](images/Gemini_Generated_Image_wqtp4wqtp4wqtp4w.png)
 
 ---
 
@@ -49,7 +63,7 @@ Perform a **somatic DNA-NGS analysis** following GATK best practices:
 - Bash script
 - Nextflow
 
-➡️ **Go to:**  
+➡️ **Go to automated workflow:**  
 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_fullbash.md)
 
 ## 🔮 Future extensions
@@ -86,6 +100,15 @@ This tutorial is intended for:
 Happy sequencing analysis!
 
 ---
+
+## 🧪 Tested Environment
+
+- macOS (Intel)
+- 8 GB RAM
+- Free space: < 40GB
+- macOS Big Sur (11..7.11)
+- Conda-based installation
+- GATK 4.x
 
 ## ⚠️ Disclaimer
 
