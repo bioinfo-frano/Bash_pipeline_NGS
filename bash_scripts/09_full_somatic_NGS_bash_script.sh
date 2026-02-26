@@ -301,6 +301,7 @@ echo "Total runtime: $((ELAPSED / 60)) minutes"
 echo "----------------------------------------"
 echo " "
 echo "================ PREPROCESSING DONE ================"
+echo " "
 
 # ========================
 # Somatic variant calling

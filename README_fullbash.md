@@ -2,7 +2,7 @@
 
 ## Single Bash Script Implementation
 
-In Part II, the public SRA dataset SRR30536566 (7-gene amplicon panel) was analyzed step by step using eight consecutive Bash scripts, covering:
+In [Part II](README_somatic_analysis_Part2-3.md), the public SRA dataset `SRR30536566` (7-gene amplicon panel) was analyzed step by step using eight consecutive Bash scripts, covering:
 
 - Quality control
 
@@ -12,9 +12,9 @@ In Part II, the public SRA dataset SRR30536566 (7-gene amplicon panel) was analy
 
 - Somatic variant calling
 
-- Filtering and post-filtering
+- Filtering and post-filtering of variants
 
-- Variant and clinical annotation were performed online.
+- Variant and clinical annotation **were performed online**.
 
 In this sense:
 
@@ -22,16 +22,14 @@ In this sense:
 
 - Part III demonstrates visualization and validation using IGV.
 
-- Part IV now provides a fully automated, harmonized implementation of all steps in a single script.
-
-This implementation represents a tumor-only somatic variant calling workflow.
+- Part IV now provides a fully automated, harmonized implementation of all steps of a **tumor-only** NGS workflow analysis in a single script.
 
 
 ## The full bash script
 
 👉 [09_full_somatic_NGS_bash_script.sh](bash_scripts/09_full_somatic_NGS_bash_script.sh)
 
-This script runs the complete NGS analysis of the SRR30536566 gene panel in a single execution, without splitting the workflow into multiple Bash files.
+This script runs the complete NGS analysis of the `SRR30536566` gene panel in a single execution, without splitting the workflow into multiple Bash files.
 
 ## What this script implements
 
