@@ -271,6 +271,7 @@ Somatic variant calling completed.
 Total runtime: 333 seconds
 Total runtime: 5 minutes
 ----------------------------------------
+
 Learning read orientation model starts after sanity checks...
 Running sanity checks...
 All required files found.
@@ -289,7 +290,6 @@ GetPileupSummaries completed.
 CalculateContamination will start after sanity checks
 Running sanity checks...
 All required files found.
- 
 Starting CalculateContamination...
 Tool returned:
 SUCCESS
