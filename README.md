@@ -19,8 +19,8 @@ The focus is educational clarity, reproducibility, and transparency.
 The workflow focuses on tumor-only variant calling without matched normal samples.
 
 ## Workflow Overview
-
-![Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository.](images/Gemini_Generated_Image_wqtp4wqtp4wqtp4w.png)
+Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository.
+![ ](images/Gemini_Generated_Image_2hszdp2hszdp2hsz.png)
 
 ---
 
