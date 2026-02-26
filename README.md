@@ -16,11 +16,12 @@ This repository shows how to build and understand a complete somatic DNA-NGS ana
 - Visualization and interpretation
 
 The focus is educational clarity, reproducibility, and transparency.
-The workflow focuses on tumor-only variant calling without matched normal samples.
+The workflow implements tumor-only variant calling without matched normal samples.
 
 ## Workflow Overview
 Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository.
-![ ](images/Gemini_Generated_Image_2hszdp2hszdp2hsz.png)
+
+![Tumor-only somatic DNA-NGS workflow](images/Gemini_Generated_Image_2hszdp2hszdp2hsz.png)
 
 ---
 
@@ -61,7 +62,7 @@ Perform a **somatic DNA-NGS analysis** following GATK best practices:
 
 ### 4️⃣ Part IV - Unified & Automated Pipeline (harmonized single-script somatic workflow)
 - Bash script
-- Nextflow
+- Nextflow (planned extension)
 
 ➡️ **Go to automated workflow:**  
 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_fullbash.md)
@@ -106,7 +107,7 @@ Happy sequencing analysis!
 - macOS (Intel)
 - 8 GB RAM
 - Free space: < 40GB
-- macOS Big Sur (11..7.11)
+- macOS Big Sur (11.7.11)
 - Conda-based installation
 - GATK 4.x
 
