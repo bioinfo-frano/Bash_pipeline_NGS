@@ -318,7 +318,8 @@ Applying post-filter thresholds:
   VAF >= 0.02
 Indexing post-filtered VCF
 Variants retained after post-filtering: 3
-[Thu Feb 26 09:58:43 CET 2026] SRR30536566_full post-filtering completed successfully
+SRR30536566_full post-filtering completed successfully
+
 ==========================================
 FULL PIPELINE COMPLETED SUCCESSFULLY
 Total runtime: 1686 seconds
