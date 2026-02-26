@@ -45,15 +45,19 @@ Perform a **somatic DNA-NGS analysis** following GATK best practices:
 
 ---
 
+### 4️⃣ Part IV - Unified & Automated Pipeline (harmonized single-script somatic workflow)
+- Bash script
+- Nextflow
+
 ## 🔮 Future extensions
 
 This repository is designed to grow. Planned additions include:
 
-- **Part IV - Synthetic pipeline (somatic analysis)**
-  - Bash pipeline
-  - Nextflow
+- **Part V – Somatic analysis with matched panel of normals**
+  - Additional datasets
+  - Pipeline optimizations and best practices
 
-- **Part IV – Germline analysis**
+- **Part VI – Germline analysis**
   - Additional datasets
   - Pipeline optimizations and best practices
 
@@ -72,11 +76,11 @@ This tutorial is intended for:
 
 - The pipeline is optimized for **educational clarity**, not HPC clusters
 - All steps are reproducible and runnable on a local machine
-- Real public datasets from **SRA** are used
+- Real public datasets from the **NCBI SRA** (e.g., SRR30536566) are used
 
 ---
 
-Happy sequencing analysis! 🚀
+Happy sequencing analysis!
 
 ---
 
@@ -93,15 +97,15 @@ All analyses are performed on publicly available research datasets.
 
 This tutorial uses and displays output or screenshots generated from the following tools and databases:
 
-- IGV (Broad Institute)
-- GATK (Broad Institute)
-- Ensembl
+- Integrative Genomics Viewer (IGV, Broad Institute)
+- Genome Analysis Toolkit (GATK, Broad Institute)
+- Ensembl Genome Browser
 - OncoKB
-- CIViC
+- CIViC (Clinical Interpretation of Variants in Cancer)
 - PanDrugs2
 - FastQC
 - MultiQC
-- NCBI SRA
+- NCBI Sequence Read Archive (SRA)
 
 All trademarks, software, and database contents belong to their respective owners.  
 Screenshots and outputs are shown for educational and demonstration purposes only.
