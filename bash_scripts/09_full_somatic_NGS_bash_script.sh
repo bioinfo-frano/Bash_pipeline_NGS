@@ -376,7 +376,7 @@ echo "Somatic variant calling completed."
 echo "Total runtime: ${ELAPSED_2} seconds"
 echo "Total runtime: $((ELAPSED_2 / 60)) minutes"
 echo "----------------------------------------"
-
+echo " "
 
 echo "Learning read orientation model starts after sanity checks..."
 
@@ -463,7 +463,6 @@ echo "All required files found."
 # ============================================================
 # CalculateContamination
 # ============================================================
-echo " "
 echo "Starting CalculateContamination..."
 
 gatk --java-options "$JAVA_MEM" CalculateContamination \
@@ -558,7 +557,7 @@ MIN_VAF=0.02        # 2%
 
 exec > >(tee -a "$LOG_FILE") 2>&1
 
-echo "[$(date)] Starting post-filtering"
+echo "Starting post-filtering"
 echo "Sample: $SAMPLE_FULL"
 
 # ============================================================
@@ -631,8 +630,9 @@ fi
   echo "Variants retained: $N_VARIANTS"
 } > "$SUMMARY_TXT"
 
+echo " "
 echo "[$(date)] $SAMPLE_FULL post-filtering completed successfully"
-
+echo " "
 
 # ========================
 # TOTAL PIPELINE RUNTIME
