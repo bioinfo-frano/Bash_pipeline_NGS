@@ -49,6 +49,9 @@ Perform a **somatic DNA-NGS analysis** following GATK best practices:
 - Bash script
 - Nextflow
 
+➡️ **Go to:**  
+👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_fullbash.md)
+
 ## 🔮 Future extensions
 
 This repository is designed to grow. Planned additions include:

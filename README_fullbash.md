@@ -1,4 +1,4 @@
-# Part IV – Fully Automated Somatic DNA-NGS Pipeline (Single Bash Script)
+# Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline (Single Bash Script)
 
 ## Single Bash Script Implementation
 
