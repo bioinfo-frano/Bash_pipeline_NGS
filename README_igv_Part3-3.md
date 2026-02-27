@@ -1027,7 +1027,7 @@ Importantly, this section highlighted that not all visually convincing variants 
 In **Part IV**, we will focus on automation and reproducibility by running the entire DNA-NGS analysis pipeline using a single Bash script, followed by an introduction to Nextflow for scalable and reproducible workflow execution.
 
 
-Go back to the beginning of 👉 [Part III – Variant Visualization](#)
+Go back to the beginning of 👉 [Part III – Variant Visualization](#part-iii--variant-visualization)
 
 Go to automated workflow: 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_fullbash.md)
 
