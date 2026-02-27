@@ -3561,6 +3561,8 @@ This concludes Part II of the tutorial, which covered end-to-end somatic variant
 
 Go back to the beginning of  👉 [Part II – Somatic analysis](#)
 
-Go to the main page 👉 [Part I](README.md)
+Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
+
+Go to the main page 👉 [Bash_pipeline_NGS](README.md)
 
 End of Part II.
