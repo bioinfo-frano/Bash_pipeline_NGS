@@ -1,5 +1,3 @@
-⚠️ **WORK IN PROGRESS**
-
 #  Part III – Variant Visualization
 
 ## Table of Contents

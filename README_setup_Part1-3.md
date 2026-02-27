@@ -1,5 +1,3 @@
-⚠️ **WORK IN PROGRESS**
-
 # Part I – Preparation & setup
 
 ## Table of Contents

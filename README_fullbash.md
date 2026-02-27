@@ -329,3 +329,9 @@ Total runtime: 0 hours
 (DNA) scripts $ 
 ```
 
+Go back to the beginning of  👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](#)
+
+Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
+
+Go to the main page 👉 [Bash_pipeline_NGS](README.md)
+

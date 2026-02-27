@@ -1,5 +1,3 @@
-⚠️ **WORK IN PROGRESS**
-
 #  Part II – Somatic analysis (Bash pipelines)
 
 ## Table of Contents
@@ -3557,7 +3555,7 @@ In a **certified clinical laboratory**, the variants identified in this tutorial
 
 This concludes Part II of the tutorial, which covered end-to-end somatic variant analysis and clinical annotation from raw FASTQ sequencing data.
 
-**Click** here 👉 [Part III – Somatic - IGV analysis](README_somatic_igv_analysis.md) to learn how to visualize the reads of variants using **IGV** software, explained step-by-step.
+**Click** here 👉 [Part III – Variant Visualization](README_igv_Part3-3.md) to learn how to visualize the reads of variants using **IGV** software, explained step-by-step.
 
 Go back to the beginning of  👉 [Part II – Somatic analysis](#)
 
