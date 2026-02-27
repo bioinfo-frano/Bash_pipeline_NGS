@@ -124,7 +124,7 @@ Genomics_cancer/
 │       ├── intervals/
 │       └── somatic_resources/
 │
-├── bash_scripts/
+├── scripts/
 └── logs/
 ```
 
