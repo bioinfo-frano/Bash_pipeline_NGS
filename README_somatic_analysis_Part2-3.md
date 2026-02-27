@@ -3557,7 +3557,7 @@ This concludes Part II of the tutorial, which covered end-to-end somatic variant
 
 **Click** here 👉 [Part III – Variant Visualization](README_igv_Part3-3.md) to learn how to visualize the reads of variants using **IGV** software, explained step-by-step.
 
-Go back to the beginning of  👉 [Part II – Somatic analysis](#)
+Go back to the top of 👉 [Part II – Somatic analysis](README_somatic_analysis_Part2-3.md#part-ii--somatic-analysis-bash-pipelines)
 
 Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
 
