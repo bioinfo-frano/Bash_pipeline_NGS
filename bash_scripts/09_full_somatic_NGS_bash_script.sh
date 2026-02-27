@@ -590,7 +590,7 @@ bcftools filter \
 
 echo "Indexing post-filtered VCF"
 
-bcftools index -t "$POSTFILTER_VCF" # Option '-t' → .tbi. Without any option → .csi (default). Both are valid index.
+bcftools index -t "$POSTFILTER_VCF"                           # Option '-t' → .tbi. Without any option → .csi (default). Both are valid index.
 
 # Sanity check: ensure index was created
 if [[ ! -f "${POSTFILTER_VCF}.tbi" ]]; then
