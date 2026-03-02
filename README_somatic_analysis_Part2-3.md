@@ -3232,6 +3232,47 @@ supporting their validity for clinical decision-making.
 
 2. **Visualize** the found annotated variants using IGV.
 
+### ClinVar: Germline clinical significance database
+
+ClinVar is a public repository maintained by the NIH that aggregates information about the clinical significance of genetic variants, particularly in the context of inherited disease.
+
+Unlike CIViC or OncoKB, ClinVar does not focus on drug actionability, but rather on whether a variant is classified as:
+
+- Pathogenic
+
+- Likely pathogenic
+
+- Benign
+
+- Likely benign
+
+- Variant of Uncertain Significance (VUS)
+
+- Conflicting interpretations
+
+Although ClinVar primarily focuses on germline variants, it also contains submissions describing somatic variants and their reported disease associations.
+
+In cancer genomics, ClinVar is especially useful when evaluating potential hereditary cancer predisposition. In tumor-only analyses, it can help determine whether a detected variant has previously been reported as pathogenic in germline disease.
+
+Website: <https://www.ncbi.nlm.nih.gov/clinvar/>
+
+>**Important**: ClinVar is less comprehensive in terms of somatic coverage than OncoKB and CIViC.
+
+In the figures below, you can see how to enter the information for your variant (e.g., **PIK3CA p.E542K**) into the ClinVar portal 
+(left panel). Variants can be queried using:
+
+- **Variant**: enter either **HGVSc** and/or **HGVSp** notation
+
+-**Gene (name)**
+
+- **Genomic location** (genomic coordinates). 
+
+This information can be obtained from the **Ensembl VEP** annotation tables (see above). 
+
+In the result window (middle panel), it is possible to filter the interpretation by **Germline** or **Somatic** using the toggle at the top of the page (see arrows). By selecting the “Somatic” filter, you can view submissions and literature references specifically related to the somatic interpretation of this variant (right panel).
+
+![Figure 8.5: ClinVar website](images/ClinVar_Website_PIK3CA.png)
+
 
 ### Folder structure: after VEP-Online variant annotation.
 
