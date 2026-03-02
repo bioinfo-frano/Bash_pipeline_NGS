@@ -3263,7 +3263,7 @@ In the figures below, you can see how to enter the information for your variant 
 
 - **Variant**: enter either **HGVSc** and/or **HGVSp** notation
 
--**Gene (name)**
+- **Gene (name)**
 
 - **Genomic location** (genomic coordinates). 
 

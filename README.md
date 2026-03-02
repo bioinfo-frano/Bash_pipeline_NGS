@@ -131,6 +131,7 @@ This tutorial uses and displays output or screenshots generated from the followi
 - Integrative Genomics Viewer (IGV, Broad Institute)
 - Genome Analysis Toolkit (GATK, Broad Institute)
 - Ensembl Genome Browser
+- ClinVar
 - OncoKB
 - CIViC (Clinical Interpretation of Variants in Cancer)
 - PanDrugs2
