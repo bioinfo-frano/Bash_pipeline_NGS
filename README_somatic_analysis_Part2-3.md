@@ -3389,7 +3389,7 @@ A public, expert‑curated database linking variants to clinical evidence, thera
 
 8. Follow the same pipeline for **PIK3A E542K**
 
-![Figure 12: CIViC PIK3A E542E-Therapy table](images/CIViC_MolecularProfiles_PIK3A_test.png)
+![Figure 12: CIViC PIK3A E542K-Therapy table](images/CIViC_MolecularProfiles_PIK3A_test.png)
 
 >**Note**
 >
