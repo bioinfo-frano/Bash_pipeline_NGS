@@ -3252,7 +3252,7 @@ Unlike CIViC or OncoKB, ClinVar does not focus on drug actionability, but rather
 
 Although ClinVar primarily focuses on germline variants, it also contains submissions describing somatic variants and their reported disease associations.
 
-In cancer genomics, ClinVar is especially useful when evaluating potential hereditary cancer predisposition. In tumor-only analyses, it can help determine whether a detected variant has previously been reported as pathogenic in germline disease.
+>**Important**: In cancer genomics, ClinVar is especially useful when evaluating potential hereditary cancer predisposition. In tumor-only analyses, it can help determine whether a detected variant has previously been reported as pathogenic in germline disease.
 
 Website: <https://www.ncbi.nlm.nih.gov/clinvar/>
 
@@ -3263,7 +3263,7 @@ In the figures below, you can see how to enter the information for your variant 
 
 - **Variant**: enter either **HGVSc** and/or **HGVSp** notation
 
-- **Gene (name)**
+- **Gene** (name)
 
 - **Genomic location** (genomic coordinates). 
 
