@@ -176,7 +176,7 @@ Expected output:
 SnpEff	5.1d	2022-04-19
 ```
 
-### Reproducibility of conda `DNA`
+### c) Reproducibility of conda `DNA`
 
 To export the environment, run in the Terminal:
 
