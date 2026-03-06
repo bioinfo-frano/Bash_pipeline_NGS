@@ -176,6 +176,32 @@ Expected output:
 SnpEff	5.1d	2022-04-19
 ```
 
+### Reproducibility of conda `DNA`
+
+To export the environment, run in the Terminal:
+
+```bash
+conda env export --no-builds > DNA_conda_environment_full.yml
+```
+
+This generates a `DNA_conda_environment_full.yml` file containing all software dependencies.
+
+>**Note**: 
+The `--no-builds` flag is important because it removes platform-specific build strings that can break installation on different systems.
+
+To reproduce this environment on another system, run:
+
+```bash
+conda env create -f DNA_conda_environment_full.yml
+conda activate DNA
+conda list
+```
+
+Finally, `conda list` will display the installed packages and confirm that the `DNA` conda environment was created successfully.
+
+The **.yml** file is available here 👉 [DNA_conda_environment_full.yml](DNA_conda_environment_full.yml)
+
+
 ## II. Create the folder structure
 
 All FASTQ files, reference (e.g. human) genome and scripts should be located into specific folders. Below is a recommended folder structure:

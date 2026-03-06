@@ -17,3 +17,13 @@
 
 # IGV session files (optional)
 *.xml
+
+# Bash script files (to prevent large files accidentally entering the repo)
+*.bam
+*.bai
+*.vcf
+*.vcf.gz
+*.fastq
+*.fastq.gz
+*.sam
+*.tar.gz
