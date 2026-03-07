@@ -200,11 +200,17 @@ conda create -n DNA2 \
 
 >**Key-Note**: Alternatively, instead of creating `DNA2` with Conda, it can be use a better (faster) alternative with **mamba**.
 In base environment, check whether **mamba** is installed with:
+>
 > `which mamba`
+>
 > `mamba --version`
+>
 > In order to create `DNA2` use the same Conda command replacing `conda` for `mamba` like this:
+>
 > `mamba create -n DNA2 ...`
+>
 > Then activate:
+>
 > `conda activate DNA2`
 
 CORRECT THE CODE
