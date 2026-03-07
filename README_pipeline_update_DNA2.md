@@ -90,91 +90,122 @@ In some research institutions and diagnostic laboratories, any modification to a
 
 Even a small change in the code or in a software dependency could potentially alter the final results. Therefore, **reference samples with known variants ("gold standard samples")** are often processed again through the updated pipeline to verify that key performance metrics such as **sensitivity** and **specificity** remain unchanged.
 
+---
 
 # Practical example
 
-In this tutorial, the somatic variant analysis from a targeted NGS gene panel is performed using the Bash pipeline (`09_full_somatic_NGS_bash_script.sh` (make a link)). The script sequentially runs several bioinformatics tools, including the variant caller Mutect2 from the GATK toolkit.
+In this tutorial, the somatic variant analysis from a targeted NGS gene panel is performed using the Bash pipeline:
 
-All required software is installed inside a Conda environment called `DNA`. One of the tools used in this environment is samtools, which is widely used for manipulating sequencing alignment files (BAM/CRAM).
+[`09_full_somatic_NGS_bash_script.sh`](bash_scripts/09_full_somatic_NGS_bash_script.sh). 
 
-The original `DNA` environment contains a very old version of samtools (0.1.19, "legacy"). Modern versions of samtools (>1.10) rely on the library HTSlib and include numerous improvements and bug fixes.
+The script sequentially runs several bioinformatics tools, including the variant caller **Mutect2** from the GATK toolkit. All required software is installed inside a Conda environment called `DNA`. One of the tools used in this environment is **samtools**, which is widely used for manipulating sequencing alignment files (BAM/CRAM).
+
+The original `DNA` environment contains a very old version of samtools (**0.1.19**, a "legacy" version). Modern versions of samtools (>1.10) rely on the library HTSlib and include numerous improvements and bug fixes.
 
 An interesting question is therefore:
 
 "***Will the number or identity of detected variants change if the pipeline is executed using a modern version of samtools instead of the legacy version?***"
 
+---
 
 ## Methodology: 
 
 To evaluate the potential impact of this update, the following approach will be used.
 
-### 1. Compare "DNA" with a new Conda environment.
+### 1. Compare the environments `DNA` and `DNA2`
 
-A second environment called `DNA2` will be created. This environment will contain a more recent version of samtools and updated dependencies (for example **Perl 5.32.1**).
+A new environment called `DNA2` will be created with a modern version of samtools and updated dependencies.
 
+**Conda environment comparison**
 
-```bash
-conda create -n DNA \
-  -c conda-forge -c bioconda -c defaults \
-  python=3.9 \
-  openjdk=17 \
-  perl=5.32 \
-  fastqc \
-  multiqc \
-  cutadapt \
-  bwa \
-  samtools \
-  picard \
-  htslib \
-  gatk4 \
-  bcftools \
-  vcftools \
-  snpeff \
-  ensembl-vep \
-  bedtools \
-  coreutils \
-  pigz \
-  pbzip2 \
-  pandas \
-  numpy \
-  matplotlib \
-  seaborn \
-  -y
-```
+| Dependency | Version (`DNA`) | Dependency | Version (`DNA2`) |
+| ---------- | --------------- | ---------- | ---------------- |
+| Python     | 3.9             | Python     | 3.9              |
+| OpenJDK    | 17.0.17         | OpenJDK    | 17.0.17          |
+| Perl       | 5.32.1          | Perl       | 5.32.1           |
+| samtools   | 0.1.19          | **samtools** | **1.22.1**     |
+| HTSlib     | 1.22.1          | HTSlib     | 1.22.1           |
+| GATK       | 4.6.2           | GATK       | 4.6.2            |
+| BWA        | 0.7.19          | BWA        | 0.7.19           |
 
-MAKE A TABLE CALLED: "CONDA ENV 'OLD' (`DNA`) and NEW (`DNA2`) COMPARISON". IN THIS TABLE, THE FIRST TWO COLUMNS SHOWS THE DEPENDENCIES FROM OLD AND VERSION, AND THE LAST TWO THE DEPENDENCIES OF THE NEW AND VERSION
+In this experiment, the only intentionally modified tool is **samtools**, which is updated from 0.1.19 to 1.22.1. All other core tools remain unchanged to isolate the effect of this update.
 
 ### 2. Create the new conda environment `DNA2`. 
 
+The installation of `DNA2` should be in `base` environment. All environment must be **children** of `base`.
+
+1. Go to `base` environment
+
+```base
+conda deactivate
+```
+You should see `(base)`
+
+2. Configure Conda channels (recommended)
+
+```bash
+conda config --add channels conda-forge
+conda config --add channels bioconda
+conda config --set channel_priority strict
+```
+
+Then check:
+
+```bash
+conda config --show channels
+```
+
+You should see something like:
+
+```bash
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+```
+
+This provides a strict channel priority that helps prevent dependency conflicts when installing bioinformatics software.  
+
+
+3. Then run:
 
 ```bash
 conda create -n DNA2 \
   -c conda-forge -c bioconda -c defaults \
-  python=3.9 \
-  openjdk=17 \
-  perl=5.32 \
-  fastqc \
-  multiqc \
-  cutadapt \
-  bwa \
-  samtools***VERSION \
-  picard \
-  htslib \
-  gatk4 \
-  bcftools \
-  vcftools \
-  snpeff \
-  ensembl-vep \
-  bedtools \
-  coreutils \
-  pigz \
-  pbzip2 \
-  pandas \
-  numpy \
-  matplotlib \
-  seaborn \
+  python=3.9.23 \
+  openjdk=17.0.17 \
+  perl=5.32.1 \
+  fastqc=0.12.1 \
+  multiqc=1.33 \
+  cutadapt=5.2 \
+  bwa=0.7.19 \
+  samtools=1.22.1 \
+  picard=3.4.0 \
+  htslib=1.22.1 \
+  gatk4=4.6.2.0 \
+  bcftools=1.22 \
+  vcftools=0.1.17 \
+  snpeff=5.1 \
+  ensembl-vep=115.2 \
+  bedtools=2.31.1 \
+  coreutils=9.5 \
+  pigz=2.8 \
+  pbzip2=1.1.13 \
+  pandas=2.3.1 \
+  numpy=2.0.2 \
+  matplotlib=3.9.4 \
+  seaborn=0.13.2 \
   -y
 ```
+
+>**Key-Note**: Alternatively, instead of creating `DNA2` with Conda, it can be use a better (faster) alternative with **mamba**.
+In base environment, check whether **mamba** is installed with:
+> `which mamba`
+> `mamba --version`
+> In order to create `DNA2` use the same Conda command replacing `conda` for `mamba` like this:
+> `mamba create -n DNA2 ...`
+> Then activate:
+> `conda activate DNA2`
 
 CORRECT THE CODE
 
