@@ -79,6 +79,8 @@ Learn why is important to keep your pipeline updated and verify it reproducibili
 **Just click here**
 👉 [Part V – Pipeline maintenance](README_pipeline_update_DNA2.md)
 
+---
+
 ## 🔮 Future extensions
 
 This repository is designed to grow. Planned additions include:
