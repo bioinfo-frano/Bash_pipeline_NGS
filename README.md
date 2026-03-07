@@ -71,6 +71,12 @@ Perform a **somatic DNA-NGS analysis** following GATK best practices:
 ➡️ **Go to automated workflow:**  
 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_fullbash.md)
 
+### 5️⃣ Part V - Pipeline maintenance
+Learn why is important to keep your pipeline updated and verify it reproducibility
+
+**Just click here**
+👉 [Part V – Pipeline maintenance](README_pipeline_update_DNA2.md)
+
 ## 🔮 Future extensions
 
 This repository is designed to grow. Planned additions include:
