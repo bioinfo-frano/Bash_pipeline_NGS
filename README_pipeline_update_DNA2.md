@@ -205,22 +205,26 @@ c) Update the bash script `09_full_somatic_DNA2_updated.sh`
 SAMPLE="SRR30536566"
 
 Old version
-SAMPLE_FULL="${SAMPLE}_full"
+`SAMPLE_FULL="${SAMPLE}_full"`
 
 New version
-SAMPLE_FULL="${SAMPLE}_full_DNA2"
+`SAMPLE_FULL="${SAMPLE}_full_DNA2"`
 
 - Change samtools syntax in "Step3: Sort BAM (coordinate sort)"
 
 Old alignment block
+```bash
 samtools sort -@ "$THREADS" \
   "$ALIGN_DIR/${SAMPLE_FULL}.bam" \
   "$ALIGN_DIR/${SAMPLE_FULL}.sorted"
+```
 
 New version
+```bash
 samtools sort -@ "$THREADS" \
   "$ALIGN_DIR/${SAMPLE_FULL}.sorted" \
   "$ALIGN_DIR/${SAMPLE_FULL}.bam"
+```
 
 
 ### 3. Re-run the pipeline
