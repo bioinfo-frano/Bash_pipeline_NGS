@@ -127,21 +127,25 @@ A new environment called `DNA2` will be created with a modern version of samtool
 | HTSlib     | 1.22.1          | HTSlib     | 1.22.1           |
 | GATK       | 4.6.2           | GATK       | 4.6.2            |
 | BWA        | 0.7.19          | BWA        | 0.7.19           |
+| bcftools   | 1.22            | bcftools   | 1.22             |
+| Picard     | 3.4.0           | Picard     | 3.4.0            |
 
-In this experiment, the primary tool intentionally modified is samtools, which is updated from version 0.1.19 to 1.22.1. Because samtools is part of the HTSlib ecosystem, this update also introduces newer compatible versions of HTSlib and bcftools that are required by the modern samtools release. All other core tools remain unchanged to isolate the effect of this update.
+In this experiment, the primary tool intentionally modified is samtools, which is updated from version 0.1.19 to 1.22.1. Because modern samtools releases are built on the HTSlib library, updating samtools also introduces compatible versions of HTSlib and related tools such as bcftools. All other core tools remain unchanged to isolate the effect of this update.
+
+---
 
 ### 2. Create the new conda environment `DNA2`. 
 
 The installation of `DNA2` should be in `base` environment. All Conda environments are created from the `base` installation but remain isolated from each other.
 
-1. Go to `base` environment
+**I. Go to `base` environment**:
 
 ```base
 conda deactivate
 ```
 You should see `(base)`
 
-2. Configure Conda channels (recommended)
+**II. Configure Conda channels (recommended)**
 
 ```bash
 conda config --add channels conda-forge
@@ -167,10 +171,9 @@ channels:
 This provides a strict channel priority that helps prevent dependency conflicts when installing bioinformatics software.  
 
 > WARNING:
-> During environment creation, dependency conflicts may occur when incompatible versions of tools are requested simultaneously. In such cases, removing strict version constraints often allows Conda to automatically resolve compatible versions. In genomics pipelines this frequently occurs with legacy Perl-based tools such as VEP. In practice, complex pipelines often split tools into multiple environments to avoid dependency conflicts.
+> During environment creation, dependency conflicts may occur when incompatible versions of tools are requested simultaneously. In such cases, removing strict version constraints often allows Conda to automatically resolve compatible versions. In genomics pipelines this frequently occurs with legacy Perl-based tools such as **Ensembl-VEP**. For this reason, complex pipelines often split tools into multiple environments to avoid dependency conflicts.
 
-
-3. Then run:
+**III. Then run**:
 
 ```bash
 conda create -n DNA2 \
@@ -201,21 +204,22 @@ conda create -n DNA2 \
   -y
 ```
 
-This conda environment will present conflicts during its installation. The conflict is basically, as it was mentioned, due to the dependency `ensembl-vep`.
-`Ensembl-VEP` depends on the Perl module `perl-bio-samtools`, which relies on the legacy samtools API (<0.2), preventing the installation of modern samtools versions (>1.0) within the same environment.
+This environment will likely produce dependency conflicts during installation. The conflict is basically, as it was mentioned, due to the dependency `ensembl-vep`.
+`Ensembl-VEP` depends on the Perl module `perl-bio-samtools`, which relies on the legacy samtools API (<0.2), preventing Conda from installing modern samtools versions (>=1.x)
+within the same environment.
 
 ```bash
 ensembl-vep
   └─ perl-bioperl
        └─ perl-bio-samtools
-            └─ samtools <0.2
+            └─ samtools (<0.2 legacy API)
 ```
 
-However, we need `samtools 1.22.1`. In order to solve this conflicts, one option is to remove `ensembl-vep` and let conda decide, which `Perl` version should be installed.
+However, we need `samtools 1.22.1`. To resolve this conflict, one option is to remove `ensembl-vep` and let Conda decide, which `Perl` version should be installed automatically.
 
-Thus, repeat the `DNA2` installation with this small modifications.
+The installation of `DNA2` can therefore be repeated with the following modifications.
 
-4. Recreate the environment without VEP:
+IV. Recreate the environment without Ensembl-VEP:
 
 ```bash
 conda create -n DNA2 \
@@ -276,12 +280,13 @@ So now, the new `DNA2` environment will have a newer version of samtools.
 | ---------- | --------------- | ------------ | ---------------- |
 | samtools   | 0.1.19          | **samtools** | **1.22.1**       |
 
+---
 
 ### 3. Environment reproducibility (`DNA2`)
 
-Instead of installing environments manually, you can export a full enviroment using a `.yml` file.
+Instead of installing environments manually, you can export a full environment using a `.yml` file.
 
-**1. Export the environment**
+**I. Export the environment**
 
 After creating `DNA2`
 
@@ -298,7 +303,7 @@ conda env export --no-builds > DNA2_conda_environment.yml
 This will create `DNA2_conda_environment.yml`
 
 
-**2. Recreate the environment anywhere**
+**II. Recreate the environment anywhere**
 
 Anyone can recreate the **exact same pipeline environment**:
 
@@ -312,7 +317,7 @@ If the `.yml` should go directly to a folder `/envs` then:
 conda env create -f envs/DNA2_conda_environment.yml
 ```
 
-**Alternative method**: Lock your environment.
+**III. Alternative method**: Lock your environment.
 
 ```bash
 conda list --explicit > DNA2_lock.txt
@@ -335,7 +340,7 @@ These are **standard methods used in bioinformatics to transfer exact conda envi
 
 >IMPORTANT:
 >
-> By creating the environment from a **YAML** file, i.e. `conda env create -f envs/DNA2_conda_environment.yml`, Conda will **resolve dependencies again** and install compatible packages that satisfy the constraints. This means that when installing the environment through `.yml` in another system, Conda might install differet builds. For example, `zlib 1.3.1` vs `zlib 1.3.1 build_1`. So the environment is reproducible **conceptually**, but not identical.
+> By creating the environment from a **YAML** file, i.e. `conda env create -f envs/DNA2_conda_environment.yml`, Conda will **resolve dependencies again** and install compatible packages that satisfy the constraints. This means that when installing the environment through `.yml` in another system, Conda might install different builds. For example, `zlib 1.3.1` vs `zlib 1.3.1 build_1`. So the environment is reproducible **conceptually**, but not identical.
 > On the other hand, by creating the environment from a **lock** file, i.e. `conda create --name DNA2 --file DNA2_lock.txt`, Conda uses an **explicit package list**. In this case, Conda **does not solve dependencies**, and it installs the **exact package builds**. So you get **bit-identical environments**. For example, `samtools-1.22.1-h96c455f_0` will be the same version, same build, same hash. The problem with this way of transferring environment is that they are **platform specific**, for example **Platform: osx-64**. This means that the installation of the environment **would fail** on:
 > - Linux cluster
 > - Apple Silicon
@@ -343,17 +348,21 @@ These are **standard methods used in bioinformatics to transfer exact conda envi
 >
 > YAML files **are portable**, **reproducible**, and **standard in bioinformatics**.
 
+---
 
+### 4. Tools verification 
 
+After activating the environment, it is recommended to verify that the main tools are correctly installed:
 
+```bash
+samtools --version
+bcftools --version
+gatk --version
+```
 
+---
 
-
-CORRECT THE CODE
-
-
-
-### 3. Update the Bash pipeline
+### 5. Update the Bash pipeline
 
 a) Copy the bash script `09_full_somatic_NGS_bash_script.sh` and create a `09_full_somatic_DNA2_updated.sh`
 
