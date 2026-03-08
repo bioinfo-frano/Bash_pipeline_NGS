@@ -128,11 +128,11 @@ A new environment called `DNA2` will be created with a modern version of samtool
 | GATK       | 4.6.2           | GATK       | 4.6.2            |
 | BWA        | 0.7.19          | BWA        | 0.7.19           |
 
-In this experiment, the only intentionally modified tool is **samtools**, which is updated from 0.1.19 to 1.22.1. All other core tools remain unchanged to isolate the effect of this update.
+In this experiment, the primary tool intentionally modified is samtools, which is updated from version 0.1.19 to 1.22.1. Because samtools is part of the HTSlib ecosystem, this update also introduces newer compatible versions of HTSlib and bcftools that are required by the modern samtools release. All other core tools remain unchanged to isolate the effect of this update.
 
 ### 2. Create the new conda environment `DNA2`. 
 
-The installation of `DNA2` should be in `base` environment. All environment must be **children** of `base`.
+The installation of `DNA2` should be in `base` environment. All Conda environments are created from the `base` installation but remain isolated from each other.
 
 1. Go to `base` environment
 
@@ -166,6 +166,10 @@ channels:
 
 This provides a strict channel priority that helps prevent dependency conflicts when installing bioinformatics software.  
 
+> WARNING:
+>
+> During environment creation, dependency conflicts may occur when incompatible versions of tools are requested simultaneously. In such cases, removing strict version constraints often allows Conda to automatically resolve compatible versions. In genomics pipelines this frequently occurs with legacy Perl-based tools such as VEP. In practice, complex pipelines often split tools into multiple environments to avoid dependency conflicts.
+
 
 3. Then run:
 
@@ -198,6 +202,58 @@ conda create -n DNA2 \
   -y
 ```
 
+This conda environment will present conflicts during its installation. The conflict is basically, as it was mentioned, due to the dependency `ensembl-vep`.
+`Ensembl-VEP` depends on perl-bio-samtools, which in older builds links against the legacy samtools API (<0.2). This dependency prevents Conda from installing modern samtools versions (>=1.x) within the same environment.
+
+```bash
+ensembl-vep
+  └─ perl-bioperl
+       └─ perl-bio-samtools
+            └─ samtools <0.2
+```
+
+However, we need `samtools 1.22.1`. In order to solve this conflicts, one option is to remove `ensembl-vep` and let conda decide, which `Perl` version should be installed.
+
+Thus, repeat the `DNA2` installation with this small modifications.
+
+4. Recreate the environment without VEP:
+
+```bash
+conda create -n DNA2 \
+  -c conda-forge -c bioconda -c defaults \
+  python=3.9.23 \
+  openjdk=17.0.17 \
+  perl \
+  fastqc=0.12.1 \
+  multiqc=1.33 \
+  cutadapt=5.2 \
+  bwa=0.7.19 \
+  samtools=1.22.1 \
+  picard=3.4.0 \
+  htslib=1.22.1 \
+  gatk4=4.6.2.0 \
+  bcftools=1.22 \
+  vcftools \
+  snpeff \
+  bedtools \
+  coreutils \
+  pigz \
+  pbzip2 \
+  pandas \
+  numpy \
+  matplotlib \
+  seaborn \
+  -y
+```
+
+It will be shown in terminal:
+
+```bash
+Solving environment: done
+...
+Executing transaction: done
+```
+
 >**Key-Note**: Alternatively, instead of creating `DNA2` with Conda, it can be use a better (faster) alternative with **mamba**.
 In base environment, check whether **mamba** is installed with:
 >
@@ -212,6 +268,18 @@ In base environment, check whether **mamba** is installed with:
 > Then activate:
 >
 > `conda activate DNA2`
+>
+> `conda list`  
+
+So now, the new `DNA2` environment will have a newer version of samtools.
+
+| Dependency | Version (`DNA`) | Dependency   | Version (`DNA2`) |
+| ---------- | --------------- | ------------ | ---------------- |
+| samtools   | 0.1.19          | **samtools** | **1.22.1**       |
+
+
+
+
 
 CORRECT THE CODE
 
