@@ -362,7 +362,7 @@ gatk --version
 
 ---
 
-### 5. Update the Bash pipeline
+### 5. Preparation of folder structure and Update of Bash pipeline
 
 a) Copy the bash script `09_full_somatic_NGS_bash_script.sh` and create a `09_full_somatic_DNA2_updated.sh`
 
@@ -380,36 +380,146 @@ Go to ~/Genomics_cancer/data
 mkdir -p SRR30536566_full_DNA2/{aligned,logs,qc,trimmed,variants,annotation}
 ```
 
+Folder structure:
+
+```code
+Genomics_cancer/
+├── data/
+│   ├── SRR30536566_full/   # Used by the unified script. DNA environment.
+│   │   ├── qc/
+│   │   ├── trimmed/
+│   │   ├── logs/
+│   │   ├── aligned/
+│   │   ├── variants/
+│   │   └── annotation/
+│   │
+│   └── SRR30536566/        # Used for step-by-step bash scritp workflow (Part I & II)
+│   │   ├── raw_fastq/
+│   │   ├── qc/
+│   │   ├── trimmed/
+│   │   ├── aligned/
+│   │   ├── variants/
+│   │   └── annotation/
+│   │
+│   └── SRR30536566_full_DNA2/        # Used by the unified script. DNA2 environment.
+│       ├── qc/
+│       ├── trimmed/
+│       ├── logs/
+│       ├── aligned/
+│       ├── variants/
+│       └── annotation/
+│
+├── reference/
+│   └── GRCh38/
+│       ├── fasta/
+│       ├── intervals/
+│       └── somatic_resources/
+│
+├── scripts/
+└── logs/
+```
+
 c) Update the bash script `09_full_somatic_DNA2_updated.sh`
 
-- Change variables in "Configuration"
+Change variables in "Configuration"
 
+```bash
 SAMPLE="SRR30536566"
+SAMPLE_FULL="${SAMPLE}_full"
+```
 
-Old version
-`SAMPLE_FULL="${SAMPLE}_full"`
+To this one:
 
-New version
-`SAMPLE_FULL="${SAMPLE}_full_DNA2"`
+```bash
+SAMPLE="SRR30536566"
+SAMPLE_FULL="${SAMPLE}_full_DNA2"
+```
 
-- Change samtools syntax in "Step3: Sort BAM (coordinate sort)"
+Change samtools syntax in "Step3: Sort BAM (coordinate sort)"
 
-Old alignment block
+From this version:
+
 ```bash
 samtools sort -@ "$THREADS" \
   "$ALIGN_DIR/${SAMPLE_FULL}.bam" \
   "$ALIGN_DIR/${SAMPLE_FULL}.sorted"
 ```
 
-New version
+To this one
 ```bash
 samtools sort -@ "$THREADS" \
-  "$ALIGN_DIR/${SAMPLE_FULL}.sorted" \
+  -o "$ALIGN_DIR/${SAMPLE_FULL}.sorted.bam" \
   "$ALIGN_DIR/${SAMPLE_FULL}.bam"
 ```
 
+**Everything else automatically updates**, this means that the pipeline in `09_full_somatic_DNA2_updated.sh` will output to `data/SRR30536566_full_DNA2/` as intended.
 
-### 3. Re-run the pipeline
+---
+
+### 6. Run the pipeline in the DNA2 environment
+
+Activate the environment:
+
+```bash
+conda activate DNA2
+```
+
+Move to scripts (where `09_full_somatic_DNA2_updated.sh` is)
+
+```bash
+cd ~/Genomics_cancer/scripts
+```
+
+Run:
+
+```bash
+bash 09_full_somatic_DNA2_updated.sh
+```
+
+or 
+
+```bash
+./ 09_full_somatic_DNA2_updated.sh
+```
+
+### Expected output structure after the run
+
+```code
+Genomics_cancer/
+└── data/
+    └── SRR30536566_full_DNA2/
+        ├── qc/
+        │   ├── raw/
+        │   ├── trimmed/
+        │   └── md_flagstat/
+        │
+        ├── trimmed/
+        │
+        ├── logs/
+        │
+        ├── aligned/
+        │   └── SRR30536566_full_DNA2.sorted.markdup.md.bam
+        │   └── SRR30536566_full_DNA2.sorted.markdup.md.bam.bai
+        │   └── SRR30536566_full_DNA2.markdup.metrics.txt
+        │
+        ├── variants/
+        │   ├── *.contamination.table
+        │   ├── *.f1r2.tar.gz
+        │   ├── *.unfiltered.vcf.gz
+        │   ├── *.unfiltered.vcf.gz.stats
+        │   ├── *.unfiltered.vcf.gz.tbi
+        │   ├── *.read-orientation-model.tar.gz
+        │   ├── *.filtered.vcf.gz
+        │   ├── *.filtered.vcf.gz.tbi
+        │   ├── *.pileups.table
+        │   ├── *.PASS.vcf.gz
+        │   ├── *.PASS.vcf.gz.tbi
+        │   └── *.postfiltered.vcf.gz
+        │   └── *.postfiltered.vcf.gz.tbi
+        │   └── *.postfilter_summary.txt
+        │
+        └── annotation/
+```
 
 The entire pipeline will then be executed again on the same sequencing dataset (`SRR30536566`)
 

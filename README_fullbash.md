@@ -102,7 +102,6 @@ For full setup instructions, see:
 Genomics_cancer/
 ├── data/
 │   ├── SRR30536566_full/   # Used by the unified script
-│   │   ├── raw_fastq/
 │   │   ├── qc/
 │   │   ├── trimmed/
 │   │   ├── logs/
