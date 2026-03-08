@@ -203,7 +203,7 @@ conda create -n DNA2 \
 ```
 
 This conda environment will present conflicts during its installation. The conflict is basically, as it was mentioned, due to the dependency `ensembl-vep`.
-`Ensembl-VEP` depends on perl-bio-samtools, which in older builds links against the legacy samtools API (<0.2). This dependency prevents Conda from installing modern samtools versions (>=1.x) within the same environment.
+`Ensembl-VEP` depends on the Perl module `perl-bio-samtools`, which relies on the legacy samtools API (<0.2), preventing the installation of modern samtools versions (>1.0) within the same environment.
 
 ```bash
 ensembl-vep
@@ -276,6 +276,69 @@ So now, the new `DNA2` environment will have a newer version of samtools.
 | Dependency | Version (`DNA`) | Dependency   | Version (`DNA2`) |
 | ---------- | --------------- | ------------ | ---------------- |
 | samtools   | 0.1.19          | **samtools** | **1.22.1**       |
+
+
+### 3. Environment reproducibility (`DNA2`)
+
+Instead of installing environments manually, you can export a full enviroment using a `.yml` file.
+
+**1. Export the environment**
+
+After creating `DNA2`
+
+```bash
+conda activate DNA2
+```
+
+Run:
+
+```bash
+conda env export --no-builds > DNA2_conda_environment.yml
+```
+
+This will create `DNA2_conda_environment.yml`
+
+
+**2. Recreate the environment anywhere**
+
+Anyone can recreate the **exact same pipeline environment**:
+
+```bash
+conda env create -f DNA2_conda_environment.yml
+```
+
+If the `.yml` should go directly to a folder `/envs` then:
+
+```bash
+conda env create -f envs/DNA2_conda_environment.yml
+```
+
+**Alternative method**: Lock your environment.
+
+```bash
+conda list --explicit > DNA2_lock.txt
+```
+
+Then recreate byte-identical environments:
+
+```bash
+conda create --name DNA2 --file DNA2_lock.txt
+```
+
+This is **maximum reproducibility**.
+
+
+These are **standard methods used in bioinformatics to transfer exact conda environments**. With the **YAML** file, the environment won't be affected by changes in versions on each dependency, making the environment:
+
+- reproducible
+- shareable
+- version-controlled
+
+>IMPORTANT:
+>
+>With the first method
+
+
 
 
 
