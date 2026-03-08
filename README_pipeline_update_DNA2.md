@@ -336,7 +336,12 @@ These are **standard methods used in bioinformatics to transfer exact conda envi
 
 >IMPORTANT:
 >
->With the first method
+> By creating the environment from a YAML file
+
+>```bash
+`conda env create -f envs/DNA2_conda_environment.yml`
+```
+> 
 
 
 
