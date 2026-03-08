@@ -473,12 +473,6 @@ cd ~/Genomics_cancer/scripts
 Run:
 
 ```bash
-bash 09_full_somatic_DNA2_updated.sh
-```
-
-or 
-
-```bash
 ./ 09_full_somatic_DNA2_updated.sh
 ```
 
