@@ -22,7 +22,7 @@ Occasionally, a specific sequencing sample may produce an unexpected error durin
 
 A robust pipeline should ideally detect these failures and allow the rest of the samples to continue processing. In practice, this may require adjusting the script to handle exceptional cases without interrupting the entire analysis run.
 
-### 3. Reference Data updates
+## 3. Reference Data updates
 
 Many genomic reference resources are continuously updated, including:
 
@@ -167,7 +167,6 @@ channels:
 This provides a strict channel priority that helps prevent dependency conflicts when installing bioinformatics software.  
 
 > WARNING:
->
 > During environment creation, dependency conflicts may occur when incompatible versions of tools are requested simultaneously. In such cases, removing strict version constraints often allows Conda to automatically resolve compatible versions. In genomics pipelines this frequently occurs with legacy Perl-based tools such as VEP. In practice, complex pipelines often split tools into multiple environments to avoid dependency conflicts.
 
 
@@ -336,12 +335,13 @@ These are **standard methods used in bioinformatics to transfer exact conda envi
 
 >IMPORTANT:
 >
-> By creating the environment from a YAML file
-
->```bash
-`conda env create -f envs/DNA2_conda_environment.yml`
-```
-> 
+> By creating the environment from a **YAML** file, i.e. `conda env create -f envs/DNA2_conda_environment.yml`, Conda will **resolve dependencies again** and install compatible packages that satisfy the constraints. This means that when installing the environment through `.yml` in another system, Conda might install differet builds. For example, `zlib 1.3.1` vs `zlib 1.3.1 build_1`. So the environment is reproducible **conceptually**, but not identical.
+> On the other hand, by creating the environment from a **lock** file, i.e. `conda create --name DNA2 --file DNA2_lock.txt`, Conda uses an **explicit package list**. In this case, Conda **does not solve dependencies**, and it installs the **exact package builds**. So you get **bit-identical environments**. For example, `samtools-1.22.1-h96c455f_0` will be the same version, same build, same hash. The problem with this way of transferring environment is that they are **platform specific**, for example **Platform: osx-64**. This means that the installation of the environment **would fail** on:
+> - Linux cluster
+> - Apple Silicon
+> - HPC systems
+>
+> YAML files **are portable**, **reproducible**, and **standard in bioinformatics**.
 
 
 
