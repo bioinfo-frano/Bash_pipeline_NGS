@@ -303,7 +303,7 @@ conda env export --no-builds > DNA2_conda_environment.yml
 This will create `DNA2_conda_environment.yml`, which has all packages of `DNA2` and their corresponding versions.
 
 
-To get a higher level of reproducibility, remove `--no-builds`.
+To get a higher level of reproducibility, remove `--no-builds` from the code.
 
 If you want a perfect reproducibility, then the strongest methods are:
 
