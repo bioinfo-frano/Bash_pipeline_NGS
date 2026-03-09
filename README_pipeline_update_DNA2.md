@@ -300,16 +300,19 @@ conda activate DNA2
 conda env export --no-builds > DNA2_conda_environment.yml
 ```
 
-This will create `DNA2_conda_environment.yml`, which has all packages of `DNA2` and their corresponding versions.
-
+The file `DNA2_conda_environment.yml` will store all packages and versions of `DNA2`.
 
 To get a higher level of reproducibility, remove `--no-builds` from the code.
+
+
+**II. Create a fully reproducible lock file**
 
 If you want a perfect reproducibility, then the strongest methods are:
 
 ```bash
 conda list --explicit > DNA2_conda_environment.lock
 ```
+
 or 
 
 ```bash
@@ -319,10 +322,18 @@ conda env export --no-builds > DNA2_conda_environment.yml
 conda-lock lock -f DNA2_conda_environment.yml -p osx-64
 # Alternatively, for macOS(Apple Silicon)
 conda-lock lock -f DNA2_conda_environment.yml -p osx-arm64
-# Or if you want to increase portability to other platforms (linux-64, win-64)
+# Or if you also want to increase portability to other platforms (linux-64, win-64)
 conda-lock -f DNA2_conda_environment.yml
 ```
-It records **exact binary URLs**.
+
+This generates:
+
+```bash
+conda-lock.yml
+```
+
+This file contains **exact package URLs and checksums** for perfect reproducibility.
+
 
 **Comparison of exporting environment methods and reproducibility levels**:
 
