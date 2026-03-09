@@ -175,7 +175,7 @@ This configuration ensures a **strict channel priority**, which helps prevent de
 > [!WARNING]
 > During environment creation, dependency conflicts may occur when incompatible versions of tools are requested simultaneously. In such cases, removing strict version constraints often allows Conda to automatically resolve compatible versions. In genomics pipelines this frequently occurs with legacy Perl-based tools such as **Ensembl-VEP**. For this reason, complex pipelines often split tools into multiple environments to avoid dependency conflicts.
 
-**III. Then run**:
+**III. Create the environment**:
 
 ```bash
 conda create -n DNA2 \c 
@@ -206,9 +206,7 @@ conda create -n DNA2 \c
   -y
 ```
 
-This environment will likely produce dependency conflicts during installation. The conflict is basically, as it was mentioned, due to the dependency `ensembl-vep`.
-`Ensembl-VEP` depends on the Perl module `perl-bio-samtools`, which relies on the legacy samtools API (<0.2), preventing Conda from installing modern samtools versions (>=1.x)
-within the same environment.
+This environment will likely produce dependency conflicts during installation. The conflict occurs because **Ensembl-VEP depends on the legacy samtools API (<0.2)** through `perl-bio-samtools`, preventing Conda from installing modern samtools versions (>=1.x) within the same environment.
 
 ```bash
 ensembl-vep
@@ -217,11 +215,11 @@ ensembl-vep
             └─ samtools (<0.2 legacy API)
 ```
 
-However, we need `samtools 1.22.1`. To resolve this conflict, one option is to remove `ensembl-vep` and let Conda decide, which `Perl` version should be installed automatically.
+Since we require **samtools 1.22.1**, the dependency `ensembl-vep` must be removed and let Conda decide, which `Perl` version should be installed automatically.
 
 The installation of `DNA2` can therefore be repeated with the following modifications.
 
-IV. Recreate the environment without Ensembl-VEP:
+**IV. Recreate the environment without Ensembl-VEP**
 
 ```bash
 conda create -n DNA2 \
@@ -251,7 +249,7 @@ conda create -n DNA2 \
   -y
 ```
 
-It will be shown in terminal:
+Expected output:
 
 ```bash
 Solving environment: done
@@ -259,22 +257,27 @@ Solving environment: done
 Executing transaction: done
 ```
 
->**Key-Note**: Alternatively, instead of creating `DNA2` with Conda, it can be use a better (faster) alternative with **mamba**.
-In base environment, check whether **mamba** is installed with:
->
-> `which mamba`
->
-> `mamba --version`
->
-> In order to create `DNA2` use the same Conda command replacing `conda` for `mamba` like this:
->
-> `mamba create -n DNA2 ...`
->
-> Then activate:
->
-> `conda activate DNA2`
->
-> `conda list`  
+**Alternative**: Instead of Conda, the environment can be created using mamba, which resolves dependencies much faster.
+
+Check if mamba is installed:
+
+```bash
+which mamba
+mamba --version
+```
+
+Then create the environment:
+
+```bash
+`mamba create -n DNA2 ...
+```
+
+After installation:
+
+```bamba
+conda activate DNA2
+conda list
+```
 
 So now, the new `DNA2` environment will have a newer version of samtools.
 
@@ -286,7 +289,7 @@ So now, the new `DNA2` environment will have a newer version of samtools.
 
 ### 3. Environment reproducibility (`DNA2`)
 
-Instead of installing environments manually, you can install a full environment using a `.yml`, `.lock` or `txt` files. Conda environments can be exported with different levels of reproducibility depending on how much information about each package is stored.
+Instead of installing environments manually, Conda environments can be exported and recreated using `.yml` or `.lock` files. Conda environments can be exported with different levels of reproducibility depending on how much information about each package is stored.
 
 **I. Export the environment**
 
@@ -294,11 +297,6 @@ After creating `DNA2`
 
 ```bash
 conda activate DNA2
-```
-
-Run:
-
-```bash
 conda env export --no-builds > DNA2_conda_environment.yml
 ```
 
