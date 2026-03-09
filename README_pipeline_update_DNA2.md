@@ -284,7 +284,7 @@ So now, the new `DNA2` environment will have a newer version of samtools.
 
 ### 3. Environment reproducibility (`DNA2`)
 
-Instead of installing environments manually, you can install a full environment using a `.yml` or `.lock` files. Conda environments can be exported with different levels of reproducibility depending on how much information about each package is stored.
+Instead of installing environments manually, you can install a full environment using a `.yml`, `.lock` or `txt` files. Conda environments can be exported with different levels of reproducibility depending on how much information about each package is stored.
 
 **I. Export the environment**
 
@@ -313,6 +313,13 @@ conda list --explicit > DNA2_conda_environment.lock
 or 
 
 ```bash
+# First export DNA2 env without builds
+conda env export --no-builds > DNA2_conda_environment.yml
+# Second, create the lock DNA2 env specifically for macOS(Intel)
+conda-lock lock -f DNA2_conda_environment.yml -p osx-64
+# Alternatively, for macOS(Apple Silicon)
+conda-lock lock -f DNA2_conda_environment.yml -p osx-arm64
+# Or if you want to increase portability to other platforms (linux-64, win-64)
 conda-lock -f DNA2_conda_environment.yml
 ```
 It records **exact binary URLs**.
@@ -332,6 +339,8 @@ It records **exact binary URLs**.
 | **used by workflow tools**             | sometimes                             | sometimes                             | rarely                                  | ✔ widely used                                  |
 | **best for**                           | documentation                         | collaboration                         | exact backup                            | production workflows                           |
 | **typical recreate command**           | `conda env create -f environment.yml` | `conda env create -f environment.yml` | `conda create -n DNA2 --file DNA2.lock` | `conda-lock install -n DNA2 conda-osx-64.lock` |
+
+
 
 
 **II. Recreate the environment anywhere**
