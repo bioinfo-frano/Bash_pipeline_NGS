@@ -130,13 +130,15 @@ A new environment called `DNA2` will be created with a modern version of samtool
 | bcftools   | 1.22            | bcftools   | 1.22             |
 | Picard     | 3.4.0           | Picard     | 3.4.0            |
 
-In this experiment, the primary tool intentionally modified is samtools, which is updated from version 0.1.19 to 1.22.1. Because modern samtools releases are built on the HTSlib library, updating samtools also introduces compatible versions of HTSlib and related tools such as bcftools. All other core tools remain unchanged to isolate the effect of this update.
+In this experiment, the primary tool intentionally modified is **samtools**, which is updated from version **0.1.19** to **1.22.1**. Because modern samtools releases are built on the **HTSlib** library, updating samtools also introduces compatible versions of HTSlib and related tools such as bcftools. 
+
+All other core tools remain unchanged to isolate the effect of this update.
 
 ---
 
 ### 2. Create the new conda environment `DNA2`. 
 
-The installation of `DNA2` should be in `base` environment. All Conda environments are created from the `base` installation but remain isolated from each other.
+The installation of `DNA2` should be performed from the in `base` environment. All Conda environments are created from the `base` installation but remain isolated from each other.
 
 **I. Go to `base` environment**:
 
@@ -159,7 +161,7 @@ Then check:
 conda config --show channels
 ```
 
-You should see something like:
+Expected output:
 
 ```bash
 channels:
@@ -168,15 +170,15 @@ channels:
   - defaults
 ```
 
-This provides a strict channel priority that helps prevent dependency conflicts when installing bioinformatics software.  
+This configuration ensures a **strict channel priority**, which helps prevent dependency conflicts when installing bioinformatics software.  
 
-> WARNING:
+> [!WARNING]
 > During environment creation, dependency conflicts may occur when incompatible versions of tools are requested simultaneously. In such cases, removing strict version constraints often allows Conda to automatically resolve compatible versions. In genomics pipelines this frequently occurs with legacy Perl-based tools such as **Ensembl-VEP**. For this reason, complex pipelines often split tools into multiple environments to avoid dependency conflicts.
 
 **III. Then run**:
 
 ```bash
-conda create -n DNA2 \
+conda create -n DNA2 \c 
   -c conda-forge -c bioconda -c defaults \
   python=3.9.23 \
   openjdk=17.0.17 \
