@@ -114,7 +114,7 @@ To evaluate the potential impact of this update, the following approach will be 
 
 ### 1. Compare the environments `DNA` and `DNA2`
 
-A new environment called `DNA2` will be created with a modern version of samtools and updated dependencies.
+A new environment called `DNA2` will be created with a modern version of samtools.
 
 **Conda environment comparison**
 
@@ -311,6 +311,12 @@ Anyone can recreate the **exact same pipeline environment**:
 conda env create -f DNA2_conda_environment.yml
 ```
 
+or 
+
+```bash
+conda-lock -f DNA2_conda_environment.yml
+```
+
 If the `.yml` should go directly to a folder `/envs` then:
 
 ```bash
@@ -320,17 +326,42 @@ conda env create -f envs/DNA2_conda_environment.yml
 **III. Alternative method**: Lock your environment.
 
 ```bash
-conda list --explicit > DNA2_lock.txt
+conda list --explicit
 ```
-
-Then recreate byte-identical environments:
+output:
 
 ```bash
-conda create --name DNA2 --file DNA2_lock.txt
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: osx-64
+@EXPLICIT
+https://conda.anaconda.org/conda-forge/osx-64/coreutils-9.5-h10d778d_0.conda
+https://conda.anaconda.org/conda-forge/noarch/_r-mutex-1.0.1-anacondar_1.tar.bz2
+...
+https://conda.anaconda.org/conda-forge/noarch/seaborn-base-0.13.2-pyhd8ed1ab_3.conda
+https://conda.anaconda.org/bioconda/noarch/picard-3.4.0-hdfd78af_0.tar.bz2
+https://conda.anaconda.org/conda-forge/noarch/seaborn-0.13.2-hd8ed1ab_3.conda
 ```
+**Meaning**: This codes is useful when creating a **lock file** listing the exact packages. This means that it's possible to recreate the **identical environment** later using:
 
-This is **maximum reproducibility**.
+```bash
+conda create --name DNA2_clone --file env_lock.txt
+```
+where `env.txt` is the saved file. This guarantees **bit-identical environments**.
 
+Alternatively, **freeze the environment** like this:
+
+```bash
+conda list --explicit > DNA2.lock
+```
+Then the environment can be recreated exactly on another machine. This is **maximum reproducibility**.
+
+Example:
+
+```bash
+conda create -n DNA2 --file DNA2.lock
+```
+This is important when installing an environment in an HPC cluster, reproducing papers and pipeline sharing. 
 
 These are **standard methods used in bioinformatics to transfer exact conda environments**. With the **YAML** file, the environment won't be affected by changes in versions on each dependency, making the environment:
 
@@ -348,6 +379,74 @@ These are **standard methods used in bioinformatics to transfer exact conda envi
 >
 > YAML files **are portable**, **reproducible**, and **standard in bioinformatics**.
 
+
+### SUMMARY
+
+`conda list --explicit > DNA2.lock`  ➡️ **Creates a lock file from an existing environment**. 
+
+What it does:
+
+- Exports exact package URLs
+
+- Includes build numbers
+
+- Includes channels
+
+- Includes platform
+
+Example inside the file:
+
+```bash
+@EXPLICIT
+https://conda.anaconda.org/bioconda/osx-64/samtools-1.22.1-h96c455f_0.conda
+https://conda.anaconda.org/bioconda/osx-64/bcftools-1.22-hb1a7a94_0.conda
+```
+Install these **exact binaries**, no solving. **This is the most reproducible export**.
+
+
+`conda create -n DNA2 --file DNA2.lock`  ➡️ **Recreates the exact environment and save it to a file**. 
+
+Important:
+
+- No dependency solving
+
+- Installs exact builds
+
+- Same packages
+
+- Same versions
+
+- Same builds
+
+This guarantees **bit-identical environments**. Used for HPC pipelies, published analyses and reproducibility
+
+
+`conda env create -f DNA2_conda_environment.yml` or `conda create --name DNA2_clone --file env.txt`: both do not have option `--explicit`
+
+Then Conda must:
+
+- solve dependencies again
+
+- choose builds again
+
+- maybe upgrade things
+
+So the environment may be **different**.
+
+**IMPORTANT**: There's no technical difference in filenames:
+
+```bash
+DNA2.lock
+DNA2_lock.txt
+env.txt
+```
+What matters is the **content**, especially the line:
+```bash
+@EXPLICIT
+```
+
+`conda-lock -f DNA2_conda_environment.yml` ➡️ **These contain fully solved environments**.
+
 ---
 
 ### 4. Tools verification 
@@ -362,7 +461,123 @@ gatk --version
 
 ---
 
-### 5. Preparation of folder structure and Update of Bash pipeline
+### 5. Verifying how "clean" is `DNA2` environment
+
+A “clean” environment means that all packages are resolved correctly with no hidden conflicts.
+
+Before using the environment `DNA2`:
+
+**1. Activate the new environment**:
+
+```bash
+conda activate DNA2
+```
+
+**2. Check for broke dependencies**:
+
+```bash
+conda list --explicit
+```
+output:
+
+```bash
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: osx-64
+@EXPLICIT
+https://conda.anaconda.org/conda-forge/osx-64/coreutils-9.5-h10d778d_0.conda
+https://conda.anaconda.org/conda-forge/noarch/_r-mutex-1.0.1-anacondar_1.tar.bz2
+...
+https://conda.anaconda.org/conda-forge/noarch/seaborn-base-0.13.2-pyhd8ed1ab_3.conda
+https://conda.anaconda.org/bioconda/noarch/picard-3.4.0-hdfd78af_0.tar.bz2
+https://conda.anaconda.org/conda-forge/noarch/seaborn-0.13.2-hd8ed1ab_3.conda
+```
+**Meaning**: This codes is useful when creating a **lock file** listing the exact packages. This means that it's possible to recreate the **identical environment** later using:
+
+```bash
+conda create --name DNA2_clone --file env.txt
+```
+where `env.txt` is the saved file. This guarantees **bit-identical environments**.
+
+Alternatively, **freeze the environment** like this:
+
+```bash
+conda list --explicit > DNA2.lock
+```
+Then the environment can be recreated exactly on another machine.
+
+Example:
+
+```bash
+conda create -n DNA2 --file DNA2.lock
+```
+This is important when installing an environment in an HPC cluster, reproducing papers and pipeline sharing.
+
+
+**3. Check the installation history**:
+
+```bash
+conda list --revisions
+```
+output:
+
+```bash
+2026-03-08 11:02:06  (rev 0)
+    +_openmp_mutex-4.5 (conda-forge/osx-64)
+    +_python_abi3_support-1.0 (conda-forge/noarch)
+    ...
+    +zstandard-0.23.0 (conda-forge/osx-64)
+    +zstd-1.5.7 (conda-forge/osx-64)
+```
+**Meaning** of `(rev 0)`: It means that `DNA2` environment has never been modified since creation.
+
+```bash
+rev 0  -> environment created
+rev 1  -> you installed a package
+rev 2  -> you upgraded something
+```
+
+
+
+**4. Simulate installing critical packages to check for conflicts**:
+
+```bash
+mamba install --dry-run -n DNA2 samtools htslib bcftools
+```
+
+output:
+
+```bash
+Looking for: ['samtools', 'htslib', 'bcftools']
+
+bioconda/noarch                                               No change
+pkgs/main/osx-64                                              No change
+bioconda/osx-64                                               No change
+pkgs/r/osx-64                                                 No change
+pkgs/r/noarch                                                 No change
+pkgs/main/noarch                                              No change
+conda-forge/noarch                                  25.0MB @   1.3MB/s 18.8s
+conda-forge/osx-64                                  44.5MB @   2.2MB/s 20.0s
+
+Pinned packages:
+  - python 3.9.*
+
+
+Transaction
+
+  Prefix: /opt/anaconda3/envs/DNA2
+
+  All requested packages already installed
+```
+**Meaning** of `All requested packages already installed`: It means that samtools, htslib, bcftools were already installed in `DNA2` environment, and there is **no dependency resolution needed**.
+
+
+>**Key note**: Using `--dry-run` ensures that you detect dependency conflicts **without modifying the environment**, preventing surprises later in your analysis.
+
+
+---
+
+### 6. Preparation of folder structure and Update of Bash pipeline
 
 a) Copy the bash script `09_full_somatic_NGS_bash_script.sh` and create a `09_full_somatic_DNA2_updated.sh`
 
