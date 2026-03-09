@@ -284,7 +284,7 @@ So now, the new `DNA2` environment will have a newer version of samtools.
 
 ### 3. Environment reproducibility (`DNA2`)
 
-Instead of installing environments manually, you can export a full environment using a `.yml` file.
+Instead of installing environments manually, you can install a full environment using a `.yml` or `.lock` files. Conda environments can be exported with different levels of reproducibility depending on how much information about each package is stored.
 
 **I. Export the environment**
 
@@ -300,7 +300,38 @@ Run:
 conda env export --no-builds > DNA2_conda_environment.yml
 ```
 
-This will create `DNA2_conda_environment.yml`
+This will create `DNA2_conda_environment.yml`, which has all packages of `DNA2` and their corresponding versions.
+
+
+To get a higher level of reproducibility, remove `--no-builds`.
+
+If you want a perfect reproducibility, then the strongest methods are:
+
+```bash
+conda list --explicit > DNA2_conda_environment.lock
+```
+or 
+
+```bash
+conda-lock -f DNA2_conda_environment.yml
+```
+It records **exact binary URLs**.
+
+**Comparison of exporting environment methods and reproducibility levels**:
+
+| Feature                                | `conda env export`                    | `conda env export --no-builds`        | `conda list --explicit > DNA2.lock`     | `conda-lock -f DNA2_environment.yml`           |
+| -------------------------------------- | ------------------------------------- | ------------------------------------- | --------------------------------------- | ---------------------------------------------- |
+| **File extension**                     | `.yml`                                | `.yml`                                | `.lock` or `.txt`                       | `.lock`                                        |
+| **build numbers**                      | ✔ included                            | ❌ removed                             | ✔ exact builds                          | ✔ exact builds                                 |
+| **dependency solving during recreate** | minimal                               | required                              | ❌ none                                  | ❌ none (after lock created)                    |
+| **reproducibility**                    | high                                  | medium                                | ⭐ perfect                               | ⭐ perfect                                      |
+| **portability (other machines)**       | medium                                | high                                  | low (same platform only)                | ⭐ very high                                    |
+| **cross-platform support**             | limited                               | limited                               | ❌ none                                  | ✔ macOS / Linux / clusters                     |
+| **human readability**                  | ✔ easy                                | ✔ easy                                | ❌ difficult                             | medium                                         |
+| **typical use**                        | sharing environment                   | sharing portable env                  | cloning exact env                       | pipelines / HPC                                |
+| **used by workflow tools**             | sometimes                             | sometimes                             | rarely                                  | ✔ widely used                                  |
+| **best for**                           | documentation                         | collaboration                         | exact backup                            | production workflows                           |
+| **typical recreate command**           | `conda env create -f environment.yml` | `conda env create -f environment.yml` | `conda create -n DNA2 --file DNA2.lock` | `conda-lock install -n DNA2 conda-osx-64.lock` |
 
 
 **II. Recreate the environment anywhere**
