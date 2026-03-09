@@ -352,83 +352,51 @@ This file contains **exact package URLs and checksums** for perfect reproducibil
 | **typical recreate command**           | `conda env create -f environment.yml` | `conda env create -f environment.yml` | `conda create -n DNA2 --file DNA2.lock` | `conda-lock install -n DNA2 conda-osx-64.lock` |
 
 
+**III. Recreate the environment anywhere from the lock file**
 
-
-**II. Recreate the environment anywhere**
-
-Anyone can recreate the **exact same pipeline environment**:
+To recreate the same environment in other computers and attempt to reproduce the same analysis, use these codes:
 
 ```bash
 conda env create -f DNA2_conda_environment.yml
 ```
+Expected output: `DNA2_conda_environment.yml` in workig directory
 
-or 
-
-```bash
-conda-lock -f DNA2_conda_environment.yml
-```
-
-If the `.yml` should go directly to a folder `/envs` then:
+If the `.yml` should be directed to a different folder, for example `/envs`, then:
 
 ```bash
 conda env create -f envs/DNA2_conda_environment.yml
 ```
 
-**III. Alternative method**: Lock your environment.
+If `conda-lock` was used for exporting the environment, use this code for environment recreation:
 
 ```bash
-conda list --explicit
+conda-lock install -n DNA2 conda-lock.yml
 ```
-output:
+or
+```bash
+conda-lock -f DNA2_conda_environment.yml
+```
+
+If the environment was exported using `conda list --explicit`
 
 ```bash
-# This file may be used to create an environment using:
-# $ conda create --name <env> --file <this file>
-# platform: osx-64
-@EXPLICIT
-https://conda.anaconda.org/conda-forge/osx-64/coreutils-9.5-h10d778d_0.conda
-https://conda.anaconda.org/conda-forge/noarch/_r-mutex-1.0.1-anacondar_1.tar.bz2
-...
-https://conda.anaconda.org/conda-forge/noarch/seaborn-base-0.13.2-pyhd8ed1ab_3.conda
-https://conda.anaconda.org/bioconda/noarch/picard-3.4.0-hdfd78af_0.tar.bz2
-https://conda.anaconda.org/conda-forge/noarch/seaborn-0.13.2-hd8ed1ab_3.conda
+conda create --name DNA2 --file env_lock.txt
 ```
-**Meaning**: This codes is useful when creating a **lock file** listing the exact packages. This means that it's possible to recreate the **identical environment** later using:
-
+or
 ```bash
-conda create --name DNA2_clone --file env_lock.txt
+conda create --n DNA2 --file env_lock.loc
 ```
-where `env.txt` is the saved file. This guarantees **bit-identical environments**.
 
-Alternatively, **freeze the environment** like this:
+These are **standard methods used in bioinformatics to transfer exact Conda environments**.
 
-```bash
-conda list --explicit > DNA2.lock
-```
-Then the environment can be recreated exactly on another machine. This is **maximum reproducibility**.
-
-Example:
-
-```bash
-conda create -n DNA2 --file DNA2.lock
-```
-This is important when installing an environment in an HPC cluster, reproducing papers and pipeline sharing. 
-
-These are **standard methods used in bioinformatics to transfer exact conda environments**. With the **YAML** file, the environment won't be affected by changes in versions on each dependency, making the environment:
-
-- reproducible
-- shareable
-- version-controlled
-
->IMPORTANT:
->
+> [!IMPORTANT]
 > By creating the environment from a **YAML** file, i.e. `conda env create -f envs/DNA2_conda_environment.yml`, Conda will **resolve dependencies again** and install compatible packages that satisfy the constraints. This means that when installing the environment through `.yml` in another system, Conda might install different builds. For example, `zlib 1.3.1` vs `zlib 1.3.1 build_1`. So the environment is reproducible **conceptually**, but not identical.
 > On the other hand, by creating the environment from a **lock** file, i.e. `conda create --name DNA2 --file DNA2_lock.txt`, Conda uses an **explicit package list**. In this case, Conda **does not solve dependencies**, and it installs the **exact package builds**. So you get **bit-identical environments**. For example, `samtools-1.22.1-h96c455f_0` will be the same version, same build, same hash. The problem with this way of transferring environment is that they are **platform specific**, for example **Platform: osx-64**. This means that the installation of the environment **would fail** on:
 > - Linux cluster
 > - Apple Silicon
 > - HPC systems
 >
-> YAML files **are portable**, **reproducible**, and **standard in bioinformatics**.
+> YAML files **are portable**, **reproducible**, **shareable**,and **standard in bioinformatics**.
 
 
 ### SUMMARY
