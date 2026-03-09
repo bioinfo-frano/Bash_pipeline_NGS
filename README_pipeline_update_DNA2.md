@@ -398,142 +398,21 @@ These are **standard methods used in bioinformatics to transfer exact Conda envi
 >
 > YAML files **are portable**, **reproducible**, **shareable**,and **standard in bioinformatics**.
 
-
-### SUMMARY
-
-`conda list --explicit > DNA2.lock`  ➡️ **Creates a lock file from an existing environment**. 
-
-What it does:
-
-- Exports exact package URLs
-
-- Includes build numbers
-
-- Includes channels
-
-- Includes platform
-
-Example inside the file:
-
-```bash
-@EXPLICIT
-https://conda.anaconda.org/bioconda/osx-64/samtools-1.22.1-h96c455f_0.conda
-https://conda.anaconda.org/bioconda/osx-64/bcftools-1.22-hb1a7a94_0.conda
-```
-Install these **exact binaries**, no solving. **This is the most reproducible export**.
-
-
-`conda create -n DNA2 --file DNA2.lock`  ➡️ **Recreates the exact environment and save it to a file**. 
-
-Important:
-
-- No dependency solving
-
-- Installs exact builds
-
-- Same packages
-
-- Same versions
-
-- Same builds
-
-This guarantees **bit-identical environments**. Used for HPC pipelies, published analyses and reproducibility
-
-
-`conda env create -f DNA2_conda_environment.yml` or `conda create --name DNA2_clone --file env.txt`: both do not have option `--explicit`
-
-Then Conda must:
-
-- solve dependencies again
-
-- choose builds again
-
-- maybe upgrade things
-
-So the environment may be **different**.
-
-**IMPORTANT**: There's no technical difference in filenames:
-
-```bash
-DNA2.lock
-DNA2_lock.txt
-env.txt
-```
-What matters is the **content**, especially the line:
-```bash
-@EXPLICIT
-```
-
-`conda-lock -f DNA2_conda_environment.yml` ➡️ **These contain fully solved environments**.
-
 ---
 
-### 4. Tools verification 
-
-After activating the environment, it is recommended to verify that the main tools are correctly installed:
-
-```bash
-samtools --version
-bcftools --version
-gatk --version
-```
-
----
-
-### 5. Verifying how "clean" is `DNA2` environment
+### 4. Verifying how "clean" is `DNA2` environment
 
 A “clean” environment means that all packages are resolved correctly with no hidden conflicts.
 
 Before using the environment `DNA2`:
 
-**1. Activate the new environment**:
+**I. Activate the new environment**:
 
 ```bash
 conda activate DNA2
 ```
 
-**2. Check for broke dependencies**:
-
-```bash
-conda list --explicit
-```
-output:
-
-```bash
-# This file may be used to create an environment using:
-# $ conda create --name <env> --file <this file>
-# platform: osx-64
-@EXPLICIT
-https://conda.anaconda.org/conda-forge/osx-64/coreutils-9.5-h10d778d_0.conda
-https://conda.anaconda.org/conda-forge/noarch/_r-mutex-1.0.1-anacondar_1.tar.bz2
-...
-https://conda.anaconda.org/conda-forge/noarch/seaborn-base-0.13.2-pyhd8ed1ab_3.conda
-https://conda.anaconda.org/bioconda/noarch/picard-3.4.0-hdfd78af_0.tar.bz2
-https://conda.anaconda.org/conda-forge/noarch/seaborn-0.13.2-hd8ed1ab_3.conda
-```
-**Meaning**: This codes is useful when creating a **lock file** listing the exact packages. This means that it's possible to recreate the **identical environment** later using:
-
-```bash
-conda create --name DNA2_clone --file env.txt
-```
-where `env.txt` is the saved file. This guarantees **bit-identical environments**.
-
-Alternatively, **freeze the environment** like this:
-
-```bash
-conda list --explicit > DNA2.lock
-```
-Then the environment can be recreated exactly on another machine.
-
-Example:
-
-```bash
-conda create -n DNA2 --file DNA2.lock
-```
-This is important when installing an environment in an HPC cluster, reproducing papers and pipeline sharing.
-
-
-**3. Check the installation history**:
+**II. Check the installation history**:
 
 ```bash
 conda list --revisions
@@ -556,9 +435,7 @@ rev 1  -> you installed a package
 rev 2  -> you upgraded something
 ```
 
-
-
-**4. Simulate installing critical packages to check for conflicts**:
+**III. Simulate installing critical packages to check for conflicts**:
 
 ```bash
 mamba install --dry-run -n DNA2 samtools htslib bcftools
@@ -591,24 +468,25 @@ Transaction
 **Meaning** of `All requested packages already installed`: It means that samtools, htslib, bcftools were already installed in `DNA2` environment, and there is **no dependency resolution needed**.
 
 
->**Key note**: Using `--dry-run` ensures that you detect dependency conflicts **without modifying the environment**, preventing surprises later in your analysis.
+>**[!Key note]**
+> Using `--dry-run` ensures that you detect dependency conflicts **without modifying the environment**, preventing surprises later in your analysis.
 
 
 ---
 
-### 6. Preparation of folder structure and Update of Bash pipeline
+### 5. Preparation of folder structure and Update of Bash pipeline
 
-a) Copy the bash script `09_full_somatic_NGS_bash_script.sh` and create a `09_full_somatic_DNA2_updated.sh`
+**I. Make a copy of the bash script `09_full_somatic_NGS_bash_script.sh`**
 
-Go to ~/Genomics_cancer/scripts
+Go to `~/Genomics_cancer/scripts`
 
 ```bash
 cp 09_full_somatic_NGS_bash_script.sh 09_full_somatic_DNA2_updated.sh
 ```
 
-b) Create a new folder called "SRR30536566_full_DNA2" with its subfolders:
+**II. Create a new folder called "SRR30536566_full_DNA2" with its subfolders**
 
-Go to ~/Genomics_cancer/data
+Go to `~/Genomics_cancer/data`
 
 ```bash
 mkdir -p SRR30536566_full_DNA2/{aligned,logs,qc,trimmed,variants,annotation}
@@ -619,7 +497,7 @@ Folder structure:
 ```code
 Genomics_cancer/
 ├── data/
-│   ├── SRR30536566_full/   # Used by the unified script. DNA environment.
+│   ├── SRR30536566_full/   # NGS analysis with a single bash script `09_full_somatic_NGS_bash_script.sh` (Tutorial: Part IV). DNA environment.
 │   │   ├── qc/
 │   │   ├── trimmed/
 │   │   ├── logs/
@@ -627,7 +505,7 @@ Genomics_cancer/
 │   │   ├── variants/
 │   │   └── annotation/
 │   │
-│   └── SRR30536566/        # Used for step-by-step bash scritp workflow (Part I & II)
+│   └── SRR30536566/        # NGS analysis using multiple step-by-step bash scripts (Tutorial: Part I - II). DNA environment.
 │   │   ├── raw_fastq/
 │   │   ├── qc/
 │   │   ├── trimmed/
@@ -635,7 +513,7 @@ Genomics_cancer/
 │   │   ├── variants/
 │   │   └── annotation/
 │   │
-│   └── SRR30536566_full_DNA2/        # Used by the unified script. DNA2 environment.
+│   └── SRR30536566_full_DNA2/        # NGS analysis using a single samtools-updated bash script (Tutorial: Part V). DNA2 environment.
 │       ├── qc/
 │       ├── trimmed/
 │       ├── logs/
@@ -653,7 +531,7 @@ Genomics_cancer/
 └── logs/
 ```
 
-c) Update the bash script `09_full_somatic_DNA2_updated.sh`
+**III Update the bash script `09_full_somatic_DNA2_updated.sh`**
 
 Change variables in "Configuration"
 
@@ -690,27 +568,23 @@ samtools sort -@ "$THREADS" \
 
 ---
 
-### 6. Run the pipeline in the DNA2 environment
+### 6. Run the pipeline in `DNA2` environment
 
-Activate the environment:
+**I. Activate the environment**
 
 ```bash
 conda activate DNA2
 ```
 
-Move to scripts (where `09_full_somatic_DNA2_updated.sh` is)
+**II. Move to ~/scripts and run the `09_full_somatic_DNA2_updated.sh`**
 
 ```bash
 cd ~/Genomics_cancer/scripts
-```
-
-Run:
-
-```bash
 ./ 09_full_somatic_DNA2_updated.sh
 ```
+The entire pipeline will the same sequencing dataset `SRR30536566`.
 
-### Expected output structure after the run
+### Expected output & folder structure
 
 ```code
 Genomics_cancer/
@@ -718,12 +592,28 @@ Genomics_cancer/
     └── SRR30536566_full_DNA2/
         ├── qc/
         │   ├── raw/
+        │       └── multiqc_report.html/multiqc_data
+        │       └── SRR30536566_[1,2]_fastqc.html/zip
         │   ├── trimmed/
+        │       └── multiqc_report.html/multiqc_data
+        │       └── SRR30536566_full_DNA2_[R1,R2].trimmed_fastqc.html/zip
         │   └── md_flagstat/
+        │       └── multiqc_report.html/multiqc_data
         │
         ├── trimmed/
+        │   └── SRR30536566_full_DNA2_[R1,R2].trimmed.fastq.gz
         │
         ├── logs/
+        │   └── cutadapt_SRR30536566_full_DNA2.log
+        │   └── bwa_mem.log
+        │   └── markduplicates.log
+        │   └── SRR30536566_full_DNA2.flagstat.txt
+        │   └── mutect2.stderr.log / mutect2.stdout.log
+        │   └── learn_read_orientation_model.log
+        │   └── get_pileup_summaries.log
+        │   └── calculate_contamination.log
+        │   └── filter_mutect_calls.log
+        │   └── SRR30536566_full_DNA2.postfilter.log
         │
         ├── aligned/
         │   └── SRR30536566_full_DNA2.sorted.markdup.md.bam
@@ -749,17 +639,15 @@ Genomics_cancer/
         └── annotation/
 ```
 
-The entire pipeline will then be executed again on the same sequencing dataset (`SRR30536566`)
+### 7. Comparison between outputs from `DNA` and `DNA2`
 
-The resulting quality metrics will be compared using the report generated by MultiQC, paying particular attention to:
+The resulting quality metrics will be compared using the reports generated by **MultiQC** and `.logs`, paying particular attention to:
 
 - alignment statistics
 
 - duplicate marking metrics
 
-- the number of variants detected
-
-- the number of variants remaining after filtering
+- the number and type of variants remaining after filtering
 
 This comparison allows us to evaluate whether updating samtools has any measurable impact on the final somatic variant calls.
 
