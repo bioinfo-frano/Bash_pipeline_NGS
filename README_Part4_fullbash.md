@@ -328,9 +328,9 @@ Total runtime: 0 hours
 (DNA) scripts $ 
 ```
 
-Go back to the top of  👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_part4.md#part-iv--bash-script-fully-automated-somatic-dna-ngs-pipeline)
+Go back to the top of  👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md.md#part-iv--bash-script-fully-automated-somatic-dna-ngs-pipeline)
 
-Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in 👉 [Part V – Pipeline maintenance](README_pipeline_update_DNA2.md)
+Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in 👉 [Part V – Pipeline maintenance](README_Part5_DNA2_pipeline_update.md)
 
 Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
 
