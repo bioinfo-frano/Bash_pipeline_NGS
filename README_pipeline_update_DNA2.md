@@ -659,13 +659,243 @@ The resulting quality metrics will be compared using the reports recorded in `.l
 
 - FilterMutectCalls: `filter_mutect_calls.log`
 
-- Variant postfilter: number and type of variants remaining after filtering.
+- Variant postfilter: `SRR30536566_full.postfilter.log`
 
 This comparison allows us to evaluate whether updating samtools has any measurable impact on the final somatic variant calls.
 
 
+### Results - Table: Comparison of outputted metrics between files generated from environments `DNA` vs `DNA2`. Dataset: `SRR30536566`
 
-MAKE A TABLE COMPARING OUTPUTS from OLD `DNA` vs NEW `DNA2`
+| .log file                                    | Pipeline step            | Tool                      | Quantitative result  | DNA vs DNA2   |
+| ---------------------------------------------| ------------------------ | ------------------------- | -------------------- | ------------- |
+| `cutadapt_.log`                              | Trimming                 | Cutadapt                  | identical reads      | identical     |
+| `bwa_mem.log`                                | Alignment                | BWA                       | 7,726,570 reads      | identical     |
+| `bwa_mem.log`                                | Alignment runtime        | BWA                       | 881 s vs 711 s       | ~19% faster   |
+| `markduplicates.log`                         | Duplicate marking        | Picard                    | 4,101,894 duplicates | identical duplicate detection |
+| `SRR30536566_.flagstat.txt`                  | Mapping stats            | Samtools flagstat         | 99.32% mapped        | mapping identical;<br>minor differences due to<br>samtools reporting format     |
+| `mutect2.stderr.log`<br>`mutect2.stdout.log` | Variant calling          | Mutect2                   | 948 variants         | Identical variant-calling statistics     |
+| `learn_read_orientation_model.log`           | Orientation bias model   | LearnReadOrientationModel | 32 sequence contexts modeled      | identical EM convergence and model     |
+| `get_pileup_summaries.log`                   | Pileup summaries         | GetPileupSummaries        | 1,464,279 reads processed<br>901,738 filtered<br>88,955 loci analyzed          | identical     |
+| `calculate_contamination.log`                | Contamination estimation | CalculateContamination    | 0 changepoints detected       | identical     |
+| `filter_mutect_calls.log`                    | Variant filtering        | FilterMutectCalls         | 948 variants retained         | identical     |
+| `SRR30536566_full.postfilter.log`            | Custom post-filter       | panel thresholds          | 3 final variants     | identical     |
+
+
+### Verify the differences between the final (post-filtered) VCF files using **BCFtools**:
+
+**I. Activate `DNA2` and go to `~/Genomics_cancer`**:
+
+```bash
+bcftools isec -p vcf_compare \
+~/data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.filtered.vcf.gz \
+~/data/SRR30536566_full/variants/SRR30536566_full.filtered.vcf.gz
+```
+> [!NOTE]: Use absolute paths when using `bcftools isec -p vcf_compare`
+
+Expected output: Generation of folder called `~/Genomics_cancer/vcf_compare`
+
+```bash
+-rw-r--r-- 1 Frano staff 181K Mar 10 08:34 0000.vcf
+-rw-r--r-- 1 Frano staff 181K Mar 10 08:34 0001.vcf
+-rw-r--r-- 1 Frano staff 261K Mar 10 08:34 0002.vcf
+-rw-r--r-- 1 Frano staff 261K Mar 10 08:34 0003.vcf
+-rw-r--r-- 1 Frano staff 5.7K Mar 10 08:34 sites.txt
+-rw-r--r-- 1 Frano staff 1.5K Mar 10 08:36 README.txt
+```
+
+**Meaning**:
+
+| File       | Meaning                                     |
+| ---------- | ------------------------------------------- |
+| `0000.vcf` | variants only in file 1 (DNA2)              |
+| `0001.vcf` | variants only in file 2 (DNA)               |
+| `0002.vcf` | variants shared by both                     |
+| `0003.vcf` | variants present in both (intersection set) |
+
+**II. Count the amount of shared and intersected variants in `0000.vcf`, `0001.vcf`, `0002.vcf` and `0003.vcf`**
+
+```bash
+grep -vc "^#" 0000.vcf 
+0
+grep -vc "^#" 0001.vcf
+0
+grep -vc "^#" 0002.vcf
+237
+grep -vc "^#" 0003.vcf
+237
+```
+
+**Meaning**:
+
+| File       | Variants | Meaning                     |
+| ---------- | -------- | --------------------------- |
+| `0000.vcf` | **0**    | variants unique to **DNA2** |
+| `0001.vcf` | **0**    | variants unique to **DNA**  |
+| `0002.vcf` | **237**  | variants shared by both     |
+| `0003.vcf` | **237**  | same shared variants        |
+
+**Conclusion**: DNA variants = DNA2 variants. There are no variants unique to either pipeline, and that means `DNA` and `DNA2` environments produced **identical variant calls**.
+
+
+**III. Check the file `sites.txt`**
+`sites.txt` is a summary of variant sites produced by BCFtools.
+
+| Column | Meaning                     |
+| ------ | --------------------------- |
+| 1      | Chromosome                  |
+| 2      | Position                    |
+| 3      | REF allele                  |
+| 4      | ALT allele                  |
+| 5      | bitmask indicating presence |
+
+Example:
+```bash
+chr1 114705278 A G 11
+```
+**Meaning**:
+
+| Field     | Meaning                   |
+| --------- | ------------------------- |
+| chr1      | chromosome                |
+| 114705278 | position                  |
+| A         | reference                 |
+| G         | alternative               |
+| 11        | present in **both files** |
+
+**Bitmask explanation**:
+
+| Code | Meaning         |
+| ---- | --------------- |
+| `10` | only file 1     |
+| `01` | only file 2     |
+| `11` | present in both |
+
+**Conclusion**: The entire file shows: **11**, that means, for every variant → **all sites identical**.
+
+### Visual summary
+
+```bash
+DNA pipeline
+        │
+        ├── 237 variants
+        │
+        ▼
+DNA2 pipeline
+        │
+        ├── 237 variants
+        │
+        ▼
+Difference
+        │
+        └── 0 variants
+```
+
+**IV. Compare post-filtered *.vcf.gz files generated from `DNA` and `DNA2`**
+
+Similarly, the comparison can be done with BCFtools. Go to `~/Genomics_cancer`:
+
+```bash
+bcftools isec -p vcf_compare \
+~/data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.postfiltered.vcf.gz \
+~/data/SRR30536566_full/variants/SRR30536566_full.postfiltered.vcf.gz
+```
+
+Alternatively, go to `~/Genomics_cancer`
+
+```bash
+bcftools view -H data/SRR30536566_full/variants/SRR30536566_full.postfiltered.vcf.gz
+bcftools view -H data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.postfiltered.vcf.gz
+```
+
+**Results - Table of comparison**: Both pipelines show these metrics
+| Chr  | Pos       | REF | ALT | DP   | AD      | AF    |
+| ---- | --------- | --- | --- | ---- | ------- | ----- |
+| chr1 | 114713909 | G   | T   | 817  | 648,115 | 0.154 |
+| chr3 | 179218294 | G   | A   | 1324 | 915,347 | 0.277 |
+| chr3 | 179226113 | C   | G   | 589  | 165,394 | 0.698 |
+
+> [!NOTE]
+- DP = total depth
+- AD = allelic depth (ref, alt)
+- AF = allelic fraction (ALT / DP)
+- GT = genotype (0/1 = heterozygous)
+
+
+**Comparison DNA vs DNA2**
+
+Looking line by line:
+- **chr1:114713909** G>T → identical
+
+- **chr3:179218294** G>A → identical
+
+- **chr3:179226113** C>G → identical
+
+All fields, depth, AF, genotypes, filter tags **are exactly the same**.
+
+
+## Conclusion:
+
+After post-filtering, the final VCFs from `DNA` and `DNA2` are identical.
+
+- There is no difference in variants, genotypes, or quality metrics.
+
+- This fully confirms that switching to `DNA2` is reproducible at the final variant call level.
+
+- By comparing the generated metrics from the somatic analysis done in both Conda environments, the new environment **`DNA2` is a fully reproducible replacement of `DNA`**.
+
+
+| Pipeline step                | Tool                      | Key quantitative result                           | DNA vs DNA2 |
+| ---------------------------- | ------------------------- | ------------------------------------------------- | ----------- |
+| Trimming                     | Fastp                     | identical preprocessing                           | identical   |
+| Alignment                    | BWA                       | 7,726,570 reads aligned                           | identical   |
+| Sorting                      | Samtools                  | identical BAM                                     | identical   |
+| Duplicate marking            | Picard                    | 4,101,894 duplicates                              | identical   |
+| Mapping stats                | Samtools flagstat         | 7,673,918 mapped (99.32%)                         | identical   |
+| Variant calling              | Mutect2 (GATK)            | 1,479,947 reads processed<br>863,479 filtered     | identical   |
+| Orientation bias model       | LearnReadOrientationModel | 32 contexts modeled                               | identical   |
+| Pileup summaries             | GetPileupSummaries        | 1,464,279 reads processed<br>88,955 loci analyzed | identical   |
+| **Contamination estimation** | CalculateContamination    | 0 changepoints detected                           | identical   |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+| Pipeline step          | Tool                      | Key quantitative result                                               | DNA vs DNA2 |
+| ---------------------- | ------------------------- | --------------------------------------------------------------------- | ----------- |
+| Trimming               | Fastp                     | identical preprocessing                                               | identical   |
+| Alignment              | BWA                       | 7,726,570 reads aligned                                               | identical   |
+| Sorting                | Samtools                  | identical BAM                                                         | identical   |
+| Duplicate marking      | Picard                    | 4,101,894 duplicates                                                  | identical   |
+| Mapping stats          | Samtools flagstat         | 7,673,918 mapped (99.32%)                                             | identical   |
+| Variant calling        | Mutect2 (GATK)            | 1,479,947 reads processed<br>863,479 filtered                         | identical   |
+| Orientation bias model | LearnReadOrientationModel | 32 contexts modeled<br>identical ref/alt counts                       | identical   |
+| **Pileup summaries**   | GetPileupSummaries        | 1,464,279 reads processed<br>901,738 filtered<br>88,955 loci analyzed | identical   |
+
+
+
+
+
+| Pipeline step              | Tool                      | DNA environment                                                                                                                  | DNA2 environment                                                                                                                  | Result                                                            |
+| -------------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| **Trimming**               | fastp                     | same parameters                                                                                                                  | same parameters                                                                                                                   | identical behaviour                                               |
+| **Alignment**              | bwa mem                   | same reference genome                                                                                                            | same reference genome                                                                                                             | identical alignment                                               |
+| **Sorting**                | samtools sort             | identical command                                                                                                                | identical command                                                                                                                 | identical BAM structure                                           |
+| **Duplicate marking**      | Picard MarkDuplicates     | identical settings                                                                                                               | identical settings                                                                                                                | identical duplicate detection                                     |
+| **Mapping stats**          | samtools flagstat         | **7,726,570 reads total**<br>**7,673,918 mapped (99.32%)**<br>**4,101,894 duplicates**<br>**7,126,034 properly paired (92.23%)** | **7,726,570 reads total**<br>**7,673,918 mapped (99.32%)**<br>**4,101,894 duplicates**<br>**7,043,696 properly paired (93.07%)*** | metrics consistent *(difference due to flagstat reporting style)* |
+| **Variant calling**        | Mutect2 (GATK 4.6.2.0)    | 1,479,947 reads processed<br>863,479 filtered<br>30,672 filtered by MQ                                                           | same values                                                                                                                       | identical variant calling statistics                              |
+| **Read orientation model** | LearnReadOrientationModel | 32 sequence contexts modeled<br>identical ref/alt counts per context                                                             | identical values                                                                                                                  | identical EM convergence and model                                |
+
+
 
 
 
