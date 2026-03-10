@@ -5,7 +5,7 @@
 - [Introduction](#introduction)
 - [Methodology](#methodology)
     - [Environment reproducibility (`DNA2`)](#environment-reproducibility-dna2)
-    - [Preparation of folder structure and Update of Bash pipeline](#preparation-of-folder-structure-and-update-of-bash-pipeline)
+    - [Preparation of folder structure and update of Bash pipeline](#preparation-of-folder-structure-and-update-of-bash-pipeline)
 - [Results](#results)
     - [Verify the differences between the filtered VCF files using **BCFtools**](#verify-the-differences-between-the-filtered-vcf-files-using-bcftools)
     - [Verify the differences between the post-filtered VCF files](#verify-the-differences-between-the-post-filtered-vcf-files)
@@ -883,7 +883,7 @@ After post-filtering, the final VCFs from `DNA` and `DNA2` are identical.
 
 ---
 
-Go back to the top of  👉 [Part V: Pipeline maintenance](README_pipeline_update_DNA2.md#introduction)
+Go back to the top of 👉 [Part V: Pipeline maintenance](README_pipeline_update_DNA2.md#part-v--pipeline-maintenance)
 
 Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
 
