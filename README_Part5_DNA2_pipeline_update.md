@@ -938,6 +938,7 @@ Expected output: `f085e93f16b007dd2f3b0a13875b405b`
 bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\n' data/SRR30536566_full/variants/SRR30536566_full.postfiltered.vcf.gz | md5sum
 ```
 Expected output: `f085e93f16b007dd2f3b0a13875b405b`
+
 ---
 
 ## Conclusion
