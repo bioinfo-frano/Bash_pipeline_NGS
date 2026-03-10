@@ -706,7 +706,7 @@ bcftools isec -p vcf_compare \
 ~/data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.filtered.vcf.gz \
 ~/data/SRR30536566_full/variants/SRR30536566_full.filtered.vcf.gz
 ```
-> [!TIP]: Use absolute paths when using `bcftools isec -p vcf_compare`
+> [!Note] Use absolute paths when using `bcftools isec -p vcf_compare`
 
 Expected output: Generation of folder called `~/Genomics_cancer/vcf_compare`
 
