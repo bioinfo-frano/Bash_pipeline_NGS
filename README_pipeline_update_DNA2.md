@@ -696,6 +696,7 @@ This comparison allows us to evaluate whether updating samtools has any measurab
 | `filter_mutect_calls.log`                    | Variant filtering        | FilterMutectCalls         | 948 variants retained         | identical     |
 | `SRR30536566_full.postfilter.log`            | Custom post-filter       | panel thresholds          | 3 final variants     | identical     |
 
+---
 
 ### Verify the differences between the filtered VCF files using **BCFtools**:
 
@@ -806,6 +807,8 @@ Difference
         └── 0 variants
 ```
 
+---
+
 ### Verify the differences between the post-filtered VCF files
 
 Similarly, the comparison can be done with BCFtools from `*.postfiltered.vcf.gz`. Go to `~/Genomics_cancer`:
@@ -854,6 +857,7 @@ Looking line by line:
 
 All fields, depth, AF, genotypes, filter tags **are exactly the same**.
 
+---
 
 ### Quick way of checking VCF equality
 
@@ -870,6 +874,8 @@ zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.postfilt
 Expected output: `235266e81bb7ad44a73a1594cdd29291`
 
 **Meaning**: If the hashes match, the files are similar. This is **much faster** than `bcftools isec`, especially for large VCFs.
+
+---
 
 ## Conclusion:
 
