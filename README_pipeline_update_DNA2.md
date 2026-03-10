@@ -891,7 +891,7 @@ After post-filtering, the final VCFs from `DNA` and `DNA2` are identical.
 
 Go back to the top of 👉 [Part V: Pipeline maintenance](README_pipeline_update_DNA2.md#part-v--pipeline-maintenance)
 
-Go and see somatic NGS analysis in `DNA` **samtools legacy version** environment in 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_fullbash.md)
+Go and see somatic NGS analysis in `DNA` **samtools legacy (old) version** environment in 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_fullbash.md)
 
 Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
 
