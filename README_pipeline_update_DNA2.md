@@ -185,7 +185,7 @@ channels:
 
 This configuration ensures a **strict channel priority**, which helps prevent dependency conflicts when installing bioinformatics software.  
 
-> [!WARNING]
+> [!CAUTION]
 > During environment creation, dependency conflicts may occur when incompatible versions of tools are requested simultaneously. In such cases, removing strict version constraints often allows Conda to automatically resolve compatible versions. In genomics pipelines this frequently occurs with legacy Perl-based tools such as **Ensembl-VEP**. For this reason, complex pipelines often split tools into multiple environments to avoid dependency conflicts.
 
 **III. Create the environment**:
@@ -481,7 +481,7 @@ Transaction
 **Meaning** of `All requested packages already installed`: It means that samtools, htslib, bcftools were already installed in `DNA2` environment, and there is **no dependency resolution needed**.
 
 
->**[!Key note]**
+> [!Note]
 > Using `--dry-run` ensures that you detect dependency conflicts **without modifying the environment**, preventing surprises later in your analysis.
 
 
@@ -706,7 +706,7 @@ bcftools isec -p vcf_compare \
 ~/data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.filtered.vcf.gz \
 ~/data/SRR30536566_full/variants/SRR30536566_full.filtered.vcf.gz
 ```
-> [!NOTE]: Use absolute paths when using `bcftools isec -p vcf_compare`
+> [!TIP]: Use absolute paths when using `bcftools isec -p vcf_compare`
 
 Expected output: Generation of folder called `~/Genomics_cancer/vcf_compare`
 
@@ -832,15 +832,15 @@ bcftools view -H data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.postf
 
 
 > [!NOTE]
-- DP = total depth
-- AD = allelic depth (ref, alt)
-- AF = allelic fraction (ALT / DP)
-- GT = genotype (0/1 = heterozygous)
-- F1R2 / F2R1 – counts of alt alleles on forward/reverse strands (strand bias)
-- FAD – filtered allelic depth
-- SB – strand bias table (ref-forward, ref-reverse, alt-forward, alt-reverse)
-- POPAF – population allele frequency
-- TLOD – log-odds score for variant
+> - DP = total depth
+> - AD = allelic depth (ref, alt)
+> - AF = allelic fraction (ALT / DP)
+> - GT = genotype (0/1 = heterozygous)
+> - F1R2 / F2R1 – counts of alt alleles on forward/reverse strands (strand bias)
+> - FAD – filtered allelic depth
+> - SB – strand bias table (ref-forward, ref-reverse, alt-forward, alt-reverse)
+> - POPAF – population allele frequency
+> - TLOD – log-odds score for variant
 
 
 **Comparison DNA vs DNA2**
@@ -888,125 +888,4 @@ Go back to the top of 👉 [Part V: Pipeline maintenance](README_pipeline_update
 Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
 
 Go to the main page 👉 [Bash_pipeline_NGS](README.md)
-
-| Pipeline step                | Tool                      | Key quantitative result                           | DNA vs DNA2 |
-| ---------------------------- | ------------------------- | ------------------------------------------------- | ----------- |
-| Trimming                     | Fastp                     | identical preprocessing                           | identical   |
-| Alignment                    | BWA                       | 7,726,570 reads aligned                           | identical   |
-| Sorting                      | Samtools                  | identical BAM                                     | identical   |
-| Duplicate marking            | Picard                    | 4,101,894 duplicates                              | identical   |
-| Mapping stats                | Samtools flagstat         | 7,673,918 mapped (99.32%)                         | identical   |
-| Variant calling              | Mutect2 (GATK)            | 1,479,947 reads processed<br>863,479 filtered     | identical   |
-| Orientation bias model       | LearnReadOrientationModel | 32 contexts modeled                               | identical   |
-| Pileup summaries             | GetPileupSummaries        | 1,464,279 reads processed<br>88,955 loci analyzed | identical   |
-| **Contamination estimation** | CalculateContamination    | 0 changepoints detected                           | identical   |
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-| Pipeline step          | Tool                      | Key quantitative result                                               | DNA vs DNA2 |
-| ---------------------- | ------------------------- | --------------------------------------------------------------------- | ----------- |
-| Trimming               | Fastp                     | identical preprocessing                                               | identical   |
-| Alignment              | BWA                       | 7,726,570 reads aligned                                               | identical   |
-| Sorting                | Samtools                  | identical BAM                                                         | identical   |
-| Duplicate marking      | Picard                    | 4,101,894 duplicates                                                  | identical   |
-| Mapping stats          | Samtools flagstat         | 7,673,918 mapped (99.32%)                                             | identical   |
-| Variant calling        | Mutect2 (GATK)            | 1,479,947 reads processed<br>863,479 filtered                         | identical   |
-| Orientation bias model | LearnReadOrientationModel | 32 contexts modeled<br>identical ref/alt counts                       | identical   |
-| **Pileup summaries**   | GetPileupSummaries        | 1,464,279 reads processed<br>901,738 filtered<br>88,955 loci analyzed | identical   |
-
-
-
-
-
-| Pipeline step              | Tool                      | DNA environment                                                                                                                  | DNA2 environment                                                                                                                  | Result                                                            |
-| -------------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| **Trimming**               | fastp                     | same parameters                                                                                                                  | same parameters                                                                                                                   | identical behaviour                                               |
-| **Alignment**              | bwa mem                   | same reference genome                                                                                                            | same reference genome                                                                                                             | identical alignment                                               |
-| **Sorting**                | samtools sort             | identical command                                                                                                                | identical command                                                                                                                 | identical BAM structure                                           |
-| **Duplicate marking**      | Picard MarkDuplicates     | identical settings                                                                                                               | identical settings                                                                                                                | identical duplicate detection                                     |
-| **Mapping stats**          | samtools flagstat         | **7,726,570 reads total**<br>**7,673,918 mapped (99.32%)**<br>**4,101,894 duplicates**<br>**7,126,034 properly paired (92.23%)** | **7,726,570 reads total**<br>**7,673,918 mapped (99.32%)**<br>**4,101,894 duplicates**<br>**7,043,696 properly paired (93.07%)*** | metrics consistent *(difference due to flagstat reporting style)* |
-| **Variant calling**        | Mutect2 (GATK 4.6.2.0)    | 1,479,947 reads processed<br>863,479 filtered<br>30,672 filtered by MQ                                                           | same values                                                                                                                       | identical variant calling statistics                              |
-| **Read orientation model** | LearnReadOrientationModel | 32 sequence contexts modeled<br>identical ref/alt counts per context                                                             | identical values                                                                                                                  | identical EM convergence and model                                |
-
-
-
-
-
-| Analysis stage    | Tool                            | DNA output                                                                                                                             | DNA2 output                                                                                                                            | Interpretation                                                        |
-| ----------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| Adapter trimming  | Cutadapt                        | 3,784,192 read pairs retained (97.2%); adapters R1 4.3% / R2 4.9%; bases trimmed 0.9%                                                  | 3,784,192 read pairs retained (97.2%); adapters R1 4.3% / R2 4.9%; bases trimmed 0.9%                                                  | **Identical preprocessing**                                           |
-| Alignment         | BWA                             | identical mapping                                                                                                                      | identical mapping                                                                                                                      | identical algorithm                                                   |
-| Alignment runtime | BWA                             | 881 s                                                                                                                                  | 711 s                                                                                                                                  | ~19% faster                                                           |
-| Duplicate marking | Picard                          | 4,101,894 duplicates                                                                                                                   | 4,101,894 duplicates                                                                                                                   | identical duplicate detection                                         |
-| Mapping stats     | Samtools                        | 7,726,570 reads total; 7,673,918 mapped (99.32%); 7,126,034 properly paired (92.23%); 25,330 singletons (0.33%)                        | 7,726,570 reads total; 7,673,918 mapped (99.32%); 7,043,696 properly paired (93.07%); 23,524 singletons (0.31%)                        | mapping identical; minor differences due to samtools reporting format |
-| Variant calling   | Genome Analysis Toolkit Mutect2 | 1,479,947 reads processed; 863,479 filtered; 832,807 duplicates filtered; 30,672 MQ filtered; 2,318 regions analyzed; runtime 5.50 min | 1,479,947 reads processed; 863,479 filtered; 832,807 duplicates filtered; 30,672 MQ filtered; 2,318 regions analyzed; runtime 5.59 min | **Identical variant-calling computation**                             |
-
-
-
-
-| Analysis stage    | Tool     | DNA output        | DNA2 output       | Interpretation       |
-| ----------------- | -------- | ----------------- | ----------------- | -------------------- |
-| Adapter trimming  | Cutadapt | 3,784,192 pairs   | 3,784,192 pairs   | identical            |
-| Alignment         | BWA      | identical mapping | identical mapping | identical            |
-| Alignment runtime | BWA      | 881 s             | 711 s             | ~19% faster          |
-| Duplicate marking | Picard   | 4,101,894         | 4,101,894         | identical            |
-| Duplicate runtime | Picard   | 1.58 min          | 1.64 min          | negligible           |
-| Mapping rate      | Samtools | 99.32%            | 99.32%            | identical            |
-| Flagstat metrics  | Samtools | older format      | newer format      | reporting difference |
-
-
-
-
-
-
-| Analysis stage        | Tool     | DNA output                            | DNA2 output                           | Interpretation               |
-| --------------------- | -------- | ------------------------------------- | ------------------------------------- | ---------------------------- |
-| Adapter trimming      | Cutadapt | 3,784,192 read pairs retained (97.2%) | 3,784,192 read pairs retained (97.2%) | **Identical results**        |
-| Adapter contamination | Cutadapt | R1: 4.3% / R2: 4.9%                   | R1: 4.3% / R2: 4.9%                   | No difference                |
-| Quality trimming      | Cutadapt | 0.9% bases trimmed                    | 0.9% bases trimmed                    | No difference                |
-| Alignment             | BWA      | identical mapping                     | identical mapping                     | no algorithm change          |
-| Runtime alignment     | BWA      | 881 s                                 | 711 s                                 | ~19% faster                  |
-
-
-| Analysis stage            | Tool     | DNA output              | DNA2 output             | Interpretation        |
-| ------------------------- | -------- | ----------------------- | ----------------------- | --------------------- |
-| Adapter trimming          | Cutadapt | 3,784,192 pairs (97.2%) | 3,784,192 pairs (97.2%) | Identical             |
-| Adapter contamination     | Cutadapt | R1 4.3% / R2 4.9%       | R1 4.3% / R2 4.9%       | Identical             |
-| Quality trimming          | Cutadapt | 0.9% bases trimmed      | 0.9% bases trimmed      | Identical             |
-| Alignment                 | BWA      | identical mapping       | identical mapping       | identical algorithm   |
-| Runtime alignment         | BWA      | 881 s                   | 711 s                   | ~19% faster           |
-| Duplicate marking         | Picard   | 4,101,894 duplicates    | 4,101,894 duplicates    | **Identical result**  |
-| Runtime duplicate marking | Picard   | 1.58 min                | 1.64 min                | negligible difference |
-
-
-
-
-
-
-| BAM sorting           | SAMtools | legacy syntax                         | modern syntax                         | same sorted BAM expected     |
-| Duplicate marking     | Picard   | metrics generated                     | metrics generated                     | expected identical           |
-| Variant calling       | GATK     | VCF produced                          | VCF produced                          | compare variants             |
-| Variant statistics    | bcftools | variant counts                        | variant counts                        | evaluate differences         |
-
-
-| Analysis stage   | Tool     | DNA output        | DNA2 output       | Interpretation      |
-| ---------------- | -------- | ----------------- | ----------------- | ------------------- |
-| Adapter trimming | Cutadapt | identical         | identical         | deterministic       |
-| Alignment        | BWA      | identical mapping | identical mapping | no algorithm change |
-| Runtime alignment| BWA      | 881 s             | 711 s             | ~19% faster         |
-
-
-
 
