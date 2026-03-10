@@ -1,4 +1,4 @@
-# Pipeline maintenance
+# Part V: Pipeline maintenance
 
 Maintaining or updating a bioinformatics pipeline is a critical responsibility for any bioinformatician, especially when working with research or clinical genomic data.
 
@@ -808,17 +808,23 @@ bcftools view -H data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.postf
 ```
 
 **Results - Table of comparison**: Both pipelines show these metrics
-| Chr  | Pos       | REF | ALT | DP   | AD      | AF    |
-| ---- | --------- | --- | --- | ---- | ------- | ----- |
-| chr1 | 114713909 | G   | T   | 817  | 648,115 | 0.154 |
-| chr3 | 179218294 | G   | A   | 1324 | 915,347 | 0.277 |
-| chr3 | 179226113 | C   | G   | 589  | 165,394 | 0.698 |
+| Chr  | Pos       | REF | ALT | DP   | AD      | AF    | GT  | F1R2    | F2R1    | FAD     | SB              | POPAF | TLOD    |
+| ---- | --------- | --- | --- | ---- | ------- | ----- | --- | ------- | ------- | ------- | --------------- | ----- | ------- |
+| chr1 | 114713909 | G   | T   | 817  | 648,115 | 0.154 | 0/1 | 241,52  | 289,43  | 567,103 | 328,320,61,54   | 5.6   | 323.24  |
+| chr3 | 179218294 | G   | A   | 1324 | 915,347 | 0.277 | 0/1 | 363,138 | 382,148 | 786,300 | 454,461,162,185 | 5.6   | 1026.18 |
+| chr3 | 179226113 | C   | G   | 589  | 165,394 | 0.698 | 0/1 | 68,145  | 75,182  | 151,350 | 23,142,63,331   | 1.34  | 1387.91 |
+
 
 > [!NOTE]
 - DP = total depth
 - AD = allelic depth (ref, alt)
 - AF = allelic fraction (ALT / DP)
 - GT = genotype (0/1 = heterozygous)
+- F1R2 / F2R1 – counts of alt alleles on forward/reverse strands (strand bias)
+- FAD – filtered allelic depth
+- SB – strand bias table (ref-forward, ref-reverse, alt-forward, alt-reverse)
+- POPAF – population allele frequency
+- TLOD – log-odds score for variant
 
 
 **Comparison DNA vs DNA2**
@@ -833,6 +839,22 @@ Looking line by line:
 All fields, depth, AF, genotypes, filter tags **are exactly the same**.
 
 
+### Quick way of checking VCF equality
+
+**I. Go to `~/Genomics_cancer`**
+
+```bash
+zgrep -v "^#" data/SRR30536566_full/variants/SRR30536566_full.postfiltered.vcf.gz | md5sum
+```
+Expected output: `235266e81bb7ad44a73a1594cdd29291`
+
+```bash
+zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.postfiltered.vcf.gz | md5sum
+```
+Expected output: `235266e81bb7ad44a73a1594cdd29291`
+
+**Meaning**: If the hashes match, the files are similar. This is **much faster** than `bcftools isec`, especially for large VCFs.
+
 ## Conclusion:
 
 After post-filtering, the final VCFs from `DNA` and `DNA2` are identical.
@@ -843,6 +865,11 @@ After post-filtering, the final VCFs from `DNA` and `DNA2` are identical.
 
 - By comparing the generated metrics from the somatic analysis done in both Conda environments, the new environment **`DNA2` is a fully reproducible replacement of `DNA`**.
 
+Go back to the top of  👉 [Part V: Pipeline maintenance](README_part4.md#part-iv--bash-script-fully-automated-somatic-dna-ngs-pipeline)
+
+Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
+
+Go to the main page 👉 [Bash_pipeline_NGS](README.md)
 
 | Pipeline step                | Tool                      | Key quantitative result                           | DNA vs DNA2 |
 | ---------------------------- | ------------------------- | ------------------------------------------------- | ----------- |
