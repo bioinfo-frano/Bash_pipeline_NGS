@@ -12,7 +12,7 @@
     - [6. Run the pipeline in `DNA2`](#6-run-the-pipeline-in-dna2)
 - [Results](#results)
     - [Filtered VCF files comparison using **BCFtools**](#filtered-vcf-files-comparison-using-bcftools)
-    - [Post-filtered VCF files comparison using **BCFtools**](#post---filtered-vcf-files-comparison-using-bcftools)
+    - [Post-filtered VCF files comparison using **BCFtools**](#post-filtered-vcf-files-comparison-using-bcftools)
 - [Conclusion](#conclusion)
 
 # Introduction
@@ -811,6 +811,14 @@ Difference
         │
         └── 0 variants
 ```
+**Aternative verification: In `~/Genomics_cancer`**: 
+
+```bash
+zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l
+
+zgrep -v "^#" data/SRR30536566_full/variants/SRR30536566_full.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l
+```
+Ouput: 237 unique variants sites (in `DNA` and `DNA2`) = Difference = 0 (identical)
 
 ---
 
@@ -867,31 +875,23 @@ All fields, depth, AF, genotypes, filter tags **are exactly the same**.
 **FilterMutectCalls** then annotated these variants with filter tags but did not remove them, which is the expected behavior of this tool.
 When comparing the filtered VCF files using **bcftools isec**, the comparison operates on explicit variant records defined by CHROM + POS + REF + ALT. The comparison confirms that all 237 candidate variants are identical between the two environments.
 >Finally, a custom post-filtering step based on "PASS", depth (DP), alternate allele count (AD), and variant allele frequency (VAF) reduced the dataset to 3 high-confidence variants.
->
-> Mutect2
->  │
->  ├─ evaluates 948 possible sites
->  │
->  └─ writes 237 candidate variants → unfiltered.vcf
->          │
->          ▼
->FilterMutectCalls
->          │
->          └─ adds FILTER tags (still 237 variants)
->                  │
->                  ▼
->Custom pipeline thresholds
->                  │
->                  ▼
->          3 final variants in `DNA` and `DNA2`
->
-> Verification: In ~/Genomics_cancer: 
->
->`zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l`
->
->`zgrep -v "^#" data/SRR30536566_full/variants/SRR30536566_full.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l`
->
-> Ouput: 237 unique variants sites (in `DNA` and `DNA2`) = Difference = 0 (identical)
+
+ Mutect2
+  │
+  ├─ evaluates 948 possible sites
+  │
+  └─ writes 237 candidate variants → unfiltered.vcf
+          │
+          ▼
+  FilterMutectCalls
+          │
+          └─ adds FILTER tags (still 237 variants)
+                   │
+                   ▼
+      Custom pipeline thresholds
+                   │
+                   ▼
+      3 final variants in `DNA` and `DNA2`
 
 ---
 
