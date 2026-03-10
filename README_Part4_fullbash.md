@@ -96,12 +96,12 @@ For full setup instructions, see:
 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
 
 
-## 📁 Recommended Folder Structure
+## 📁 Recommended Folder Structure for ~/SRR30536566_full
 
 ```code
 Genomics_cancer/
 ├── data/
-│   ├── SRR30536566_full/   # Used by the unified script
+│   ├── SRR30536566_full/   # # NGS analysis with a single bash script `09_full_somatic_NGS_bash_script.sh` (Tutorial: Part IV). Conda `DNA` environment.
 │   │   ├── qc/
 │   │   ├── trimmed/
 │   │   ├── logs/
@@ -109,8 +109,10 @@ Genomics_cancer/
 │   │   ├── variants/
 │   │   └── annotation/
 │   │
-│   └── SRR30536566/        # Used for step-by-step workflow (Part I & II)
+│   └── SRR30536566/        # NGS analysis using multiple step-by-step bash scripts (Tutorial: Part I - II). Conda `DNA` environment.
 │       ├── raw_fastq/
+│           └── SRR30536566_1.fastq.gz
+│           └── SRR30536566_2.fastq.gz
 │       ├── qc/
 │       ├── trimmed/
 │       ├── aligned/
@@ -120,8 +122,12 @@ Genomics_cancer/
 ├── reference/
 │   └── GRCh38/
 │       ├── fasta/
+│           └── Homo_sapiens_assembly38.fasta, .alt, .amb, .ann, .bwt, .dic, .pac, .sa, .fai
 │       ├── intervals/
+│           └── crc_panel_7genes_sorted.hg38.bed
 │       └── somatic_resources/
+│           └── 1000g_pon.hg38.vcf.gz
+│           └── af-only-gnomad.hg38.vcf.gz
 │
 ├── scripts/
 └── logs/
@@ -158,7 +164,6 @@ total 80K
 -rwxr--r-- 1 Frano staff 3.2K Jan 25 00:27  08_postfilter.sh
 -rwxr--r-- 1 Frano staff  615 Feb  3 17:52  04_for_loop_gtf.sh
 -rwxr--r-- 1 Frano staff  619 Feb  3 17:56  04_for_loop_gtf_copy.sh
--rw-r--r-- 1 Frano staff 1.4K Feb 25 17:17  creating_full_somatic_bash_script.txt
 -rwxr--r-- 1 Frano staff  18K Feb 26 09:23  09_full_somatic_NGS_bash_script.sh
 (DNA) scripts $ ./09_full_somatic_NGS_bash_script.sh
 Starting FastQC...
@@ -327,6 +332,76 @@ Total runtime: 0 hours
 ==========================================
 (DNA) scripts $ 
 ```
+
+## Outputted files - Folder structure:
+
+```code
+Genomics_cancer/
+└── data/
+│    └── SRR30536566_full/
+│        ├── qc/
+│        │   ├── raw/
+│        │       └── multiqc_report.html/multiqc_data
+│        │       └── SRR30536566_[1,2]_fastqc.html/zip
+│        │   ├── trimmed/
+│        │       └── multiqc_report.html/multiqc_data
+│        │       └── SRR30536566_full_[R1,R2].trimmed_fastqc.html/zip
+│        │   └── md_flagstat/
+│        │       └── multiqc_report.html/multiqc_data
+│        │
+│        ├── trimmed/
+│        │   └── SRR30536566_full_[R1,R2].trimmed.fastq.gz
+│        │
+│        ├── logs/
+│        │   └── cutadapt_SRR30536566_full.log
+│        │   └── bwa_mem.log
+│        │   └── markduplicates.log
+│        │   └── SRR30536566_full.flagstat.txt
+│        │   └── mutect2.stderr.log / mutect2.stdout.log
+│        │   └── learn_read_orientation_model.log
+│        │   └── get_pileup_summaries.log
+│        │   └── calculate_contamination.log
+│        │   └── filter_mutect_calls.log
+│        │   └── SRR30536566_full_DNA2.postfilter.log
+│        │
+│        ├── aligned/
+│        │   └── SRR30536566_full.sorted.markdup.md.bam
+│        │   └── SRR30536566_full.sorted.markdup.md.bam.bai
+│        │   └── SRR30536566_full.markdup.metrics.txt
+│        │
+│        ├── variants/
+│        │   ├── *.contamination.table
+│        │   ├── *.f1r2.tar.gz
+│        │   ├── *.unfiltered.vcf.gz
+│        │   ├── *.unfiltered.vcf.gz.stats
+│        │   ├── *.unfiltered.vcf.gz.tbi
+│        │   ├── *.read-orientation-model.tar.gz
+│        │   ├── *.filtered.vcf.gz
+│        │   ├── *.filtered.vcf.gz.tbi
+│        │   ├── *.pileups.table
+│        │   ├── *.PASS.vcf.gz
+│        │   ├── *.PASS.vcf.gz.tbi
+│        │   └── *.postfiltered.vcf.gz
+│        │   └── *.postfiltered.vcf.gz.tbi
+│        │   └── *.postfilter_summary.txt
+│        │
+│        └── annotation/
+│
+├── reference/
+│   └── GRCh38/
+│       ├── fasta/
+│       ├── intervals/
+│       └── somatic_resources/
+│
+├── scripts/
+└── logs/
+```
+
+## Conclusion
+
+The bash script [09_full_somatic_NGS_bash_script.sh](bash_scripts/09_full_somatic_NGS_bash_script.sh) contains a pipeline that runs smoothly and outputting all expected files as the splitted bash scripts. Most importantly, this pipeline could also output the same three expected variants.
+
+---
 
 Go back to the top of  👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md.md#part-iv--bash-script-fully-automated-somatic-dna-ngs-pipeline)
 

@@ -608,6 +608,8 @@ Genomics_cancer/
 └── logs/                      
 ```
 
+---
+
 If you have reached the end of **PART I**, I invite you to continue with the 👉 [Part II – Somatic analysis](README_somatic_analysis_Part2-3.md), where the DNA analysis will be explained step-by-step.
 
 Go back to the top of 👉 [Part I – Preparation & setup](README_setup_Part1-3.md#part-i--preparation--setup)

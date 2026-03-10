@@ -107,13 +107,15 @@ In this tutorial, the somatic variant analysis from a targeted NGS gene panel wa
 
 [`09_full_somatic_NGS_bash_script.sh`](bash_scripts/09_full_somatic_NGS_bash_script.sh). 
 
-The script sequentially runs several bioinformatics tools, including the variant caller **Mutect2** from the GATK toolkit. All required software is installed inside a Conda environment called `DNA`. One of the tools used in this environment is **samtools**, which is widely used for manipulating sequencing alignment files (BAM/CRAM).
+The script sequentially runs several bioinformatics tools, including the variant caller **Mutect2** from the GATK toolkit. All software runs in a Conda environment called `DNA`. 
 
-The original `DNA` environment contains a very old version of samtools (**0.1.19**, a "legacy" version). Modern versions of samtools (>1.10) rely on the library HTSlib and include numerous improvements and bug fixes.
+One of the tools used in `DNA` environment is the **samtools**, which is widely used for manipulating sequencing alignment files (BAM/CRAM).
+
+The **samtools** contained in this enviroment is a very old version (**0.1.19**, a "***legacy***" version). Modern versions of samtools (>1.10) rely on the library **HTSlib** and include numerous improvements and bug fixes.
 
 An interesting question is therefore:
 
-"***Will the number or identity of detected variants change if the pipeline is executed using a modern version of samtools instead of the legacy version?***"
+"***Will the number or identity of detected variants change if the pipeline is executed using a modern version of samtools?***"
 
 ---
 
@@ -121,9 +123,9 @@ An interesting question is therefore:
 
 To evaluate the potential impact of this update, the following approach will be used.
 
-### 1. Compare the environments `DNA` and `DNA2`
+### 1. Compare `DNA` and `DNA2` environments
 
-A new environment called `DNA2` will be created with a modern version of samtools.
+A new environment called `DNA2` will be created **with a modern version of samtools**.
 
 **Conda environment comparison**
 
@@ -139,7 +141,7 @@ A new environment called `DNA2` will be created with a modern version of samtool
 | bcftools   | 1.22            | bcftools   | 1.22             |
 | Picard     | 3.4.0           | Picard     | 3.4.0            |
 
-In this experiment, the primary tool intentionally modified is **samtools**, which is updated from version **0.1.19** to **1.22.1**. Because modern samtools releases are built on the **HTSlib** library, updating samtools also introduces compatible versions of HTSlib and related tools such as bcftools. 
+In this experiment, the primary tool intentionally modified is **samtools**, which is updated from version **0.1.19** to **1.22.1**.
 
 All other core tools remain unchanged to isolate the effect of this update.
 
@@ -147,7 +149,7 @@ All other core tools remain unchanged to isolate the effect of this update.
 
 ### 2. Create the new conda environment `DNA2`. 
 
-The installation of `DNA2` should be performed from the `base` environment. All Conda environments are created from the `base` installation but remain isolated from each other.
+The installation of `DNA2` should be performed from the `base` environment. All Conda environments are created from `base`, but remain isolated from each other.
 
 **I. Go to `base` environment**:
 
@@ -179,7 +181,7 @@ channels:
   - defaults
 ```
 
-This configuration ensures a **strict channel priority**, which helps prevent dependency conflicts when installing bioinformatics software.  
+This configuration ensures a **strict channel priority**, which helps prevent dependency conflicts when installing bioinformatics software (packages).  
 
 > [!CAUTION]
 > During environment creation, dependency conflicts may occur when incompatible versions of tools are requested simultaneously. In such cases, removing strict version constraints often allows Conda to automatically resolve compatible versions. In genomics pipelines this frequently occurs with legacy Perl-based tools such as **Ensembl-VEP**. For this reason, complex pipelines often split tools into multiple environments to avoid dependency conflicts.
@@ -187,7 +189,7 @@ This configuration ensures a **strict channel priority**, which helps prevent de
 **III. Create the environment**:
 
 ```bash
-conda create -n DNA2 \c 
+conda create -n DNA2 \
   -c conda-forge -c bioconda -c defaults \
   python=3.9.23 \
   openjdk=17.0.17 \
@@ -266,7 +268,7 @@ Solving environment: done
 Executing transaction: done
 ```
 
-**Alternative**: Instead of Conda, the environment can be created using mamba, which resolves dependencies much faster.
+**Optional**: Instead of Conda, use **mamba**, which resolves dependencies much faster.
 
 Check if mamba is installed:
 
@@ -278,7 +280,10 @@ mamba --version
 Then create the environment:
 
 ```bash
-`mamba create -n DNA2 ...
+mamba create -n DNA2 \
+  -c conda-forge -c bioconda -c defaults \
+  python=3.9.23 \
+  ...
 ```
 
 After installation:
@@ -300,7 +305,7 @@ So now, the new `DNA2` environment will have a newer version of samtools.
 
 Instead of installing environments manually, Conda environments can be exported and recreated using `.yml` or `.lock` files. Conda environments can be exported with different levels of reproducibility depending on how much information about each package is stored.
 
-**I. Export the environment**
+**A. Export the environment: `.yml`**
 
 After creating `DNA2`
 
@@ -314,7 +319,7 @@ The file `DNA2_conda_environment.yml` will store all packages and versions of `D
 To get a higher level of reproducibility, remove `--no-builds` from the code.
 
 
-**II. Create a fully reproducible lock file**
+**B. Export the environment: Create a fully reproducible `.lock` file**
 
 If you want a perfect reproducibility, then the strongest methods are:
 
@@ -322,7 +327,7 @@ If you want a perfect reproducibility, then the strongest methods are:
 conda list --explicit > DNA2_conda_environment.lock
 ```
 
-or 
+**C. Export the environment: for cross-platform reproducibility, use `conda-lock`** 
 
 ```bash
 # First export DNA2 env without builds
@@ -361,7 +366,7 @@ This file contains **exact package URLs and checksums** for perfect reproducibil
 | **typical recreate command**           | `conda env create -f environment.yml` | `conda env create -f environment.yml` | `conda create -n DNA2 --file DNA2.lock` | `conda-lock install -n DNA2 conda-osx-64.lock` |
 
 
-**III. Recreate the environment anywhere from the lock file**
+**D. Recreate the environment anywhere from the lock file**
 
 To recreate the same environment in other computers and attempt to reproduce the same analysis, use these codes:
 
@@ -474,7 +479,7 @@ Transaction
 
   All requested packages already installed
 ```
-**Meaning** of `All requested packages already installed`: It means that samtools, htslib, bcftools were already installed in `DNA2` environment, and there is **no dependency resolution needed**.
+**Meaning** of `All requested packages already installed`: It means that samtools, htslib, bcftools were already installed in `DNA2` environment, and there is **no dependency resolution needed**. No conflicts indicate a clean environment.
 
 
 > [!Note]
@@ -577,7 +582,7 @@ samtools sort -@ "$THREADS" \
 
 ---
 
-### 6. Run the pipeline in `DNA2` environment
+### 6. Run pipeline in `DNA2` environment
 
 **I. Activate the environment**
 
@@ -591,7 +596,7 @@ conda activate DNA2
 cd ~/Genomics_cancer/scripts
 ./09_full_somatic_DNA2_updated.sh
 ```
-The entire pipeline will the same sequencing dataset `SRR30536566`.
+The pipeline will process the same sequencing dataset `SRR30536566`.
 
 ### Expected output & folder structure
 
