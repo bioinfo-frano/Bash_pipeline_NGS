@@ -77,7 +77,7 @@ Perform a **somatic DNA-NGS analysis** following GATK best practices:
 Learn why it’s important to update your pipeline and ensure its reproducibility
 
 **Just click here**
-👉 [Part V – Pipeline maintenance](README_Part5_DNA2_pipeline_update.md)
+👉 [Part V – Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
 
 ---
 

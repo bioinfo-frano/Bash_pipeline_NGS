@@ -1,14 +1,18 @@
-# Part V – Pipeline maintenance
+# Part V – Pipeline maintenance and Environment Validation
 
 ## Table of Contents
 
 - [Introduction](#introduction)
 - [Methodology](#methodology)
-    - [Environment reproducibility (`DNA2`)](#3-environment-reproducibility-dna2)
-    - [Preparation of folder structure and update of Bash pipeline](#5-preparation-of-folder-structure-and-update-of-bash-pipeline)
+    - [1. Compare `DNA` and `DNA2` environments](#1-compare-dna-and-dna2-environments)
+    - [2. Create the new conda environment `DNA2`](#2-create-the-new-conda-environment-dna2)
+    - [3. Environment reproducibility (`DNA2`)](#3-environment-reproducibility-dna2)
+    - [4. Verifying the integrity of the `DNA2` environment](#4-verifying-the-integrity-of-the-dna2-environment)
+    - [5. Preparation of folder structure and update of Bash pipeline](#5-preparation-of-folder-structure-and-update-of-bash-pipeline)
+    - [6. Run the pipeline in `DNA2`](#6-run-the-pipeline-in-dna2)
 - [Results](#results)
-    - [Verify the differences between the filtered VCF files using **BCFtools**](#verify-the-differences-between-the-filtered-vcf-files-using-bcftools)
-    - [Verify the differences between the post-filtered VCF files](#verify-the-differences-between-the-post-filtered-vcf-files)
+    - [Filtered VCF files comparison using **BCFtools**](#filtered-vcf-files-comparison-using-bcftools)
+    - [Post-filtered VCF files comparison using **BCFtools**](#post---filtered-vcf-files-comparison-using-bcftools)
 - [Conclusion](#conclusion)
 
 # Introduction
@@ -414,7 +418,7 @@ These are **standard methods used in bioinformatics to transfer exact Conda envi
 
 ---
 
-### 4. Verifying how "clean" is `DNA2` environment
+### 4. Verifying the integrity of the `DNA2` environment
 
 A “clean” environment means that all packages are resolved correctly with no hidden conflicts.
 
@@ -582,7 +586,7 @@ samtools sort -@ "$THREADS" \
 
 ---
 
-### 6. Run pipeline in `DNA2` environment
+### 6. Run pipeline in `DNA2`
 
 **I. Activate the environment**
 
@@ -699,7 +703,7 @@ This comparison evaluates whether updating samtools in the `DNA2` environment ha
 
 ---
 
-### Verify the differences between the **filtered VCF** files using **BCFtools**:
+### Filtered VCF files comparison using **BCFtools**:
 
 **I. Activate `DNA2` and go to `~/Genomics_cancer`**:
 
@@ -810,7 +814,7 @@ Difference
 
 ---
 
-### Verify the differences between the post-filtered VCF files
+### Post-filtered VCF files comparison using **BCFtools**
 
 Similarly, the comparison can be done with BCFtools from `*.postfiltered.vcf.gz`. Go to `~/Genomics_cancer`:
 
@@ -923,7 +927,7 @@ The comparison across all pipeline stages demonstrates that `DNA2` is a fully re
 
 ---
 
-Top of page 👉 [Part V: Pipeline maintenance](README_Part5_DNA2_pipeline_update.md#part-v--pipeline-maintenance)
+Top of page 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md#part-v--pipeline-maintenance)
 
 Previous analysis with legacy samtools/`DNA` environment 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
 
