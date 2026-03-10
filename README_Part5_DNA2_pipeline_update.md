@@ -13,29 +13,27 @@
 
 # Introduction
 
-Maintaining or updating a bioinformatics pipeline is a critical responsibility for any bioinformatician, especially when working with research or clinical genomic data.
+Maintaining or updating a bioinformatics pipeline throughout its lifecycle is an essential part of bioinformatics practice, especially when working with research or clinical genomic data.
 
 Pipeline maintenance ensures that the code written months or years ago still produces **reliable, reproducible, and scientifically valid results today**.
 
-Because bioinformatics software evolves constantly, pipelines can gradually become outdated. New tool versions, new reference datasets, and improvements in algorithms may affect analysis results. Without proper maintenance, a pipeline may eventually stop working or produce inconsistent results.
+Because bioinformatics software evolves constantly, pipelines can gradually become outdated over time. New tool versions, new reference datasets, and improved algorithms may affect analysis results. Without proper maintenance, a pipeline may eventually stop working or produce inconsistent outputs.
 
-Therefore, maintaining a pipeline throughout its lifecycle is an essential part of bioinformatics practice.
-
-In general, pipeline maintenance involves several types of tasks.
+Pipeline maintenance involves several types of tasks:
 
 ## 1. Tool and Dependency updates
 
-Bioinformatics software evolves rapidly. Tools such as GATK, BWA and samtools are regularly updated, along with their dependencies (e.g. Python, R, or Java). For example, if a pipeline originally used **GATK 4.2** and is later updated to **GATK 4.5**, it is important to verify that the updated pipeline still produces consistent results.
+Bioinformatics software evolves rapidly. Tools such as **GATK**, **BWA** and **samtools** are regularly updated, along with their dependencies (e.g. Python, R, or Java). For example, if a pipeline originally used **GATK 4.2** and is later updated to **GATK 4.5**, it is important to verify that the updated pipeline still produces consistent results.
 
-Another important aspect of maintenance is ensuring **reproducibility of the computational environment**. Package managers such as **Conda** allow the exact software environment used in the past to be recreated later. In more advanced pipelines, container technologies such as Docker or Singularity may also be used to fully reproduce the runtime environment.
+Ensuring **reproducibility of the computational environment** is equally important. Package managers such as **Conda** allow the exact software environment used in the past to be recreated later. For more advanced reproducibility, container technologies such as **Docker** or **Singularity** may be used to reproduce the runtime environment.
 
 ## 2. Exceptional cases
 
 Occasionally, a specific sequencing sample may produce an unexpected error during pipeline execution.
 
-A robust pipeline should ideally detect these failures and allow the rest of the samples to continue processing. In practice, this may require adjusting the script to handle exceptional cases without interrupting the entire analysis run.
+A robust pipeline should ideally detect these failures and allow the processing of the rest of the samples to continue uninterrupted. In practice, this may require adjusting the script to handle exceptional cases without interrupting the entire analysis run.
 
-## 3. Reference Data updates
+## 3. Reference Data Updates
 
 Many genomic reference resources are continuously updated, including:
 
@@ -47,7 +45,7 @@ Many genomic reference resources are continuously updated, including:
 
 - Human reference genome GRCh38.
 
-Maintaining a pipeline may therefore require downloading updated reference datasets, indexing them, and validating that they are compatible with the pipeline before sharing them with collaborators.
+Maintaining a pipeline may therefore require downloading updated reference datasets, indexing them, and validating compatibility with the pipeline before sharing analyses with collaborators.
 
 ## 4. Bug fixes
 
@@ -61,27 +59,25 @@ During routine pipeline usage, unexpected issues may arise such as:
 
 - incorrect parameter usage
 
-Fixing these issues requires updating the pipeline code and validating that the modifications do not alter the expected biological results.
+Fixing these issues requires updating the pipeline code while ensuring biological results remain unchanged.
 
 ## 5. Pipeline Versioning and Provenance Tracking
 
-Another essential aspect of pipeline maintenance is **tracking which version of the pipeline produced each result**. This concept is known as **pipeline versioning** and **data provenance**.
+Tracking which pipeline version produced each result is critical. This concept is known as **pipeline versioning** and **data provenance**.
 
 Even small changes in a pipeline may affect results. Examples include:
 
-- updating samtools
+- Updating **samtools**
 
-- updating the variant caller Mutect2 from the GATK toolkit
+- Updating **Mutect2** in GATK
 
-- modifying filtering thresholds
+- Modifying filtering thresholds
 
-- updating annotation databases such as gnomAD or ClinVar
+- Updating annotation databases (gnomAD, ClinVar)
 
-To track these changes, bioinformatics pipelines typically use **version control systems** such as:
+To track these changes, bioinformatics pipelines typically use **version control systems** like **Git**.
 
-- Git
-
-Code repositories such as GitHub allow developers to track every modification made to the pipeline.
+Code repositories such as **GitHub** allow developers to track every modification made to the pipeline.
 
 In addition, pipelines often record **metadata for each run**, including:
 
@@ -107,7 +103,7 @@ Even a small change in the code or in a software dependency could potentially al
 
 # Practical example of pipeline maintenence
 
-In this tutorial, the somatic variant analysis from a targeted NGS gene panel is performed using the Bash pipeline:
+In this tutorial, the somatic variant analysis from a targeted NGS gene panel was performed using the Bash pipeline:
 
 [`09_full_somatic_NGS_bash_script.sh`](bash_scripts/09_full_somatic_NGS_bash_script.sh). 
 
