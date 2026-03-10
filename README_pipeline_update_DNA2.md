@@ -1,4 +1,18 @@
-# Part V: Pipeline maintenance
+# Part V – Pipeline maintenance
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Methodology](#methodology)
+      - [Environment reproducibility (`DNA2`)](#environment-reproducibility-dna2)
+      - [Preparation of folder structure and Update of Bash pipeline](#preparation-of-folder-structure-and-update-of-bash-pipeline)
+- [Results](#results)
+      - [Environment reproducibility (`DNA2`)](#environment-reproducibility-dna2-1)
+      - [Verify the differences between the filtered VCF files using **BCFtools**](#verify-the-differences-between-the-filtered-vcf-files-using-bcftools)
+      - [Verify the differences between the post-filtered VCF files](#verify-the-differences-between-the-post-filtered-vcf-files)
+- [Conclusion](#conclusion)
+
+# Introduction
 
 Maintaining or updating a bioinformatics pipeline is a critical responsibility for any bioinformatician, especially when working with research or clinical genomic data.
 
@@ -92,7 +106,7 @@ Even a small change in the code or in a software dependency could potentially al
 
 ---
 
-# Practical example
+# Practical example of pipeline maintenence
 
 In this tutorial, the somatic variant analysis from a targeted NGS gene panel is performed using the Bash pipeline:
 
@@ -638,6 +652,7 @@ Genomics_cancer/
         │
         └── annotation/
 ```
+---
 
 ## Results: Comparison between outputs from `DNA` and `DNA2` environments using dataset `SRR30536566`
 
@@ -681,7 +696,7 @@ This comparison allows us to evaluate whether updating samtools has any measurab
 | `SRR30536566_full.postfilter.log`            | Custom post-filter       | panel thresholds          | 3 final variants     | identical     |
 
 
-### Verify the differences between the final (post-filtered) VCF files using **BCFtools**:
+### Verify the differences between the filtered VCF files using **BCFtools**:
 
 **I. Activate `DNA2` and go to `~/Genomics_cancer`**:
 
@@ -790,9 +805,9 @@ Difference
         └── 0 variants
 ```
 
-**IV. Compare post-filtered *.vcf.gz files generated from `DNA` and `DNA2`**
+### Verify the differences between the post-filtered VCF files
 
-Similarly, the comparison can be done with BCFtools. Go to `~/Genomics_cancer`:
+Similarly, the comparison can be done with BCFtools from `*.postfiltered.vcf.gz`. Go to `~/Genomics_cancer`:
 
 ```bash
 bcftools isec -p vcf_compare \
@@ -865,7 +880,9 @@ After post-filtering, the final VCFs from `DNA` and `DNA2` are identical.
 
 - By comparing the generated metrics from the somatic analysis done in both Conda environments, the new environment **`DNA2` is a fully reproducible replacement of `DNA`**.
 
-Go back to the top of  👉 [Part V: Pipeline maintenance](README_part4.md#part-iv--bash-script-fully-automated-somatic-dna-ngs-pipeline)
+---
+
+Go back to the top of  👉 [Part V: Pipeline maintenance](README_pipeline_update_DNA2.md#introduction)
 
 Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
 
