@@ -11,17 +11,17 @@
     - [5. Preparation of folder structure and update of Bash pipeline](#5-preparation-of-folder-structure-and-update-of-bash-pipeline)
     - [6. Run the pipeline in `DNA2`](#6-run-the-pipeline-in-dna2)
 - [Results](#results)
-    - [Filtered VCF files comparison using **BCFtools**](#filtered-vcf-files-comparison-using-bcftools)
-    - [Post-filtered VCF files comparison using **BCFtools**](#post-filtered-vcf-files-comparison-using-bcftools)
+    - [1. Filtered VCF files comparison using **BCFtools**](#filtered-vcf-files-comparison-using-bcftools)
+    - [2. Post-filtered VCF files comparison using **BCFtools**](#post-filtered-vcf-files-comparison-using-bcftools)
 - [Conclusion](#conclusion)
 
 # Introduction
 
-Maintaining or updating a bioinformatics pipeline throughout its lifecycle is an essential part of bioinformatics practice, especially when working with research or clinical genomic data.
+Maintaining or updating a bioinformatics pipeline throughout its lifecycle is an essential when working with genomic data in research or clinical contexts.
 
 Pipeline maintenance ensures that the code written months or years ago still produces **reliable, reproducible, and scientifically valid results today**.
 
-Because bioinformatics software evolves constantly, pipelines can gradually become outdated over time. New tool versions, new reference datasets, and improved algorithms may affect analysis results. Without proper maintenance, a pipeline may eventually stop working or produce inconsistent outputs.
+Because bioinformatics software evolves constantly, pipelines can gradually become outdated over time. New tool versions, updated/new reference datasets, and improved algorithms may affect analysis results. Without proper maintenance and validation, pipelines may eventually fail or produce inconsistent outputs.
 
 Pipeline maintenance involves several types of tasks:
 
@@ -105,7 +105,7 @@ Even a small change in the code or in a software dependency could potentially al
 
 ---
 
-# Practical example of pipeline maintenence
+# Practical Example of Pipeline Maintenance
 
 In this tutorial, the somatic variant analysis from a targeted NGS gene panel was performed using the Bash pipeline:
 
@@ -113,9 +113,7 @@ In this tutorial, the somatic variant analysis from a targeted NGS gene panel wa
 
 The script sequentially runs several bioinformatics tools, including the variant caller **Mutect2** from the GATK toolkit. All software runs in a Conda environment called `DNA`. 
 
-One of the tools used in `DNA` environment is the **samtools**, which is widely used for manipulating sequencing alignment files (BAM/CRAM).
-
-The **samtools** contained in this enviroment is a very old version (**0.1.19**, a "***legacy***" version). Modern versions of samtools (>1.10) rely on the library **HTSlib** and include numerous improvements and bug fixes.
+The `DNA` environment currently contains **samtools 0.1.19**, a legacy version released before the modern **HTSlib-based samtools architecture**. Modern samtools versions (≥1.x) rely on the library **HTSlib**, , providing improved performance, new functionality, and numerous bug fixes.
 
 An interesting question is therefore:
 
@@ -185,7 +183,7 @@ channels:
   - defaults
 ```
 
-This configuration ensures a **strict channel priority**, which helps prevent dependency conflicts when installing bioinformatics software (packages).  
+This configuration enforces a **strict channel priority**, ensuring that packages from `conda-forge` and `bioconda` are preferred over the default Anaconda channel. This reduces the risk of dependency conflicts in bioinformatics environments.
 
 > [!CAUTION]
 > During environment creation, dependency conflicts may occur when incompatible versions of tools are requested simultaneously. In such cases, removing strict version constraints often allows Conda to automatically resolve compatible versions. In genomics pipelines this frequently occurs with legacy Perl-based tools such as **Ensembl-VEP**. For this reason, complex pipelines often split tools into multiple environments to avoid dependency conflicts.
@@ -221,7 +219,9 @@ conda create -n DNA2 \
   -y
 ```
 
-This environment will likely produce dependency conflicts during installation. The conflict occurs because **Ensembl-VEP depends on the legacy samtools API (<0.2)** through `perl-bio-samtools`, preventing Conda from installing modern samtools versions (>=1.x) within the same environment.
+This environment will likely produce dependency conflicts during installation. This conflict occurs because **Ensembl-VEP depends on `perl-bio-samtools`**, which in turn depends on the **legacy samtools API (<0.2)**.
+
+Therefore, installing `ensembl-vep` forces Conda to install an outdated **samtools** version, preventing the installation of modern samtools releases (≥1.x).
 
 ```bash
 ensembl-vep
@@ -320,7 +320,7 @@ conda env export --no-builds > DNA2_conda_environment.yml
 
 The file `DNA2_conda_environment.yml` will store all packages and versions of `DNA2`.
 
-To get a higher level of reproducibility, remove `--no-builds` from the code.
+For stronger reproducibility, omit `--no-builds`, which preserves exact package build identifiers.
 
 
 **B. Export the environment: Create a fully reproducible `.lock` file**
@@ -341,7 +341,7 @@ conda-lock lock -f DNA2_conda_environment.yml -p osx-64
 # Alternatively, for macOS(Apple Silicon)
 conda-lock lock -f DNA2_conda_environment.yml -p osx-arm64
 # Or if you also want to increase portability to other platforms (linux-64, win-64)
-conda-lock -f DNA2_conda_environment.yml
+conda-lock lock -f DNA2_conda_environment.yml
 ```
 
 This generates:
@@ -586,7 +586,7 @@ samtools sort -@ "$THREADS" \
 
 ---
 
-### 6. Run pipeline in `DNA2`
+### 6. Run the pipeline in `DNA2`
 
 **I. Activate the environment**
 
@@ -594,7 +594,7 @@ samtools sort -@ "$THREADS" \
 conda activate DNA2
 ```
 
-**II. Move to ~/scripts and run the `09_full_somatic_DNA2_updated.sh`**
+**II. Move to the `scripts` directory and execute the pipeline: `09_full_somatic_DNA2_updated.sh`**
 
 ```bash
 cd ~/Genomics_cancer/scripts
@@ -662,7 +662,7 @@ Genomics_cancer/
 
 ### Comparison between outputs from `DNA` and `DNA2` environments using dataset `SRR30536566`
 
-The resulting quality metrics will be compared using the reports recorded in `.logs`, paying particular attention to:
+Pipeline outputs from the `DNA` and `DNA2` environments were compared using the log files generated during each pipeline step.
 
 - Trimming and filtering: `cutadapt_SRR30536566_full_DNA2.log`
 
@@ -797,28 +797,28 @@ chr1 114705278 A G 11
 ### Visual summary
 
 ```bash
-DNA pipeline
+   DNA pipeline
         │
         ├── 237 variants
         │
         ▼
-DNA2 pipeline
+   DNA2 pipeline
         │
         ├── 237 variants
         │
         ▼
-Difference
+   Difference
         │
         └── 0 variants
 ```
-**Aternative verification: In `~/Genomics_cancer`**: 
+**Alternative verification: In `~/Genomics_cancer`**: 
 
 ```bash
 zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l
 
 zgrep -v "^#" data/SRR30536566_full/variants/SRR30536566_full.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l
 ```
-Ouput: 237 unique variants sites (in `DNA` and `DNA2`) = Difference = 0 (identical)
+Ouput: 237 unique variants sites (in `DNA` and `DNA2`) → Difference = 0 (identical)
 
 ---
 
@@ -871,10 +871,23 @@ Looking line by line:
 All fields, depth, AF, genotypes, filter tags **are exactly the same**.
 
 > [!IMPORTANT]
-> **Mutect2** and **FilterMutectCalls** report 948 variant records, but **bcftools isec** shows 237!! **Mutect2** internally evaluated 948 candidate variant records during the calling process. After applying its statistical model, only 237 candidate variants were written to the VCF file.
-**FilterMutectCalls** then annotated these variants with filter tags but did not remove them, which is the expected behavior of this tool.
-When comparing the filtered VCF files using **bcftools isec**, the comparison operates on explicit variant records defined by CHROM + POS + REF + ALT. The comparison confirms that all 237 candidate variants are identical between the two environments.
->Finally, a custom post-filtering step based on "PASS", depth (DP), alternate allele count (AD), and variant allele frequency (VAF) reduced the dataset to 3 high-confidence variants.
+> Mutect2 internally evaluates a large number of candidate variant events during its statistical modeling process.  
+> In this dataset, **948 candidate variant records were evaluated**, but only **237 candidate variants were written to the VCF file** after applying the Mutect2 calling model.
+>
+> `FilterMutectCalls` then annotates these variants with filtering tags but does **not remove them from the VCF file**. This behavior is expected.
+>
+> When comparing the VCF files with **bcftools isec**, the comparison operates on explicit variant records defined by `CHROM + POS + REF + ALT`.
+>
+> The comparison confirms that **all 237 variants are identical between the `DNA` and `DNA2` environments**.
+>
+> Finally, a custom post-filtering step based on:
+>
+> - PASS status  
+> - depth (DP)  
+> - alternate allele count (AD)  
+> - variant allele frequency (VAF)
+>
+> reduces the dataset to **3 high-confidence variants**.
 
 ```bash
  Mutect2
@@ -891,6 +904,8 @@ When comparing the filtered VCF files using **bcftools isec**, the comparison op
                    ▼
       Custom pipeline thresholds
                    │
+                   ├── Post-fitering
+                   │  
                    ▼
       3 final variants in `DNA` and `DNA2`
 ```
@@ -910,24 +925,38 @@ zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.postfilt
 ```
 Expected output: `235266e81bb7ad44a73a1594cdd29291`
 
-**Meaning**: If the hashes match, the files are identical (excluding header differences removed by `zgrep`). This is **much faster** than `bcftools isec`, especially for large VCFs.
+**Meaning**: If the hashes match, the variant records are identical. This is **much faster** than `bcftools isec`, especially for large VCFs. Header lines are excluded using `zgrep -v "^#"`.
 
+**Alternative**
+
+```bash
+bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\n' data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.postfiltered.vcf.gz | md5sum
+```
+Expected output: `f085e93f16b007dd2f3b0a13875b405b`
+
+```bash
+bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\n' data/SRR30536566_full/variants/SRR30536566_full.postfiltered.vcf.gz | md5sum
+```
+Expected output: `f085e93f16b007dd2f3b0a13875b405b`
 ---
 
-## Conclusion:
+## Conclusion
 
-After post-filtering, the final VCFs produced by the `DNA` and `DNA2` environment are identical.
+The comparison between the `DNA` and `DNA2` environments shows that the final post-filtered VCF files are **identical**.
 
 No differences were observed in:
+
 - variant positions
-- alleles
+- reference and alternate alleles
 - genotypes
-- depth or allele frequency metrics
-- filter annotations.
+- depth and allele frequency metrics
+- filtering annotations
 
-This confirms that upgrading **samtools** to version **1.22.1** in the `DNA2` environment does not affect the somatic variant calling results produced by the pipeline.
+This confirms that upgrading **samtools** from version **0.1.19** to **1.22.1** does **not affect the somatic variant calls produced by the pipeline**.
 
-The comparison across all pipeline stages demonstrates that `DNA2` is a fully reproducible replacement of the original `DNA` environment.
+Across all intermediate processing steps and final outputs, the results generated by `DNA` and `DNA2` are fully consistent.
+
+Therefore, the updated `DNA2` environment can safely replace the legacy `DNA` environment while maintaining full reproducibility of the analysis.
 
 ---
 
