@@ -4,7 +4,7 @@
 
 - [Introduction](#introduction)
 - [Methodology](#methodology)
-    - [Environment reproducibility (`DNA2`)](#environment-reproducibility-dna2)
+    - [Environment reproducibility (`DNA2`)](#3-environment-reproducibility-dna2)
     - [Preparation of folder structure and update of Bash pipeline](#5-preparation-of-folder-structure-and-update-of-bash-pipeline)
 - [Results](#results)
     - [Verify the differences between the filtered VCF files using **BCFtools**](#verify-the-differences-between-the-filtered-vcf-files-using-bcftools)
