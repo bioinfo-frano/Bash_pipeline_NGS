@@ -690,16 +690,16 @@ This comparison allows us to evaluate whether updating samtools has any measurab
 | `bwa_mem.log`                                | Alignment runtime        | BWA                       | 881 s vs 711 s       | ~19% faster   |
 | `markduplicates.log`                         | Duplicate marking        | Picard                    | 4,101,894 duplicates | identical duplicate detection |
 | `SRR30536566_.flagstat.txt`                  | Mapping stats            | Samtools flagstat         | 99.32% mapped        | mapping identical;<br>minor differences due to<br>samtools reporting format     |
-| `mutect2.stderr.log`<br>`mutect2.stdout.log` | Variant calling          | Mutect2                   | 948 variants         | Identical variant-calling statistics     |
+| `mutect2.stderr.log`<br>`mutect2.stdout.log` | Variant calling          | Mutect2                   | 948 possible variant sites         | Identical variant-calling statistics     |
 | `learn_read_orientation_model.log`           | Orientation bias model   | LearnReadOrientationModel | 32 sequence contexts modeled      | identical EM convergence and model     |
 | `get_pileup_summaries.log`                   | Pileup summaries         | GetPileupSummaries        | 1,464,279 reads processed<br>901,738 filtered<br>88,955 loci analyzed          | identical     |
 | `calculate_contamination.log`                | Contamination estimation | CalculateContamination    | 0 changepoints detected       | identical     |
-| `filter_mutect_calls.log`                    | Variant filtering        | FilterMutectCalls         | 948 variants retained         | identical     |
-| `SRR30536566_full.postfilter.log`            | Custom post-filter       | panel thresholds          | 3 final variants     | identical     |
+| `filter_mutect_calls.log`                    | Variant filtering        | FilterMutectCalls         | 948 possible variant sites<br>237 variant candidates        | identical     |
+| `SRR30536566_full.postfilter.log`            | Custom post-filter       | Panel thresholds          | 3 final variants     | identical     |
 
 ---
 
-### Verify the differences between the filtered VCF files using **BCFtools**:
+### Verify the differences between the **filtered VCF** files using **BCFtools**:
 
 **I. Activate `DNA2` and go to `~/Genomics_cancer`**:
 
@@ -808,6 +808,43 @@ Difference
         └── 0 variants
 ```
 
+> [!IMPORTANT]
+> **Mutect2** and **FilterMutectCalls** report 948 variant records, but **bcftools isec** shows 237!! This because **Mutect2** often produces **multiple records per site**, many of these correspond to multiple alternate alleles or repeated records at the same genomic position.
+>
+> A VCF record may represent:
+>
+> - a single allele variant (SNV)
+>
+> - a multi-allelic site (MNV)
+>
+> - a site with several ALT alleles
+>
+> **Mutect2** internally evaluated 948 candidate variant sites. After applying the **Mutect2** calling model, 237 candidate variants were written to the VCF file. **FilterMutectCalls** then annotated these variants with filter tags but did not remove them. This is **normal behavior of FilterMutectCalls**. 
+>When comparing the VCF files with **bcftools isec**, the comparison operates on **unique variant loci (CHROM + POS + REF + ALT)**. After collapsing duplicated or multi-allelic representations, the dataset contains **237 unique variant sites**, which are identical between the `DNA` and `DNA2` pipelines.
+>Finally, a custom post-filtering step based on "PASS", depth (DP), alternate allele count (AD), and variant allele frequency (VAF) reduced the dataset to 3 high-confidence variants.
+>
+> Mutect2
+  │
+  ├─ evaluates 948 possible sites
+  │
+  └─ writes 237 candidate variants → unfiltered.vcf
+          │
+          ▼
+FilterMutectCalls
+          │
+          └─ adds FILTER tags (still 237 variants)
+                  │
+                  ▼
+Custom pipeline thresholds
+                  │
+                  ▼
+3 final variants
+>
+> Verification: In ~/Genomics_cancer: 
+>`zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l`
+>`zgrep -v "^#" data/SRR30536566_full/variants/SRR30536566_full.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l`
+> Ouput: 237 unique variants sites (in `DNA` and `DNA2`) = Difference = 0 (identical)
+
 ---
 
 ### Verify the differences between the post-filtered VCF files
@@ -886,15 +923,17 @@ After post-filtering, the final VCFs from `DNA` and `DNA2` are identical.
 
 - This fully confirms that switching to `DNA2` is reproducible at the final variant call level.
 
-- By comparing the generated metrics from the somatic analysis done in both Conda environments, the new environment **`DNA2` is a fully reproducible replacement of `DNA`**.
+- Updating to samtools 1.22.1 in DNA2 does **not affect final somatic variant calls**.
+
+- The new environment **`DNA2` is a fully reproducible replacement of `DNA`**.
 
 ---
 
-Go back to the top of 👉 [Part V: Pipeline maintenance](README_Part5_DNA2_pipeline_update.md#part-v--pipeline-maintenance)
+Top of page 👉 [Part V: Pipeline maintenance](README_Part5_DNA2_pipeline_update.md#part-v--pipeline-maintenance)
 
-Go and see somatic NGS analysis in `DNA` **samtools legacy (old) version** environment in 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
+Previous analysis with legacy samtools/`DNA` environment 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
 
 Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
 
-Go to the main page 👉 [Bash_pipeline_NGS](README.md)
+Main page 👉 [Bash_pipeline_NGS](README.md)
 
