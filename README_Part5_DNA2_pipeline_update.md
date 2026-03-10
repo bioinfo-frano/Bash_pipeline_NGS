@@ -876,6 +876,7 @@ All fields, depth, AF, genotypes, filter tags **are exactly the same**.
 When comparing the filtered VCF files using **bcftools isec**, the comparison operates on explicit variant records defined by CHROM + POS + REF + ALT. The comparison confirms that all 237 candidate variants are identical between the two environments.
 >Finally, a custom post-filtering step based on "PASS", depth (DP), alternate allele count (AD), and variant allele frequency (VAF) reduced the dataset to 3 high-confidence variants.
 
+```bash
  Mutect2
   │
   ├─ evaluates 948 possible sites
@@ -892,7 +893,7 @@ When comparing the filtered VCF files using **bcftools isec**, the comparison op
                    │
                    ▼
       3 final variants in `DNA` and `DNA2`
-
+```
 ---
 
 ### Quick way of checking VCF equality
