@@ -869,25 +869,28 @@ When comparing the filtered VCF files using **bcftools isec**, the comparison op
 >Finally, a custom post-filtering step based on "PASS", depth (DP), alternate allele count (AD), and variant allele frequency (VAF) reduced the dataset to 3 high-confidence variants.
 >
 > Mutect2
-  │
-  ├─ evaluates 948 possible sites
-  │
-  └─ writes 237 candidate variants → unfiltered.vcf
-          │
-          ▼
-FilterMutectCalls
-          │
-          └─ adds FILTER tags (still 237 variants)
-                  │
-                  ▼
-Custom pipeline thresholds
-                  │
-                  ▼
-3 final variants
+>  │
+>  ├─ evaluates 948 possible sites
+>  │
+>  └─ writes 237 candidate variants → unfiltered.vcf
+>          │
+>          ▼
+>FilterMutectCalls
+>          │
+>          └─ adds FILTER tags (still 237 variants)
+>                  │
+>                  ▼
+>Custom pipeline thresholds
+>                  │
+>                  ▼
+>          3 final variants in `DNA` and `DNA2`
 >
 > Verification: In ~/Genomics_cancer: 
+>
 >`zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l`
+>
 >`zgrep -v "^#" data/SRR30536566_full/variants/SRR30536566_full.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l`
+>
 > Ouput: 237 unique variants sites (in `DNA` and `DNA2`) = Difference = 0 (identical)
 
 ---
