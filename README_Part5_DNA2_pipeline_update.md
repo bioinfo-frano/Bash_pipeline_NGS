@@ -678,7 +678,7 @@ The resulting quality metrics will be compared using the reports recorded in `.l
 
 - Variant postfilter: `SRR30536566_full.postfilter.log`
 
-This comparison allows us to evaluate whether updating samtools has any measurable impact on the final somatic variant calls.
+This comparison evaluates whether updating samtools in the `DNA2` environment has any measurable impact on alignment statistics, intermediate processing steps, and final somatic variant calls.
 
 
 ### Results - Table: Comparison of outputted metrics between files generated from environments `DNA` vs `DNA2`. Dataset: `SRR30536566`
@@ -690,7 +690,7 @@ This comparison allows us to evaluate whether updating samtools has any measurab
 | `bwa_mem.log`                                | Alignment runtime        | BWA                       | 881 s vs 711 s       | ~19% faster   |
 | `markduplicates.log`                         | Duplicate marking        | Picard                    | 4,101,894 duplicates | identical duplicate detection |
 | `SRR30536566_.flagstat.txt`                  | Mapping stats            | Samtools flagstat         | 99.32% mapped        | mapping identical;<br>minor differences due to<br>samtools reporting format     |
-| `mutect2.stderr.log`<br>`mutect2.stdout.log` | Variant calling          | Mutect2                   | 948 possible variant sites         | Identical variant-calling statistics     |
+| `mutect2.stderr.log`<br>`mutect2.stdout.log` | Variant calling          | Mutect2                   | 948 candidate variants evaluated         | Identical variant-calling statistics     |
 | `learn_read_orientation_model.log`           | Orientation bias model   | LearnReadOrientationModel | 32 sequence contexts modeled      | identical EM convergence and model     |
 | `get_pileup_summaries.log`                   | Pileup summaries         | GetPileupSummaries        | 1,464,279 reads processed<br>901,738 filtered<br>88,955 loci analyzed          | identical     |
 | `calculate_contamination.log`                | Contamination estimation | CalculateContamination    | 0 changepoints detected       | identical     |
@@ -725,10 +725,10 @@ Expected output: Generation of folder called `~/Genomics_cancer/vcf_compare`
 
 | File       | Meaning                                     |
 | ---------- | ------------------------------------------- |
-| `0000.vcf` | variants only in file 1 (DNA2)              |
-| `0001.vcf` | variants only in file 2 (DNA)               |
-| `0002.vcf` | variants shared by both                     |
-| `0003.vcf` | variants present in both (intersection set) |
+| `0000.vcf` | variants only in file 1 (**DNA2**)              |
+| `0001.vcf` | variants only in file 2 (**DNA**)               |
+| `0002.vcf` | variants from **DNA2** that are also present in **DNA**                     |
+| `0003.vcf` | variants from **DNA** that are also present in **DNA2** |
 
 **II. Count the amount of shared and intersected variants in `0000.vcf`, `0001.vcf`, `0002.vcf` and `0003.vcf`**
 
@@ -764,7 +764,7 @@ grep -vc "^#" 0003.vcf
 | 2      | Position                    |
 | 3      | REF allele                  |
 | 4      | ALT allele                  |
-| 5      | bitmask indicating presence |
+| 5      | The bitmask indicates in which<br>input file(s) the variant appears. |
 
 Example:
 ```bash
@@ -784,8 +784,8 @@ chr1 114705278 A G 11
 
 | Code | Meaning         |
 | ---- | --------------- |
-| `10` | only file 1     |
-| `01` | only file 2     |
+| `10` | only file 1 (**DNA2**)     |
+| `01` | only file 2  (**DNA**)   |
 | `11` | present in both |
 
 **Conclusion**: The entire file shows: **11**, that means, for every variant → **all sites identical**.
@@ -807,43 +807,6 @@ Difference
         │
         └── 0 variants
 ```
-
-> [!IMPORTANT]
-> **Mutect2** and **FilterMutectCalls** report 948 variant records, but **bcftools isec** shows 237!! This because **Mutect2** often produces **multiple records per site**, many of these correspond to multiple alternate alleles or repeated records at the same genomic position.
->
-> A VCF record may represent:
->
-> - a single allele variant (SNV)
->
-> - a multi-allelic site (MNV)
->
-> - a site with several ALT alleles
->
-> **Mutect2** internally evaluated 948 candidate variant sites. After applying the **Mutect2** calling model, 237 candidate variants were written to the VCF file. **FilterMutectCalls** then annotated these variants with filter tags but did not remove them. This is **normal behavior of FilterMutectCalls**. 
->When comparing the VCF files with **bcftools isec**, the comparison operates on **unique variant loci (CHROM + POS + REF + ALT)**. After collapsing duplicated or multi-allelic representations, the dataset contains **237 unique variant sites**, which are identical between the `DNA` and `DNA2` pipelines.
->Finally, a custom post-filtering step based on "PASS", depth (DP), alternate allele count (AD), and variant allele frequency (VAF) reduced the dataset to 3 high-confidence variants.
->
-> Mutect2
-  │
-  ├─ evaluates 948 possible sites
-  │
-  └─ writes 237 candidate variants → unfiltered.vcf
-          │
-          ▼
-FilterMutectCalls
-          │
-          └─ adds FILTER tags (still 237 variants)
-                  │
-                  ▼
-Custom pipeline thresholds
-                  │
-                  ▼
-3 final variants
->
-> Verification: In ~/Genomics_cancer: 
->`zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l`
->`zgrep -v "^#" data/SRR30536566_full/variants/SRR30536566_full.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l`
-> Ouput: 237 unique variants sites (in `DNA` and `DNA2`) = Difference = 0 (identical)
 
 ---
 
@@ -895,6 +858,34 @@ Looking line by line:
 
 All fields, depth, AF, genotypes, filter tags **are exactly the same**.
 
+> [!IMPORTANT]
+> **Mutect2** and **FilterMutectCalls** report 948 variant records, but **bcftools isec** shows 237!! **Mutect2** internally evaluated 948 candidate variant records during the calling process. After applying its statistical model, only 237 candidate variants were written to the VCF file.
+**FilterMutectCalls** then annotated these variants with filter tags but did not remove them, which is the expected behavior of this tool.
+When comparing the filtered VCF files using **bcftools isec**, the comparison operates on explicit variant records defined by CHROM + POS + REF + ALT. The comparison confirms that all 237 candidate variants are identical between the two environments.
+>Finally, a custom post-filtering step based on "PASS", depth (DP), alternate allele count (AD), and variant allele frequency (VAF) reduced the dataset to 3 high-confidence variants.
+>
+> Mutect2
+  │
+  ├─ evaluates 948 possible sites
+  │
+  └─ writes 237 candidate variants → unfiltered.vcf
+          │
+          ▼
+FilterMutectCalls
+          │
+          └─ adds FILTER tags (still 237 variants)
+                  │
+                  ▼
+Custom pipeline thresholds
+                  │
+                  ▼
+3 final variants
+>
+> Verification: In ~/Genomics_cancer: 
+>`zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l`
+>`zgrep -v "^#" data/SRR30536566_full/variants/SRR30536566_full.filtered.vcf.gz | cut -f1,2 | sort | uniq | wc -l`
+> Ouput: 237 unique variants sites (in `DNA` and `DNA2`) = Difference = 0 (identical)
+
 ---
 
 ### Quick way of checking VCF equality
@@ -911,21 +902,24 @@ zgrep -v "^#" data/SRR30536566_full_DNA2/variants/SRR30536566_full_DNA2.postfilt
 ```
 Expected output: `235266e81bb7ad44a73a1594cdd29291`
 
-**Meaning**: If the hashes match, the files are similar. This is **much faster** than `bcftools isec`, especially for large VCFs.
+**Meaning**: If the hashes match, the files are identical (excluding header differences removed by `zgrep`). This is **much faster** than `bcftools isec`, especially for large VCFs.
 
 ---
 
 ## Conclusion:
 
-After post-filtering, the final VCFs from `DNA` and `DNA2` are identical.
+After post-filtering, the final VCFs produced by the `DNA` and `DNA2` environment are identical.
 
-- There is no difference in variants, genotypes, or quality metrics.
+No differences were observed in:
+- variant positions
+- alleles
+- genotypes
+- depth or allele frequency metrics
+- filter annotations.
 
-- This fully confirms that switching to `DNA2` is reproducible at the final variant call level.
+This confirms that upgrading **samtools** to version **1.22.1** in the `DNA2` environment does not affect the somatic variant calling results produced by the pipeline.
 
-- Updating to samtools 1.22.1 in DNA2 does **not affect final somatic variant calls**.
-
-- The new environment **`DNA2` is a fully reproducible replacement of `DNA`**.
+The comparison across all pipeline stages demonstrates that `DNA2` is a fully reproducible replacement of the original `DNA` environment.
 
 ---
 
