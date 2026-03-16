@@ -129,6 +129,7 @@ Output:
 
 > [!IMPORTANT]
 > Since Nextflow wasn't installed via conda, there's no Nextflow registration in conda's `DNA` metadata. Therefore, even though Nextflow won't appear in conda list of dependencies, it is physically there. Then, Nextflow is invisible to `conda list`, but don't worry, it was installed and functional!
+
 > [!IMPORTANT]
 > Now conda can work not only in `DNA` but also in `DNA2` Conda environments.
 
