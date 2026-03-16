@@ -2,7 +2,7 @@
 
 Welcome to my **DNA-NGS tutorial** 👋  
 
-This repository provides a step-by-step guide to analyzing **DNA sequencing datasets** using primarily **Bash script pipelines**, starting from raw FASTQ data and executing the complete workflow on a **standard workstation or laptop**.
+This repository provides a step-by-step guide to analyzing **DNA sequencing datasets** using primarily **Bash script pipelines**, starting from raw FASTQ data and running the complete workflow on a **standard workstation or laptop**.
 
 The tutorial can be followed sequentially for learning purposes or modularly depending on your goals.
 
@@ -15,8 +15,8 @@ This repository shows how to build and understand a complete somatic DNA-NGS ana
 - Filtering and biological post-processing
 - Visualization and interpretation
 
-The focus is educational clarity, reproducibility, and transparency.
-The workflow implements tumor-only variant calling without matched normal samples.
+The focus is on educational clarity, reproducibility, and transparency.
+The workflow implements **tumor-only variant calling** without matched normal samples. However, one of the last part of this tutorial will be focused on **matched tumor-normal pair variant calling** analysis.
 
 ## 🔬 Workflow Overview
 Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository.
@@ -65,8 +65,7 @@ Perform a **somatic DNA-NGS analysis** following GATK best practices:
 ---
 
 ### 4️⃣ Part IV - Unified & Automated Pipeline (harmonized single-script somatic workflow)
-- Bash script
-- Nextflow (planned extension)
+A single, unified Bash script that runs the entire pipeline from end to end.
 
 ➡️ **Go to automated workflow:**  
 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
@@ -74,10 +73,18 @@ Perform a **somatic DNA-NGS analysis** following GATK best practices:
 ---
 
 ### 5️⃣ Part V - Pipeline maintenance
-Learn why it’s important to update your pipeline and ensure its reproducibility
+Learn why it’s important to keep your pipeline up-to-date and ensure its reproducibility
 
 **Just click here**
 👉 [Part V – Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
+
+---
+
+###  Part VI - Nextflow Pipeline (harmonized single-script somatic workflow)
+Understand what Nextflow is and how it compares to Bash pipelines. This section presents a fully automated Nextflow version of the somatic workflow.
+
+➡️ **Go to automated workflow:**  
+👉 [Part VI – Nextflow script: Fully Automated Somatic DNA-NGS Pipeline](README_Part6_Nextflow.md)
 
 ---
 
@@ -85,13 +92,12 @@ Learn why it’s important to update your pipeline and ensure its reproducibilit
 
 This repository is designed to grow. Planned additions include:
 
-- **Part VI – Somatic analysis with matched panel of normals**
+- **Part VII – Somatic analysis with matched tumor-normal pair**
   - Additional datasets
   - Pipeline optimizations and best practices
 
-- **Part VII – Germline analysis**
-  - Additional datasets
-  - Pipeline optimizations and best practices
+- **Part VIII – Germline analysis**
+  - New datasets and workflows for germline variant calling
 
 ---
 
@@ -100,13 +106,13 @@ This repository is designed to grow. Planned additions include:
 This tutorial is intended for:
 - Bioinformatics students
 - Life scientists learning NGS analysis
-- Researchers who want a **transparent, Bash-only workflow**
+- Researchers who want a **transparent, Bash-only workflow** that can be run locally
 
 ---
 
 ## 📌 Notes
 
-- The pipeline is optimized for **educational clarity**, not HPC clusters
+- The pipelines are optimized for **educational clarity** and designed to run on a standard workstation or laptop (not HPC clusters).
 - All steps are reproducible and runnable on a local machine
 - Real public datasets from the **NCBI SRA** (e.g., SRR30536566) are used
 
@@ -121,14 +127,14 @@ Happy sequencing analysis!
 - macOS (Intel)
 - 8 GB RAM
 - Free space: < 40GB
-- macOS Big Sur (11.7.11)
+- macOS Big Sur 11.7.11 (Intel)
 - Conda-based installation
 - GATK 4.x
 
 ## ⚠️ Disclaimer
 
 This repository is intended for **educational and research purposes only**.  
-It is not validated for clinical diagnostic use and should not be used for medical decision-making.
+It is **not validated for clinical diagnostic use** and should not be used for medical decision-making.
 
 All analyses are performed on publicly available research datasets.
 
