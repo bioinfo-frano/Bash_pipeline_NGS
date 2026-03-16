@@ -961,7 +961,7 @@ Therefore, the updated `DNA2` environment can safely replace the legacy `DNA` en
 
 ---
 
-Top of page 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md#part-v--pipeline-maintenance)
+Top of page 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md##part-v--pipeline-maintenance-and-environment-validation)
 
 Previous analysis with legacy samtools/`DNA` environment 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
 

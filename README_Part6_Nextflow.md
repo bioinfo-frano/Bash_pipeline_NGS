@@ -34,7 +34,7 @@ Nextflow can deploy workflows on a variety of execution platforms, including you
 
 - **Maxwell Cluster**: <https://wiki.desy.de/maxwell/documentation/workflows/nextflow/>
 
-- **nf-core**: "*A global community collaborating to build open-source Nextflow components and pipelines* "<https://nf-co.re/>
+- **nf-core**: "*A global community collaborating to build open-source Nextflow components and pipelines*" <https://nf-co.re/>
 
 
 ## Nextflow analysis of dataset `SRR30536566`

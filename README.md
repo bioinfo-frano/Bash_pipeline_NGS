@@ -81,7 +81,7 @@ Learn why it’s important to keep your pipeline up-to-date and ensure its repro
 
 ---
 
-###  Part VI - Nextflow Pipeline (harmonized single-script somatic workflow)
+### 6️⃣ Part VI - Nextflow Pipeline (harmonized single-script somatic workflow)
 Understand what Nextflow is and how it compares to Bash pipelines. This section presents a fully automated Nextflow version of the somatic workflow.
 
 ➡️ **Go to automated workflow:**  
