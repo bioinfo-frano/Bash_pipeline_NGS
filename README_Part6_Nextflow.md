@@ -95,7 +95,7 @@ Nextflow installation completed. Please note:
 - you may complete the installation by moving it to a directory in your $PATH
 ```
 
->[!IMPORTANT] This command is not installing Nextflow via conda, just downloading an executable file called `nextflow` in your current directory. That means that by typing "conda list", you won't find "nextflow".
+> [!IMPORTANT] This command is not installing Nextflow via conda, just downloading an executable file called `nextflow` in your current directory. That means that by typing "conda list", you won't find "nextflow".
  
 
 3. Now move it into your Conda environment’s `bin` folder and make it executable:
