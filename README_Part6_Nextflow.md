@@ -416,8 +416,6 @@ The nextflow script [09_full_somatic_SRR30536566_nextflow.nf](nextflow_scripts/0
 
 Back to the top  👉 [Part VI – Nextflow: Fully Automated Somatic DNA-NGS Pipeline](#part-vi-nextflow-pipeline-fully-automated-somatic-dna-ngs-pipeline-single-nextflow-script)
 
-[Back to the top](#)
-
 Visit the Bash script here 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
 
 Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
