@@ -161,6 +161,12 @@ Screenshots and outputs are shown for educational and demonstration purposes onl
 
 ---
 
+🤖 Acknowledgments
+
+The Nextflow pipeline presented in **Part VI** was developed with the assistance of AI language models, specifically ChatGPT (OpenAI) and DeepSeek. These tools helped translate the original Bash workflow in **Part V** into a modular Nextflow script, and provided valuable guidance on debugging and optimisation. The Bash pipeline and all other parts of the tutorial were written by the author, with support from bioinformatics tool documentation, AI tools, and YouTube tutorials.
+
+---
+
 ## 📜 License
 
 © 2026 **bioinfo-frano**

@@ -1,13 +1,13 @@
-# Part IV – Nextflow Pipeline: Fully Automated Somatic DNA-NGS Pipeline (Single Nextflow Script)
+# Part VI – Nextflow Pipeline: Fully Automated Somatic DNA-NGS Pipeline (Single Nextflow Script)
 
-In [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md) it was introduced a single bash script with the full NGS somatic analysis pipeline of the 7-gene amplicon dataset `SRR30536566`. This time is the turn of showing a Nextflow pipeline script of the same dataset, which can also do the complete analysis of the same dataset.
+In [Part IV – Bash script](README_Part4_fullbash.md) we introduced a single bash script that performs the complete NGS somatic analysis of the 7-gene amplicon dataset `SRR30536566`. This time we present a **Nextflow pipeline**  that accomplishes the same analysis.
 
 ## What is Nextflow?
 
-**Nextflow** is an open-source, data-driven workflow management system designed for creating scalable, portable, and reproducible computational pipelines, primarily in bioinformatics. The scripting language is not really trivial, and it takes a while to get know with its uncommon concepts, e.g. nextflow is written in groovy. 
-Nextflow can deploy workflows on a variety of execution platforms, including your local machine, HPC schedulers, and cloud.
+**Nextflow** is an open-source, data-driven workflow management system designed for building scalable, portable, and reproducible computational pipelines, especially in bioinformatics. The scripting language (based on Groovy) has a learning curve, and its concepts (channels, processes, operators) may feel unfamiliar at first, but once mastered, it becomes extremely powerful.
+Nextflow can run workflows on your local machine, HPC clusters, or cloud platforms with minimal changes.
 
-## What are the advantages and disadvantages of Nextflow and Bash pipelines?
+## Advantages and Disadvantages: Nextflow vs. Bash
 
 | **Aspect**                | **Bash Script**                                                                                                                                                                                                 | **Nextflow Pipeline**                                                                                                                                                                                                                     |
 |---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -30,48 +30,52 @@ Nextflow can deploy workflows on a variety of execution platforms, including you
 
 ### References: 
 
-- **Nextflow documentation**: <https://www.nextflow.io/docs/latest/index.html>
+- [Nextflow documentation](https://www.nextflow.io/docs/latest/index.html)
 
-- **Maxwell Cluster**: <https://wiki.desy.de/maxwell/documentation/workflows/nextflow/>
+- [Maxwell Cluster – Nextflow guide](https://wiki.desy.de/maxwell/documentation/workflows/nextflow/)
 
-- **nf-core**: "*A global community collaborating to build open-source Nextflow components and pipelines*" <https://nf-co.re/>
+- [nf-core community](https://nf-co.re/) – "*A global community collaborating to build open-source Nextflow components and pipelines*" 
 
+---
 
 ## Nextflow analysis of dataset `SRR30536566`
 
-## 1. Install Nextflow to conda environment 'DNA'
+Nextflow is a **Java-based workflow manager** that is updated frequently. The official installation method (`curl -s https://get.nextflow.io | bash`) is recommended for several reasons:
+
+1. **Latest version immediately** – The curl method always downloads the most recent stable release directly from the Nextflow website. Conda packages may lag behind by weeks or months, meaning you could miss important features, performance improvements, or bug fixes.
+
+2. **Simplicity and control** – Nextflow is a single executable file (a Bash wrapper that launches Java). Installing it manually gives you full control over which version you use and where it resides. Updating is as simple as re-running the curl command or replacing the executable.
+
+3. **No dependency on Conda's Python ecosystem** – Nextflow only requires Java (version 11 or later, with 17+ recommended). It does not rely on Python, R, or any Conda-managed libraries. Installing it via Conda adds unnecessary metadata and couples it to a specific environment, which can complicate maintenance.
+
+4. **Official recommendation** – The Nextflow developers explicitly recommend the manual installation method for production use (see the [official documentation](https://www.nextflow.io/docs/latest/install.html#installation)). Conda packages are community-maintained and may not always be up-to-date.
+
+5. **Portability** – Because Nextflow is a single file, you can easily move it between Conda environments (as we will do) or even keep a shared copy in a system-wide location (like `/usr/local/bin`). This flexibility is lost when using a Conda package.
+
+Therefore, Nextflow will be installed manually (not via Conda).
+The executable will be placed inside the `DNA` environment's `bin` directory so that it is available when the environment is active.
+
+---
+
+## 1.  Install Nextflow (manually) in the `DNA` environment
+
+You can use the same mechanism to install it in `DNA2` later.
 
 **In Terminal**
 
-1. Go to DNA environment
+1. Activate `DNA` environment and check that Java version >= 17 is available. 
 
 ```bash
 conda activate DNA
-```
-
-⚠️ IMPORTANT: Check whether DNA environment has already Java version >= 17 installed. 
-
-In Terminal:
-
-```bash
-conda list
-```
-
-Check the version of Java manually by scrolling and finding the dependency "openjdk"
-
-Alternative:
-
-```bash
 java -version
 ```
 Output:
 
 ```bash
-java -version
 openjdk version "17.0.17" 2025-10-21 LTS
 ```
 
-2. Nextflow installation (official way)
+2. Download and install Nextflow using the official script:
 
 ```bash
 curl -s https://get.nextflow.io | bash
@@ -91,10 +95,10 @@ Nextflow installation completed. Please note:
 - you may complete the installation by moving it to a directory in your $PATH
 ```
 
-***This command is not installing Nextflow via conda, just downloading an executable script called "nextflow" in your current directory. That means that by typing "conda list", you won't find "nextflow"***
+>[!IMPORTANT] This command is not installing Nextflow via conda, just downloading an executable file called `nextflow` in your current directory. That means that by typing "conda list", you won't find "nextflow".
  
 
-3. Now move it into your conda environment’s bin:
+3. Now move it into your Conda environment’s `bin` folder and make it executable:
 
 ```bash
 mv nextflow $CONDA_PREFIX/bin/
@@ -116,7 +120,7 @@ Output:
       http://nextflow.io
 ```
 
-5. Verify where exactly Nextflow has been installed
+5. Confirm location of Nextflow:
 
 ```bash
 which nextflow
@@ -128,23 +132,33 @@ Output:
 ```
 
 > [!IMPORTANT]
-> Since Nextflow wasn't installed via conda, there's no Nextflow registration in conda's `DNA` metadata. Therefore, even though Nextflow won't appear in conda list of dependencies, it is physically there. Then, Nextflow is invisible to `conda list`, but don't worry, it was installed and functional!
+> Because Nextflow was installed manually (via `curl`), it does not appear in conda list. However, it is physically present in the environment's bin directory and fully functional, so don't worry, it was installed and functional!
 
 > [!IMPORTANT]
-> Now conda can work not only in `DNA` but also in `DNA2` Conda environments.
+> Nextflow is now installed in the `DNA` environment, but it can also be used with other environments (like `DNA2`) because Nextflow itself is environment‑agnostic. The actual tools used by the pipeline are specified via the `conda "DNA2"` directive inside the script. You can either keep Nextflow in `DNA` or move it to `DNA2` – both work fine.
 
+## 2. (Optional) Move Nextflow to the `DNA2` environment
 
-## 2. Installing Visual Studio Code (VS Code)
+If you prefer to keep Nextflow inside the `DNA2` environment (which contains the updated samtools), you can easily move it:
+
+```bash
+conda activate DNA2
+mv /opt/anaconda3/envs/DNA/bin/nextflow $CONDA_PREFIX/bin/
+chmod +x $CONDA_PREFIX/bin/nextflow
+which nextflow   # should point to DNA2/bin/nextflow
+```
+
+## 3. (Optional) Setting up Visual Studio Code for Nextflow script editing
 
 ### Direct Download
 
 1. Go to: <https://code.visualstudio.com/>
 
-⚠️ IMPORTANT: If you have macOS version 11 (Big Sur) then go to this link:
-
-<https://code.visualstudio.com/updates/v1_106>
-
-to download the corresponding VS Code version. Choose '**Intel**' if your Mac was made before 2020.
+>[!IMPORTANT]  If you have macOS version 11 (Big Sur) then go to this link:
+>
+><https://code.visualstudio.com/updates/v1_106>
+>
+>to download the corresponding VS Code version. Choose '**Intel**' if your Mac was made before 2020.
 
 2. Download macOS version
 
@@ -160,13 +174,17 @@ Once VS Code is opened:
 5.2. Type in "Search Extensions in Marketplace" → "Nextflow"
 5.3. Click on "Nextflow" (Nextflow language support)
 
-⚠️ IMPORTANT: For those having macOS Big Sur, in VS Code, disable updates! Otherwise, VS Code will try to install/update the last version, provoking that the software can no longer work.
+>[!IMPORTANT] For those having macOS Big Sur, it's recommended to **disable updates** in VS Code. Otherwise, VS Code will try to install/update the last version, otherwise VS Code may attempt to install a newer, incompatible version.
 
-5.4 Open VS Code → Code → Preferences → Settings → Update: Mode → default
+6. Disabling updates:
 
-Change 'Mode' to: Update: Mode → none
+I. Open VS Code
+II. Go to **Code** → **Preferences** → **Settings**
+III. Search for "update mode"
+IV. Change **Update: Mode** from `default` to `none`
 
-## 3. Create folder structure
+
+## 4. Create folder structure
 
 1. Go to ~/Genomics_cancer/data/
 
@@ -175,7 +193,7 @@ Change 'Mode' to: Update: Mode → none
 mkdir -p SRR30536566_full_nf/{aligned,annotation,logs,qc,trimmed,variants}
 
 
-## 4. Create nextflow script
+## 5. Create nextflow script
 
 
 1. See the folder structure of ~/Genomics_cancer
@@ -191,7 +209,7 @@ Genomics_cancer/
 │   │   ├── variants/
 │   │   └── annotation/
 │   │
-│   ├── SRR30536566_full/             # Used by the unified bash script
+│   ├── SRR30536566_full/        # Used by the unified bash script
 │   │   ├── qc/
 │   │   ├── trimmed/
 │   │   ├── logs/
@@ -199,7 +217,7 @@ Genomics_cancer/
 │   │   ├── variants/
 │   │   └── annotation/
 │   │
-│   ├── SRR30536566_full_nf/   # Used by the unified nextflow script
+│   ├── SRR30536566_full_nf/    # Used by the unified nextflow script
 │   │   ├── qc/
 │   │   ├── trimmed/
 │   │   ├── logs/
@@ -223,50 +241,66 @@ Genomics_cancer/
 
 3. Create the nextflow (.nf) file
 
-touch 09_full_somatic_NGS_nextflow_script.nf
-
+```bash
+touch 09_full_somatic_Nextflow.nf
+```
 4. Open the .nf on VS Code
 
-## 4. Check the amount of CPUs of your computer:
+## 6. Check the amount of CPUs of your computer:
 
+```bash
 sysctl -n hw.ncpu
+```
+output: `4`
 
-output:
+## 7. The full Nextflow script
 
-4
+👉 [09_full_somatic_home_nextflow.nf](nextflow_scripts/09_full_somatic_home_nextflow.nf)
 
-## 5. Type the script
+1. Download the script and place it in `~/Genomics_cancer/scripts`
 
+2. Open it and manually replace  `home_dir = System.getenv('HOME')` for your own path to `/Genomics_cancer/scripts`.
 
+For example: `home_dir = /path/to/your`
 
+Then the script will look for files in `/path/to/your/Genomics_cancer/...`
 
-## 6. Run the .nf script from VS Code or Terminal
+>[!IMPORTANT] Make sure the folder structure exactly matches the paths used.
 
-Go to: ~/Genomics_cancer/scripts
+## 8. Run the `.nf` script from VS Code or Terminal
 
-(DNA) $ nextflow run 09_full_somatic_NGS_nextflow_script.nf
+1. Activate `DNA2` and go to `~/Genomics_cancer/scripts`
+
+2. Run:
+
+```bash
+(DNA2) scripts $ nextflow run 09_full_somatic_home_nextflow.nf
 
  N E X T F L O W   ~  version 25.10.4
 
-Launching `09_full_somatic_NGS_nextflow_script.nf` [voluminous_wilson] DSL2 - revision: 1d0af6be77
+Launching `script_test8_full.nf` [ridiculous_rubens] DSL2 - revision: 6410c369f4
 
-[-        ] FASTQC  -
-[-        ] MULTIQC -
-executor >  local (1)
-[76/0f7269] FASTQC (SRR30536566) [  0%] 0 of 1
-executor >  local (1)
-[76/0f7269] FASTQC (SRR30536566) [  0%] 0 of 1
-executor >  local (2)
-[76/0f7269] FASTQC (SRR30536566) [100%] 1 of 1 ✔
-executor >  local (2)
-[76/0f7269] FASTQC (SRR30536566) [100%] 1 of 1 ✔
-executor >  local (2)
-[76/0f7269] FASTQC (SRR30536566) [100%] 1 of 1 ✔
-[19/08e480] MULTIQC              [100%] 1 of 1
+executor >  local (13)
+[24/603d41] process > FASTQC (SRR30536566)         [100%] 1 of 1 ✔
+[43/301f80] process > MULTIQC_RAW                  [100%] 1 of 1 ✔
+[38/44130b] process > CUTADAPT (SRR30536566)       [100%] 1 of 1 ✔
+[ef/d597a2] process > FASTQC_TRIMMED (SRR30536566) [100%] 1 of 1 ✔
+[a8/62b73e] process > MULTIQC_TRIMMED              [100%] 1 of 1 ✔
+[d9/c9d855] process > ALIGNMENT (SRR30536566)      [100%] 1 of 1 ✔
+[7e/15bc70] process > MULTIQC_ALIGNMENT (1)        [100%] 1 of 1 ✔
+[a5/0f473b] process > MUTECT2 (1)                  [100%] 1 of 1 ✔
+[3c/121e60] process > LEARN_READ_ORIENTATION (1)   [100%] 1 of 1 ✔
+[f4/25df68] process > GET_PILEUP_SUMMARIES (1)     [100%] 1 of 1 ✔
+[f2/8e6f2b] process > CALCULATE_CONTAMINATION (1)  [100%] 1 of 1 ✔
+[de/601d26] process > FILTER_MUTECT_CALLS (1)      [100%] 1 of 1 ✔
+[0e/340e22] process > POSTFILTER_VARIANTS (1)      [100%] 1 of 1 ✔
+Completed at: 14-Mar-2026 10:59:53
+Duration    : 28m 10s
+CPU hours   : 1.8
+Succeeded   : 13
+```
 
-
-
-Update: Folder Structure
+## 9. Outputted files (qc, trimmed, logs, aligned, variants) Folder Structure
 
 ```code
 Genomics_cancer/
@@ -350,119 +384,22 @@ Genomics_cancer/
 │             ├── 1000g_pon.hg38.vcf.gz.tbi    
 │             └── af-only-gnomad.hg38.vcf.gz.tbi
 │   
-├── scripts/
+├── scripts/    
+│   └── 09_full_somatic_home_Nextflow.nf 
 │
 └── logs/
 
-```
-
-(DNA2) Franos-MBP:Genomics_cancer Frano$ ls -lrth
-total 8.0K
-drwxr-xr-x  4 Frano staff  128 Jan  8 22:38 reference
-drwxr-xr-x 14 Frano staff  448 Jan 15 23:28 logs
-drwxr-xr-x  7 Frano staff  224 Mar  8 21:04 data
-drwxr-xr-x 51 Frano staff 1.6K Mar 13 09:22 scripts
-
-
-(DNA2) Franos-MBP:Genomics_cancer Frano$ ls -lrth data/
-total 0
-drwxr-xr-x 9 Frano staff 288 Jan  8 17:32 SRR30536566
-drwxr-xr-x 9 Frano staff 288 Feb 27 23:43 SRR30536566_full_nf
-
-(DNA2) Franos-MBP:Genomics_cancer Frano$ ls -lrth data/SRR30536566
-total 0
-drwxr-xr-x  5 Frano staff 160 Jan  8 18:11 raw_fastq
-
-(DNA2) Franos-MBP:Genomics_cancer Frano$ ls -lrth data/SRR30536566_full_nf/
-total 0
-drwxr-xr-x 2 Frano staff 64 Feb 27 15:55 annotation
-drwxr-xr-x 2 Frano staff 64 Feb 27 15:55 variants
-drwxr-xr-x 3 Frano staff 96 Mar  5 21:47 aligned
-drwxr-xr-x 3 Frano staff 96 Mar  6 00:01 trimmed
-drwxr-xr-x 3 Frano staff 96 Mar  6 00:01 qc
-drwxr-xr-x 3 Frano staff 96 Mar  6 00:01 logs
-
-(DNA2) Franos-MBP:Genomics_cancer Frano$ 
-
-
-
-
-
-```code
-Genomics_cancer/
-├── data/
-│   ├── SRR30536566/          
-│   │   └── raw_fastq/       
-│   │         ├── SRR30536566_1.fastq.gz
-│   │         └── SRR30536566_2.fastq.gz
-│   │
-│   ├── SRR30536566_full_nf/   # Used by the nextflow script
-│   │   ├── qc/
-│   │   │     ├── raw
-│   │   │     │     ├── multiqc_data
-│   │   │     │     ├── multiqc_report.html
-│   │   │     │     ├── SRR30536566_1_fastqc.html
-│   │   │     │     └── SRR30536566_1_fastqc.html
-│   │   │     ├── md_flagstat
-│   │   │     │     ├── multiqc_data
-│   │   │     │     └── multiqc_report.html
-│   │   │     └── trimmed
-│   │   │           ├── multiqc_data
-│   │   │           ├── multiqc_report.html
-│   │   │           ├── SRR30536566_full_nf_R1.trimmed.fastqc.html
-│   │   │           └── SRR30536566_full_nf_R2.trimmed.fastqc.html
-│   │   ├── trimmed/
-│   │   │     ├── SRR30536566_full_nf_R1.trimmed.fastq.gz
-│   │   │     └── SRR30536566_full_nf_R2.trimmed.fastq.gz
-│   │   │
-│   │   ├── logs/
-│   │   │     ├── cutadapt_SRR30536566_full_nf.log
-│   │   │     ├── bwa_mem.log
-│   │   │     ├── markduplicates.log
-│   │   │     ├── bwa_index.log  (optional)
-│   │   │     └── SRR30536566_full_nf.flagstat.txt
-│   │   ├── aligned/
-│   │   │     ├── SRR30536566_full_nf.sorted.markdup.md.bam
-│   │   │     ├── SRR30536566_full_nf.sorted.markdup.md.bam.bai
-│   │   │     └── SRR30536566_full_nf.markdup.metrics.txt
-│   │   ├── variants/
-│   │   └── annotation/
-│   │
-├── reference/
-│   └── GRCh38/
-│       ├── fasta/
-│       │     ├── Homo_sapiens_assembly38.fasta
-│       │     ├── Homo_sapiens_assembly38.fasta.fai
-│       │     ├── Homo_sapiens_assembly38.dict
-│       │     ├── Homo_sapiens_assembly38.fasta.64.amb     
-│       │     ├── Homo_sapiens_assembly38.fasta.64.ann     
-│       │     ├── Homo_sapiens_assembly38.fasta.64.bwt     
-│       │     ├── Homo_sapiens_assembly38.fasta.64.pac    
-│       │     ├── Homo_sapiens_assembly38.fasta.64.sa     
-│       │     └── Homo_sapiens_assembly38.fasta.64.alt    
-│       │
-│       ├── intervals/     
-│       │     └── crc_panel_7genes_sorted.hg38.bed    
-│       └── somatic_resources/    
-│             ├── 1000g_pon.hg38.vcf.gz     
-│             ├── af-only-gnomad.hg38.vcf.gz   
-│             ├── 1000g_pon.hg38.vcf.gz.tbi    
-│             └── af-only-gnomad.hg38.vcf.gz.tbi
-│   
-├── scripts/
-│
-└── logs/
 
 ```
 
 
 ## Conclusion
 
-The bash script [09_full_somatic_NGS_bash_script.sh](bash_scripts/09_full_somatic_NGS_bash_script.sh) contains a pipeline that runs smoothly and outputting all expected files as the splitted bash scripts. Most importantly, this pipeline could also output the same three expected variants.
+The nextflow script [09_full_somatic_home_nextflow.nf](nextflow_scripts/09_full_somatic_home_nextflow.nf) contains a single pipeline that runs smoothly end-to-end the somatic analysis, producing all expected files as the individual Bash scripts in [Part II – Somatic analysis](README_somatic_analysis_Part2-3.md#part-ii--somatic-analysis-bash-pipelines). The Nextflow pipeline could also output the same three expected variants.
 
 ---
 
-Go back to the top of  👉 [Part IV – Nextflow: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_nextflow.md.md#part-iv--nextflow-fully-automated-somatic-dna-ngs-pipeline)
+Go back to the top of  👉 [Part VI – Nextflow: Fully Automated Somatic DNA-NGS Pipeline](README_Part6_nextflow.md.md#part-vi--nextflow-fully-automated-somatic-dna-ngs-pipeline)
 
 Visit the Bash script here 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
 

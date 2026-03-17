@@ -29,6 +29,8 @@ In this sense:
 
 👉 [09_full_somatic_NGS_bash_script.sh](bash_scripts/09_full_somatic_NGS_bash_script.sh)
 
+Download the script and place it in `~/Genomics_cancer/scripts`
+
 This script runs the complete NGS analysis of the `SRR30536566` gene panel in a single execution, without splitting the workflow into multiple Bash files.
 
 ## What this script implements
