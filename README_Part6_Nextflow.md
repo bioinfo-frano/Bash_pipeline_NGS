@@ -150,11 +150,12 @@ which nextflow   # should point to DNA2/bin/nextflow
 
 1. Go to: <https://code.visualstudio.com/>
 
->[!IMPORTANT]  If you have macOS version 11 (Big Sur), use this link to download the compatible version:
+> [!IMPORTANT]
+> If you have macOS version 11 (Big Sur), use this link to download the compatible version:
 >
-><https://code.visualstudio.com/updates/v1_106>
+> <https://code.visualstudio.com/updates/v1_106>
 >
->Choose '**Intel**' if your Mac was made before 2020.
+> Choose '**Intel**' if your Mac was made before 2020.
 
 2. Download macOS version
 
@@ -170,7 +171,8 @@ Once VS Code is opened:
 - Type in "Search Extensions in Marketplace" → "Nextflow"
 - Click on "Nextflow" (Nextflow language support) and install.
 
->[!IMPORTANT] For those having macOS Big Sur, it's recommended to **disable updates** in VS Code. Otherwise, VS Code will try to install/update the last version, otherwise VS Code may attempt to install a newer, incompatible version.
+> [!IMPORTANT] 
+> For those having macOS Big Sur, it's recommended to **disable updates** in VS Code. Otherwise, VS Code will try to install/update the last version, otherwise VS Code may attempt to install a newer, incompatible version.
 
 6. Disable automatic updates:
 
@@ -288,7 +290,8 @@ For example: `base_dir = /User/Peter/Desktop/Genomics_cancer` (macOS) or `base_d
 
 The script will look for files in `/path/to/your/Genomics_cancer/...`
 
->[!IMPORTANT] Make sure the folder structure inside `Genomics_cancer` exactly matches the paths used in the script.
+> [!IMPORTANT]
+> Make sure the folder structure inside `Genomics_cancer` exactly matches the paths used in the script.
 
 ## 8. Run the Nextflow script from VS Code or Terminal
 
@@ -411,7 +414,7 @@ The nextflow script [09_full_somatic_SRR30536566_nextflow.nf](nextflow_scripts/0
 
 ---
 
-Go back to the top of  👉 [Part VI – Nextflow: Fully Automated Somatic DNA-NGS Pipeline](README_Part6_nextflow.md.md#part-vi--nextflow-fully-automated-somatic-dna-ngs-pipeline)
+Go back to the top of  👉 [Part VI – Nextflow: Fully Automated Somatic DNA-NGS Pipeline](README_Part6_nextflow.md#part-vi-nextflow-pipeline-fully-automated-somatic-dna-ngs-pipeline-single-nextflow-script)
 
 Visit the Bash script here 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
 
