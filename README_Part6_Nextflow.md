@@ -95,10 +95,11 @@ Nextflow installation completed. Please note:
 - you may complete the installation by moving it to a directory in your $PATH
 ```
 
-> [!IMPORTANT] This command is not installing Nextflow via conda, just downloading an executable file called `nextflow` in your current directory. That means that by typing "conda list", you won't find "nextflow".
+> [!IMPORTANT] 
+> This command does not install Nextflow via Conda, just downloads an executable file called `nextflow` in your current directory. Typing "conda list" won't show "nextflow".
  
 
-3. Now move it into your Conda environment’s `bin` folder and make it executable:
+3. Move the executable into your Conda environment’s `bin` folder and make it executable:
 
 ```bash
 mv nextflow $CONDA_PREFIX/bin/
@@ -110,15 +111,7 @@ chmod +x $CONDA_PREFIX/bin/nextflow
 ```bash
 nextflow -version
 ```
-Output:
-
-```bash
-      N E X T F L O W
-      version 25.10.4 build 11173
-      created 10-02-2026 15:17 UTC (16:17 CEST)
-      cite doi:10.1038/nbt.3820
-      http://nextflow.io
-```
+Output should show the same version information as above.
 
 5. Confirm location of Nextflow:
 
@@ -132,10 +125,11 @@ Output:
 ```
 
 > [!IMPORTANT]
-> Because Nextflow was installed manually (via `curl`), it does not appear in conda list. However, it is physically present in the environment's bin directory and fully functional, so don't worry, it was installed and functional!
-
-> [!IMPORTANT]
+> Because Nextflow was installed manually (via `curl`), it does not appear in `conda list`. However, it is physically present in the environment's `bin` directory and fully functional.
+> [!NOTE]
 > Nextflow is now installed in the `DNA` environment, but it can also be used with other environments (like `DNA2`) because Nextflow itself is environment‑agnostic. The actual tools used by the pipeline are specified via the `conda "DNA2"` directive inside the script. You can either keep Nextflow in `DNA` or move it to `DNA2` – both work fine.
+
+---
 
 ## 2. (Optional) Move Nextflow to the `DNA2` environment
 
@@ -148,55 +142,56 @@ chmod +x $CONDA_PREFIX/bin/nextflow
 which nextflow   # should point to DNA2/bin/nextflow
 ```
 
+---
+
 ## 3. (Optional) Setting up Visual Studio Code for Nextflow script editing
 
 ### Direct Download
 
 1. Go to: <https://code.visualstudio.com/>
 
->[!IMPORTANT]  If you have macOS version 11 (Big Sur) then go to this link:
+>[!IMPORTANT]  If you have macOS version 11 (Big Sur), use this link to download the compatible version:
 >
 ><https://code.visualstudio.com/updates/v1_106>
 >
->to download the corresponding VS Code version. Choose '**Intel**' if your Mac was made before 2020.
+>Choose '**Intel**' if your Mac was made before 2020.
 
 2. Download macOS version
 
-3. Drag to `/Applications`
+3. Drag the application to `/Applications`
 
-4. Go to Launchpad or in Applications and click on the VS Code icon
+4. Open VS Code from Launchpad or Applications.
 
 Once VS Code is opened:
 
 5. Install **Nextflow extension**
 
-5.1. Go to the left panel and click on **Extensions**
-5.2. Type in "Search Extensions in Marketplace" → "Nextflow"
-5.3. Click on "Nextflow" (Nextflow language support)
+- Go to the left panel and click on **Extensions**
+- Type in "Search Extensions in Marketplace" → "Nextflow"
+- Click on "Nextflow" (Nextflow language support) and install.
 
 >[!IMPORTANT] For those having macOS Big Sur, it's recommended to **disable updates** in VS Code. Otherwise, VS Code will try to install/update the last version, otherwise VS Code may attempt to install a newer, incompatible version.
 
-6. Disabling updates:
+6. Disable automatic updates:
 
-I. Open VS Code
-II. Go to **Code** → **Preferences** → **Settings**
-III. Search for "update mode"
-IV. Change **Update: Mode** from `default` to `none`
+- Open VS Code
+- Go to **Code** → **Preferences** → **Settings**
+- Search for "update mode"
+- Change **Update: Mode** from `default` to `none`
 
+---
 
-## 4. Create folder structure
+## 4. Create the folder structure
 
-1. Go to ~/Genomics_cancer/data/
+1. Go to `~/Genomics_cancer/data/`
 
-2. Create folder structure
+2. Create the output folder for the Nextflow pipeline:
 
+```bash
 mkdir -p SRR30536566_full_nf/{aligned,annotation,logs,qc,trimmed,variants}
+```
 
-
-## 5. Create nextflow script
-
-
-1. See the folder structure of ~/Genomics_cancer
+**Folder structure**
 
 ```code
 Genomics_cancer/
@@ -209,7 +204,7 @@ Genomics_cancer/
 │   │   ├── variants/
 │   │   └── annotation/
 │   │
-│   ├── SRR30536566_full/        # Used by the unified bash script
+│   ├── SRR30536566_full/        # Used by the unified bash script (Part IV)
 │   │   ├── qc/
 │   │   ├── trimmed/
 │   │   ├── logs/
@@ -217,7 +212,7 @@ Genomics_cancer/
 │   │   ├── variants/
 │   │   └── annotation/
 │   │
-│   ├── SRR30536566_full_nf/    # Used by the unified nextflow script
+│   ├── SRR30536566_full_DNA2/    # Used by the unified bash script using DNA2 env (Part V)
 │   │   ├── qc/
 │   │   ├── trimmed/
 │   │   ├── logs/
@@ -225,57 +220,89 @@ Genomics_cancer/
 │   │   ├── variants/
 │   │   └── annotation/
 │   │
-│   └── SRR30536566/   
+│   └── SRR30536566_full_nf/    # Used by the unified nextflow script (Part VI)
+│       ├── qc/
+│       ├── trimmed/
+│       ├── logs/
+│       ├── aligned/
+│       ├── variants/
+│       └── annotation/
+│   
 │
 ├── reference/
 │   └── GRCh38/
 │       ├── fasta/
-│       ├── intervals/
-│       └── somatic_resources/
+│       │     ├── Homo_sapiens_assembly38.fasta
+│       │     ├── Homo_sapiens_assembly38.fasta.fai
+│       │     ├── Homo_sapiens_assembly38.dict
+│       │     ├── Homo_sapiens_assembly38.fasta.64.amb     
+│       │     ├── Homo_sapiens_assembly38.fasta.64.ann     
+│       │     ├── Homo_sapiens_assembly38.fasta.64.bwt     
+│       │     ├── Homo_sapiens_assembly38.fasta.64.pac    
+│       │     ├── Homo_sapiens_assembly38.fasta.64.sa     
+│       │     └── Homo_sapiens_assembly38.fasta.64.alt    
+│       │
+│       ├── intervals/     
+│       │     └── crc_panel_7genes_sorted.hg38.bed    
+│       └── somatic_resources/    
+│             ├── 1000g_pon.hg38.vcf.gz     
+│             ├── af-only-gnomad.hg38.vcf.gz   
+│             ├── 1000g_pon.hg38.vcf.gz.tbi    
+│             └── af-only-gnomad.hg38.vcf.gz.tbi
 │
 ├── scripts/
 └── logs/
 ```
 
-2. Go to /scripts
+---
 
-3. Create the nextflow (.nf) file
+## 5. Create the Nextflow script
+
+1. Go to `~/Genomics_cancer/scripts`
+
+2. Create the new nextflow (.nf) file
 
 ```bash
-touch 09_full_somatic_Nextflow.nf
+touch 09_full_somatic_SRR30536566_nextflow
 ```
-4. Open the .nf on VS Code
+3. Open the .nf in VS Code
 
-## 6. Check the amount of CPUs of your computer:
+---
+
+## 6. Check the number of CPUs of your computer:
 
 ```bash
 sysctl -n hw.ncpu
 ```
-output: `4`
+output (example): `4`
+
+---
 
 ## 7. The full Nextflow script
 
-👉 [09_full_somatic_home_nextflow.nf](nextflow_scripts/09_full_somatic_home_nextflow.nf)
+1. Download the script 👉 [09_full_somatic_SRR30536566_nextflow.nf](nextflow_scripts/09_full_somatic_SRR30536566_nextflow.nf) and place it in `~/Genomics_cancer/scripts/`
 
-1. Download the script and place it in `~/Genomics_cancer/scripts`
+2. Open it and manually replace the placeholder `base_dir = /path/to/your/Genomics_cancer` with your actual path.
 
-2. Open it and manually replace  `home_dir = System.getenv('HOME')` for your own path to `/Genomics_cancer/scripts`.
+For example: `base_dir = /User/Peter/Desktop/Genomics_cancer` (macOS) or `base_dir = /home/Peter/Desktop/Project/Genomics_cancer` (Linux)
 
-For example: `home_dir = /path/to/your`
+The script will look for files in `/path/to/your/Genomics_cancer/...`
 
-Then the script will look for files in `/path/to/your/Genomics_cancer/...`
+>[!IMPORTANT] Make sure the folder structure inside `Genomics_cancer` exactly matches the paths used in the script.
 
->[!IMPORTANT] Make sure the folder structure exactly matches the paths used.
-
-## 8. Run the `.nf` script from VS Code or Terminal
+## 8. Run the Nextflow script from VS Code or Terminal
 
 1. Activate `DNA2` and go to `~/Genomics_cancer/scripts`
 
-2. Run:
+2. Run the pipeline
 
 ```bash
-(DNA2) scripts $ nextflow run 09_full_somatic_home_nextflow.nf
+nextflow run 09_full_somatic_SRR30536566_nextflow.nf
+```
 
+3. You should see this output:
+
+```bash
  N E X T F L O W   ~  version 25.10.4
 
 Launching `script_test8_full.nf` [ridiculous_rubens] DSL2 - revision: 6410c369f4
@@ -300,7 +327,7 @@ CPU hours   : 1.8
 Succeeded   : 13
 ```
 
-## 9. Outputted files (qc, trimmed, logs, aligned, variants) Folder Structure
+## 9. Outputted files `~/Genomics_cancer/data/SRR30536566_full_nf/`
 
 ```code
 Genomics_cancer/
@@ -366,26 +393,11 @@ Genomics_cancer/
 ├── reference/
 │   └── GRCh38/
 │       ├── fasta/
-│       │     ├── Homo_sapiens_assembly38.fasta
-│       │     ├── Homo_sapiens_assembly38.fasta.fai
-│       │     ├── Homo_sapiens_assembly38.dict
-│       │     ├── Homo_sapiens_assembly38.fasta.64.amb     
-│       │     ├── Homo_sapiens_assembly38.fasta.64.ann     
-│       │     ├── Homo_sapiens_assembly38.fasta.64.bwt     
-│       │     ├── Homo_sapiens_assembly38.fasta.64.pac    
-│       │     ├── Homo_sapiens_assembly38.fasta.64.sa     
-│       │     └── Homo_sapiens_assembly38.fasta.64.alt    
-│       │
 │       ├── intervals/     
-│       │     └── crc_panel_7genes_sorted.hg38.bed    
 │       └── somatic_resources/    
-│             ├── 1000g_pon.hg38.vcf.gz     
-│             ├── af-only-gnomad.hg38.vcf.gz   
-│             ├── 1000g_pon.hg38.vcf.gz.tbi    
-│             └── af-only-gnomad.hg38.vcf.gz.tbi
 │   
 ├── scripts/    
-│   └── 09_full_somatic_home_Nextflow.nf 
+│   └── 09_full_somatic_SRR30536566_nextflow.nf 
 │
 └── logs/
 
@@ -395,7 +407,7 @@ Genomics_cancer/
 
 ## Conclusion
 
-The nextflow script [09_full_somatic_home_nextflow.nf](nextflow_scripts/09_full_somatic_home_nextflow.nf) contains a single pipeline that runs smoothly end-to-end the somatic analysis, producing all expected files as the individual Bash scripts in [Part II – Somatic analysis](README_somatic_analysis_Part2-3.md#part-ii--somatic-analysis-bash-pipelines). The Nextflow pipeline could also output the same three expected variants.
+The nextflow script [09_full_somatic_SRR30536566_nextflow.nf](nextflow_scripts/09_full_somatic_SRR30536566_nextflow.nf) contains a single pipeline that runs end-to-end, performing the complete somatic analysis and producing all expected files exactly as the individual Bash scripts in [Part II – Somatic analysis](README_somatic_analysis_Part2-3.md#part-ii--somatic-analysis-bash-pipelines) and the unified Bash scripts in [Part IV](README_Part4_fullbash.md) and [Part V](README_Part5_DNA2_pipeline_update.md). The Nextflow pipeline could also output the same three expected variants, confirming reproducibility.
 
 ---
 
