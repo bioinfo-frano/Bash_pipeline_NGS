@@ -366,7 +366,7 @@ If `SCHEMA` contains `align`, the dataset is **not raw**, and FASTQ files will b
 As shown in Table 3 and Table 4, both raw and aligned FASTQ datasets can be used but the `SRR20701732` is not really a raw FASTQ file. However, when downloading `SRR20701732` via `fasterq-dump`, this dataset will be converted to FASTQ.
 
 > [!NOTE]
-> Some SRA datasets (especially targeted panels or clinical studies) are stored internally as aligned reads (SCHEMA: NCBI:align:db:alignment_sorted).
+> Some SRA datasets (especially targeted panels or clinical studies) are stored internally as aligned reads (`SCHEMA: NCBI:align:db:alignment_sorted`).
 >
 > When downloading with `fasterq-dump` (or via **ENA**), reads are reconstructed into standard FASTQ format.
 >
@@ -380,7 +380,7 @@ As shown in Table 3 and Table 4, both raw and aligned FASTQ datasets can be used
 >
 > - they may differ slightly from the original sequencer output (e.g., read order or filtering)
 >
-> - therefore, truly raw datasets (SCHEMA: NCBI:SRA) are preferred when available
+> - therefore, truly raw datasets (`SCHEMA: NCBI:SRA`) are preferred when available
 
 ### 4. Download the SRA dataset
 
@@ -405,10 +405,10 @@ reads written   : 7,784,072
 > The `fasterq-dump` can be executed from any directory, but always use `--outdir raw_fastq` to maintain a clean and reproducible folder structure.
 
 > [!IMPORTANT]
-> **Do not get confuse**: SRA stores data in different formats (`FMT`) from raw FASTQ to aligned BAM/CRAM in it database. However, even if `vdb-dump --info` reports `FMT: BAM` or `FMT: CRAM`, running `fasterq-dump` will still generate FASTQ files.
+> **Do not get confuse**: SRA stores data in different formats (`FMT`) from raw FASTQ to aligned BAM/CRAM. However, even if `vdb-dump --info` reports `FMT: BAM` or `FMT: CRAM`, running `fasterq-dump` will still generate FASTQ files.
 > Therefore:
 > 
-> - **You will not obtain BAM/CRAM files using `fasterq-dump`**
+> - **You will not obtain BAM/CRAM files using** `fasterq-dump`
 > - **You will always obtain FASTQ files suitable for downstream analysis**
 
 
@@ -545,9 +545,9 @@ AAFFFJJJJJJJJJJJJJJJJJJJJJJJJJJFJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJFJJ
 
 Check:
 
-- @ header
+- `@` header
 - sequence line
-- +
+- `+`
 - quality scores
 
 
