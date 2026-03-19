@@ -246,15 +246,15 @@ mkdir -p Genomics_cancer/{reference/GRCh38/{fasta,known_sites},data/SRR30536566/
 
 ## III. Find & download small-sized FASTQ datasets for cancer gene panels
 
-Downloading FASTQ files directly from the SRA web interface is not recommended, because:
+Downloading FASTQ files directly from the SRA web interface is **not recommended**, because:
 
 1. R1 and R2 reads may be merged into a single file
 
-2. There is no guarantee that the FASTQ files represent raw reads (they may be reconstructed from alignments)
+2. There is no guarantee that the FASTQ files represent original raw reads (they may be reconstructed from alignments)
 
 Instead, use **SRA-Tools**.
 
-**1. Install SRA-Tools in a separate Conda environment**
+### 1. Install SRA-Tools in a separate Conda environment
 
 ```bash
 conda create -n sra \
@@ -282,13 +282,33 @@ Expected output:
 fasterq-dump : 3.2.1			# If output is 'fasterq-dump : 2.9.6', SRA-tools won't work. Update!
 ```
 
-**2. Find small FASTQ files from [SRA](https://www.ncbi.nlm.nih.gov/sra)**
+### 2. Find small FASTQ files from [SRA](https://www.ncbi.nlm.nih.gov/sra)
 
-> **Suggestion:**
-- As an example, use these keywords: **targeted, illumina, cancer, genomic, Homo sapiens**
-- As an example, you found the dataset: SRR30536566
+> [!IMPORTANT]  
+> **Controlled-access human genomic data (dbGaP):**  
+> Many sequencing datasets derived from human subjects (e.g., cancer or germline studies) are considered sensitive because they may contain identifiable genetic information.  
+>
+> As a result:
+> - Raw sequencing data (FASTQ, BAM, CRAM) are often **not publicly available**  
+> - Access is controlled through the database of Genotypes and Phenotypes (**dbGaP**) managed by the **NCBI**  
+>
+> To obtain access, researchers typically must:
+> - Be affiliated with a recognized institution
+> - Be a senior investigator/scientist/clinician, tenure-track investigator or staff scientist.
+> - Submit a formal data access request  
+> - Agree to data use limitations  
+> - Provide **Institutional Review Board (IRB)** approval for some datasets
+>
+> Therefore, fully open-access human tumor-only or tumor–normal datasets are limited.  
+> For training purposes, use:
+> - Public SRA/ENA datasets explicitly marked as open-access (**CONSENT PUBLIC**)
+> - Small targeted panel (**Assay Type: Targeted-Capture**) datasets when available  
 
-**3. Verify dataset size and whether it contains real raw FASTQ files**.
+**Suggestion:**
+- Use keywords: **targeted, illumina, cancer, genomic, Homo sapiens**
+- Example dataset: `SRR30536566`
+
+### 3. Inspect dataset structure (size, source, format) before downloading
 
 ```bash
 vdb-dump --info SRR30536566
@@ -326,11 +346,11 @@ FMT    : sharq                             # Compressed format
 | `NCBI:SRA:GenericFastq`          | `sharq` | Raw FASTQ stored in SRA compressed format          | ✅ Yes                                   |
 | `NCBI:SRA:Illumina`              | `FASTQ` | Raw FASTQ (Illumina-native representation)         | ✅ Yes                                   |
 | `NCBI:SRA:Illumina`              | `sharq` | Raw Illumina FASTQ stored in compressed SRA format | ✅ Yes                                   |
-| `NCBI:align:db:alignment_sorted` | `FASTQ` | FASTQ reconstructed from aligned reads             | ⚠️ Not ideal                            |
-| `NCBI:align:db:alignment_sorted` | `BAM`   | Pre-aligned BAM                                    | ❌ No                                    |
-| `NCBI:align:db:alignment_sorted` | `CRAM`  | Pre-aligned CRAM                                   | ❌ No                                    |
+| `NCBI:align:db:alignment_sorted` | `FASTQ` | FASTQ reconstructed from aligned reads             | ⚠️ Acceptable (with caveats)             |
+| `NCBI:align:db:alignment_sorted` | `BAM`   | Internally stored aligned reads (BAM-like)         | ⚠️ Acceptable via FASTQ reconstruction   |
+| `NCBI:align:db:alignment_sorted` | `CRAM`  | Internally stored aligned reads (CRAM-like)        | ⚠️ Acceptable via FASTQ reconstruction   |
 
-If `SCHEMA` contains `align`, the dataset is **not raw**.
+If `SCHEMA` contains `align`, the dataset is **not raw**, and FASTQ files will be **reconstructed from aligned reads**.
 
 
 **Table 4: Example of SRA dataset with raw and aligned FASTQ files.**
@@ -343,9 +363,26 @@ If `SCHEMA` contains `align`, the dataset is **not raw**.
 | SRR35529667 | SRA:Illumina | sharq | ✅ Yes      | 
 | SRR32679397 | SRA:Illumina | sharq | ✅ Yes      | 
 
-As shown in Table 3 and Table 4, both raw and aligned FASTQ datasets can be used but the `SRR20701732` is not really a raw FASTQ file.
+As shown in Table 3 and Table 4, both raw and aligned FASTQ datasets can be used but the `SRR20701732` is not really a raw FASTQ file. However, when downloading `SRR20701732` via `fasterq-dump`, this dataset will be converted to FASTQ.
 
-**4. Download the SRA dataset**
+> [!NOTE] on reconstructed FASTQ:
+> Some SRA datasets (especially targeted panels or clinical studies) are stored internally as aligned reads (SCHEMA: NCBI:align:db:alignment_sorted).
+>
+> When downloading with `fasterq-dump` (or via **ENA**), reads are reconstructed into standard FASTQ format.
+>
+>These reconstructed FASTQ files:
+>
+> - preserve sequences, quality scores, and pairing
+>
+> - are suitable for QC, alignment, and somatic variant calling (including tumor–normal analysis)
+>
+> However:
+>
+> - they may differ slightly from the original sequencer output (e.g., read order or filtering)
+>
+> - therefore, truly raw datasets (SCHEMA: NCBI:SRA) are preferred when available
+
+### 4. Download the SRA dataset
 
 - Go to working directory `~/data/SRR30536566`
 
@@ -364,17 +401,26 @@ reads read      : 7,784,072
 reads written   : 7,784,072
 ```
 
-> **Note:**  
-> The `fasterq-dump` command can be executed from any directory. However, FASTQ files should always be written to the `raw_fastq` directory using the `--outdir` option to maintain a clean and reproducible folder structure.
+> [!NOTE]  
+> The `fasterq-dump` can be executed from any directory, but always use `--outdir raw_fastq` to maintain a clean and reproducible folder structure.
+
+> [!IMPORTANT] clarification:
+> **Do not get confuse**: SRA stores data in different formats (`FMT`) from raw FASTQ to aligned BAM/CRAM in it database. However, even if `vdb-dump --info` reports `FMT: BAM` or `FMT: CRAM`, running `fasterq-dump` will still generate FASTQ files.
+> Therefore:
+> 
+> - **You will not obtain BAM/CRAM files using `fasterq-dump`**
+> - **You will always obtain FASTQ files suitable for downstream analysis**
+
 
 Then, in folder `~/raw_fastq` there should be two fastq files, each having ~1.34 GB:
 
-SRR30536566_1.fastq
+```bash
+raw_fastq/
+├── SRR30536566_1.fastq
+└── SRR30536566_2.fastq
+```
 
-SRR30536566_2.fastq
-
-
-**5. Compress the FASTQ files**
+### 5. Compress FASTQ files
 
 In `~/raw_fastq` directory:
 
@@ -384,10 +430,10 @@ gzip *.fastq
 
 Expected output:
 
+```bash
 SRR30536566_1.fastq.gz
-
 SRR30536566_2.fastq.gz
-
+```
 
 | Representation     | Approx size |
 | ------------------ | ----------- |
@@ -396,7 +442,7 @@ SRR30536566_2.fastq.gz
 | FASTQ (gzipped)    | ~530 MB (both) |
 
 
-Alternatively, compress during download with 'fastq-dump' (but it's slow, not recommended for large data)
+Alternatively, compress during download with `fastq-dump` (but it's slow, not recommended for large data)
 
 ```bash
 fastq-dump SRR15506490 \
@@ -413,30 +459,30 @@ Comparison between `fastq-dump` and `fasterq-dump`
 
 
 
-**6. Verify FASTQ integrity**
+### 6. Verify FASTQ integrity
 
-Count reads:
+**Count reads**:
 
 ```bash
 gzcat SRR30536566_1.fastq.gz | wc -l | awk '{print $1/4}'
 ```
 Expected output:
 
-3892036
+`3892036`
 
 ```bash
 gzcat SRR30536566_2.fastq.gz | wc -l | awk '{print $1/4}'
 ```
 Expected output:
 
-3892036
+`3892036`
 
 Inspect read structure:
 
 ```bash
 zless SRR30536566_1.fastq.gz | head -n 8
 ```
-Expected output:
+**Expected output**:
 
 ```bash
 @SRR30536566.1 K00133:507:H2N2NBBXY:7:1101:1621:1068 length=100
@@ -496,6 +542,14 @@ TATACTTGCCCTGATATTCTAAAACACAGAGTTTTAGTTGTTCAGAGGATAGCAACATACTTCGAGTTTTTTTCCTGATT
 +SRR30536566.3892036 K00133:507:H2N2NBBXY:7:2218:23267:47823 length=100
 AAFFFJJJJJJJJJJJJJJJJJJJJJJJJJJFJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJFJJJJJJJJJJJJJJJJJJJJJJ
 ```
+
+Check:
+
+- @ header
+- sequence line
+- +
+- quality scores
+
 
 ## IV. Download a reference human genome (GRCh38) and indexes
 
