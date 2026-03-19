@@ -89,13 +89,18 @@ Understand what Nextflow is and how it compares to Bash pipelines. This section 
 
 ---
 
+### 7️⃣ Part VII – Somatic analysis with matched tumor-normal pair
+  - See the differences between tumor-only and matched tumor-normal somatic analysis
+  - Get to know the advantages of this type of analysis compared to tumor-only
+
+➡️ **Enter here:**  
+👉 [Part VII – Matched Tumor-Normal Pair Somatic DNA-NGS Pipeline](README_Part7_tumor_normal.md)
+
+---
+
 ## 🔮 Future extensions
 
 This repository is designed to grow. Planned additions include:
-
-- **Part VII – Somatic analysis with matched tumor-normal pair**
-  - Additional datasets
-  - Pipeline optimizations and best practices
 
 - **Part VIII – Germline analysis**
   - New datasets and workflows for germline variant calling
