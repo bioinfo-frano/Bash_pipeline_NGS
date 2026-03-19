@@ -550,6 +550,36 @@ Check:
 - `+`
 - quality scores
 
+> [!NOTE]
+> Using SRA Toolkit (`fasterq-dump`) may not always work. SRA datasets are often stored in a highly compressed internal format and may appear relatively small. However, converting them to FASTQ using `fasterq-dump` can be computationally intensive and requires **large temporary disk space**. As a result, `fasterq-dump` can be slow for big datasets or simple fail due to disk space limitations.
+
+> [!TIP]
+> When SRA Toolkit fails, download the FASTQ files directly from [ENA - European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home), specially for large datasets.
+>
+> **Protocol**:
+>
+> - Copy the dataset/run ID accession (**SRR#**) from SRA 
+>
+> - Paste it into the **ENA** "Search" bar
+>
+> - Locate the run in the results table
+>
+> - In the column "Generated FASTQ files: FTP" find and select both paired-end files
+>
+> - Click on either "Get dowload script", to retrieve a `wget` command to download the files or "Download selected files" directly.
+>
+> This is often a more efficient and reliable alternative than SRA, and it reduces disk usage.
+
+
+> [!IMPORTANT]
+> FASTQ files downloaded from **ENA** are often **reconstructed from aligned data** (if original was BAM) and, same as with `fasterq-dump`, they are perfectly valid for analysis.
+> SRA is the authoritative source, but ENA is often the most practical way to obtain FASTQ files.
+
+| Scenario                 | Recommended method |
+| ------------------------ | ------------------ |
+| Small datasets (<1 GB)   | SRA Toolkit        |
+| Large datasets (>2–3 GB) | ENA + `wget`       |
+
 
 ## IV. Download a reference human genome (GRCh38) and indexes
 
