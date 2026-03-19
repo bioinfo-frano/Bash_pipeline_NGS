@@ -15,8 +15,9 @@ This repository shows how to build and understand a complete somatic DNA-NGS ana
 - Filtering and biological post-processing
 - Visualization and interpretation
 
+Although the tutorial preferentially presents a step-by-step **tumor-only variant calling** analysis, by the last part the focus will be centered on **matched tumor-normal pair variant calling** analysis.
+
 The focus is on educational clarity, reproducibility, and transparency.
-The workflow implements **tumor-only variant calling** without matched normal samples. However, one of the last part of this tutorial will be focused on **matched tumor-normal pair variant calling** analysis.
 
 ## 🔬 Workflow Overview
 Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository*.
