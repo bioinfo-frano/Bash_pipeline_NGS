@@ -586,7 +586,7 @@ samtools sort -@ "$THREADS" \
 
 ---
 
-### 6. Run the pipeline in `DNA2`
+### 6. Run the pipeline in `DNA2` 👉 [09_full_somatic_DNA2_updated.sh](bash_scripts/09_full_somatic_DNA2_updated.sh)
 
 **I. Activate the environment**
 
@@ -606,55 +606,60 @@ The pipeline will process the same sequencing dataset `SRR30536566`.
 
 ```code
 Genomics_cancer/
-└── data/
-    └── SRR30536566_full_DNA2/
-        ├── qc/
-        │   ├── raw/
-        │       └── multiqc_report.html/multiqc_data
-        │       └── SRR30536566_[1,2]_fastqc.html/zip
-        │   ├── trimmed/
-        │       └── multiqc_report.html/multiqc_data
-        │       └── SRR30536566_full_DNA2_[R1,R2].trimmed_fastqc.html/zip
-        │   └── md_flagstat/
-        │       └── multiqc_report.html/multiqc_data
-        │
-        ├── trimmed/
-        │   └── SRR30536566_full_DNA2_[R1,R2].trimmed.fastq.gz
-        │
-        ├── logs/
-        │   └── cutadapt_SRR30536566_full_DNA2.log
-        │   └── bwa_mem.log
-        │   └── markduplicates.log
-        │   └── SRR30536566_full_DNA2.flagstat.txt
-        │   └── mutect2.stderr.log / mutect2.stdout.log
-        │   └── learn_read_orientation_model.log
-        │   └── get_pileup_summaries.log
-        │   └── calculate_contamination.log
-        │   └── filter_mutect_calls.log
-        │   └── SRR30536566_full_DNA2.postfilter.log
-        │
-        ├── aligned/
-        │   └── SRR30536566_full_DNA2.sorted.markdup.md.bam
-        │   └── SRR30536566_full_DNA2.sorted.markdup.md.bam.bai
-        │   └── SRR30536566_full_DNA2.markdup.metrics.txt
-        │
-        ├── variants/
-        │   ├── *.contamination.table
-        │   ├── *.f1r2.tar.gz
-        │   ├── *.unfiltered.vcf.gz
-        │   ├── *.unfiltered.vcf.gz.stats
-        │   ├── *.unfiltered.vcf.gz.tbi
-        │   ├── *.read-orientation-model.tar.gz
-        │   ├── *.filtered.vcf.gz
-        │   ├── *.filtered.vcf.gz.tbi
-        │   ├── *.pileups.table
-        │   ├── *.PASS.vcf.gz
-        │   ├── *.PASS.vcf.gz.tbi
-        │   └── *.postfiltered.vcf.gz
-        │   └── *.postfiltered.vcf.gz.tbi
-        │   └── *.postfilter_summary.txt
-        │
-        └── annotation/
+├── data/
+│   └── SRR30536566_full_DNA2/
+│        ├── qc/
+│        │   ├── raw/
+│        │   │   └── multiqc_report.html/multiqc_data
+│        │   │   └── SRR30536566_[1,2]_fastqc.html/zip
+│        │   ├── trimmed/
+│        │   │   └── multiqc_report.html/multiqc_data
+│        │   │   └── SRR30536566_full_DNA2_[R1,R2].trimmed_fastqc.html/zip
+│        │   └── md_flagstat/
+│        │       └── multiqc_report.html/multiqc_data
+│        │
+│        ├── trimmed/
+│        │   └── SRR30536566_full_DNA2_[R1,R2].trimmed.fastq.gz
+│        │
+│        ├── logs/
+│        │   └── cutadapt_SRR30536566_full_DNA2.log
+│        │   └── bwa_mem.log
+│        │   └── markduplicates.log
+│        │   └── SRR30536566_full_DNA2.flagstat.txt
+│        │   └── mutect2.stderr.log / mutect2.stdout.log
+│        │   └── learn_read_orientation_model.log
+│        │   └── get_pileup_summaries.log
+│        │   └── calculate_contamination.log
+│        │   └── filter_mutect_calls.log
+│        │   └── SRR30536566_full_DNA2.postfilter.log
+│        │
+│        ├── aligned/
+│        │   └── SRR30536566_full_DNA2.sorted.markdup.md.bam
+│        │   └── SRR30536566_full_DNA2.sorted.markdup.md.bam.bai
+│        │   └── SRR30536566_full_DNA2.markdup.metrics.txt
+│        │
+│        ├── variants/
+│        │   ├── *.contamination.table
+│        │   ├── *.f1r2.tar.gz
+│        │   ├── *.unfiltered.vcf.gz
+│        │   ├── *.unfiltered.vcf.gz.stats
+│        │   ├── *.unfiltered.vcf.gz.tbi
+│        │   ├── *.read-orientation-model.tar.gz
+│        │   ├── *.filtered.vcf.gz
+│        │   ├── *.filtered.vcf.gz.tbi
+│        │   ├── *.pileups.table
+│        │   ├── *.PASS.vcf.gz
+│        │   ├── *.PASS.vcf.gz.tbi
+│        │   └── *.postfiltered.vcf.gz
+│        │   └── *.postfiltered.vcf.gz.tbi
+│        │   └── *.postfilter_summary.txt
+│        │
+│        └── annotation/
+│
+├── reference/
+|
+└── scripts/
+    └── 09_full_somatic_DNA2_updated.sh
 ```
 ---
 
