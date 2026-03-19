@@ -74,7 +74,7 @@ A single, unified Bash script that runs the entire pipeline from end to end.
 ---
 
 ### 5️⃣ Part V - Pipeline maintenance
-Learn why it’s important to keep your pipeline up-to-date and ensure its reproducibility
+Learn why it’s important to keep your pipeline up-to-date and ensure its reproducibility.
 
 **Just click here**
 👉 [Part V – Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
