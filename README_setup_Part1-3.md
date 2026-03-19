@@ -365,7 +365,7 @@ If `SCHEMA` contains `align`, the dataset is **not raw**, and FASTQ files will b
 
 As shown in Table 3 and Table 4, both raw and aligned FASTQ datasets can be used but the `SRR20701732` is not really a raw FASTQ file. However, when downloading `SRR20701732` via `fasterq-dump`, this dataset will be converted to FASTQ.
 
-> [!NOTE] on reconstructed FASTQ:
+> [!NOTE]
 > Some SRA datasets (especially targeted panels or clinical studies) are stored internally as aligned reads (SCHEMA: NCBI:align:db:alignment_sorted).
 >
 > When downloading with `fasterq-dump` (or via **ENA**), reads are reconstructed into standard FASTQ format.
@@ -404,7 +404,7 @@ reads written   : 7,784,072
 > [!NOTE]  
 > The `fasterq-dump` can be executed from any directory, but always use `--outdir raw_fastq` to maintain a clean and reproducible folder structure.
 
-> [!IMPORTANT] clarification:
+> [!IMPORTANT]
 > **Do not get confuse**: SRA stores data in different formats (`FMT`) from raw FASTQ to aligned BAM/CRAM in it database. However, even if `vdb-dump --info` reports `FMT: BAM` or `FMT: CRAM`, running `fasterq-dump` will still generate FASTQ files.
 > Therefore:
 > 
