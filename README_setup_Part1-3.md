@@ -572,10 +572,7 @@ Check:
 > - Click on either "**Get dowload script**", to retrieve a `wget` command to download the files or "**Download selected files**" directly.
 >
 > - Perform an **MD5 checksum** of each downloaded `*.fastq.gz` file and compare it with the value provided in ENA (column "**Generated FASTQ files: MD5**"). The checksums must match to ensure file integrity after download.
-> Example:
-  ```bash
-  md5 SRRXXXXXX_1.fastq.gz
-  ```
+> Example: `md5 SRRXXXXXX_1.fastq.gz`
 > Output: `MD5 (SRRXXXXXX_1.fastq.gz) = 21cfge23...`
 > This is often a more efficient and reliable alternative than SRA, and it reduces disk usage.
 
