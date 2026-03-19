@@ -201,6 +201,7 @@ Finally, `conda list` will display the installed packages and confirm that the `
 
 The **.yml** file is available here 👉 [DNA_conda_environment_full.yml](DNA_conda_environment_full.yml)
 
+---
 
 ## II. Create the folder structure
 
@@ -243,6 +244,8 @@ In Terminal, create all directories at once::
 ```bash
 mkdir -p Genomics_cancer/{reference/GRCh38/{fasta,known_sites},data/SRR30536566/{raw_fastq,qc,trimmed,aligned,variants,annotation},scripts,logs}
 ```
+
+---
 
 ## III. Find & download small-sized FASTQ datasets for cancer gene panels
 
@@ -564,10 +567,15 @@ Check:
 >
 > - Locate the run in the results table
 >
-> - In the column "Generated FASTQ files: FTP" find and select both paired-end files
+> - In the column "**Generated FASTQ files: FTP**" find and select both paired-end files
 >
-> - Click on either "Get dowload script", to retrieve a `wget` command to download the files or "Download selected files" directly.
+> - Click on either "**Get dowload script**", to retrieve a `wget` command to download the files or "**Download selected files**" directly.
 >
+> - Perform an **MD5 checksum** of each downloaded `*.fastq.gz` file and compare it with the value provided in ENA (column "**Generated FASTQ files: MD5**"). The checksums must match to ensure file integrity after download.
+Example:
+  ```bash
+  md5sum SRRXXXXXX_1.fastq.gz
+  ```
 > This is often a more efficient and reliable alternative than SRA, and it reduces disk usage.
 
 
@@ -580,6 +588,7 @@ Check:
 | Small datasets (<1 GB)   | SRA Toolkit        |
 | Large datasets (>2–3 GB) | ENA + `wget`       |
 
+---
 
 ## IV. Download a reference human genome (GRCh38) and indexes
 
