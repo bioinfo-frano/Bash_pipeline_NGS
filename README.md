@@ -11,16 +11,16 @@ This repository shows how to build and understand a complete somatic DNA-NGS ana
 - Data acquisition from public repositories
 - Quality control and preprocessing
 - Alignment and BAM processing
-- Somatic variant calling (tumor-only)
+- Somatic variant calling (tumor-only and matched tumor-normal pair)
 - Filtering and biological post-processing
 - Visualization and interpretation
 
-Although the tutorial preferentially presents a step-by-step **tumor-only variant calling** analysis, by the last part the focus will be centered on **matched tumor-normal pair variant calling** analysis.
+Although the tutorial preferentially presents a step-by-step **tumor-only variant calling** analysis, the final part shifts the focus to **matched tumor-normal pair variant calling**. Additionally, the tutorial will present a **Nextflow** pipeline adapted from Bash scripts for somatic analysis.
 
 The focus is on educational clarity, reproducibility, and transparency.
 
 ## 🔬 Workflow Overview
-Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository*.
+Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository.
 
 <p align="center">
   <img src="images/Gemini_Generated_Image_2hszdp2hszdp2hsz.png" 
@@ -111,21 +111,21 @@ This repository is designed to grow. Planned additions include:
 ## 🧬 Target audience
 
 This tutorial is intended for:
-- Bioinformatics students
-- Life scientists learning NGS analysis
-- Researchers who want a **transparent, Bash-only workflow** that can be run locally
+- Bioinformatics students with or without biology or engineer backgrounds
+- Life scientists learning bioinformatics tools for genomic analysis
+- Researchers who want a **transparent, Bash/Nextflow workflow** that can be run locally
 
 ---
 
 ## 📌 Notes
 
 - The pipelines are optimized for **educational clarity** and designed to run on a standard workstation or laptop (not HPC clusters).
-- All steps are reproducible and runnable on a local machine
-- Real public datasets from the **NCBI SRA** (e.g., SRR30536566) are used
+- All steps are reproducible and runnable on a local machine.
+- Real public datasets from the **NCBI SRA** (e.g., SRR30536566) are used.
 
 ---
 
-Happy sequencing analysis!
+*Happy sequencing analysis!
 
 ---
 
