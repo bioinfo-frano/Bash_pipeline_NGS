@@ -96,7 +96,7 @@ Understand what Nextflow is and how it compares to Bash pipelines. This section 
   - Get to know the advantages of this type of analysis compared to tumor-only
 
 ➡️ **Enter here:**  
-👉 [Part VII – Matched Tumor-Normal Pair Somatic DNA-NGS Pipeline](README_Part7_tumor_normal.md)
+👉 [Part VII – Matched Tumor‑Normal Somatic Analysis Pipeline](README_Part7_tumor_normal.md)
 
 ---
 
