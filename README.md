@@ -45,7 +45,7 @@ Learn how to create a clean and reproducible environment:
 
 ---
 
-### 2️⃣ Part II – Somatic analysis (Bash pipelines)  
+### 2️⃣ Part II – Stepwise somatic analysis using bash pipelines  
 Perform a **somatic DNA-NGS analysis** following GATK best practices:
 - FASTQ processing and QC
 - Alignment and BAM processing
@@ -90,8 +90,9 @@ Understand what Nextflow is and how it compares to Bash pipelines. This section 
 
 ---
 
-### 7️⃣ Part VII – Somatic analysis with matched tumor-normal pair
+### 7️⃣ Part VII – Somatic analysis with matched tumor-normal pair using Bash script
   - See the differences between tumor-only and matched tumor-normal somatic analysis
+  - What are the new parameters to consider in **Mutect2** variant calling 
   - Get to know the advantages of this type of analysis compared to tumor-only
 
 ➡️ **Enter here:**  

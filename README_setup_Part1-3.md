@@ -37,6 +37,11 @@ However, **cloud services incur financial costs**. See below **Table 1** showing
 
 Therefore, for learners who prefer to work locally — typically with 8–16 GB RAM and limited disk storage (<60 GB) — it becomes essential to carefully select small sequencing datasets and design lightweight Conda environments. Equally important is the creation of a simple and efficient analysis pipeline and a well-defined folder structure.
 
+Before we talk about FASTQ files, which contain the raw sequenced fragments (known as **reads**) of a DNA sample produced by a sequencer, I recommend reading more about them on these websites:
+
+- [FASTQ files explained](https://knowledge.illumina.com/software/general/software-general-reference_material-list/000002211)
+- [FASTQ format](https://en.wikipedia.org/wiki/FASTQ_format#:~:text=FASTQ%20format%20is%20a%20text%2Dbased%20format%20for,instruments%20such%20as%20the%20Illumina%20Genome%20Analyzer.)
+
 In practice, FASTQ file sizes vary widely depending on the sequencing strategy and target region. Small targeted sequencing panels may generate FASTQ files smaller than 1 GB, whereas larger experiments such as whole-exome sequencing (WES) or whole-genome sequencing (WGS) can easily produce tens to hundreds of gigabytes per sample. For users working on local machines with limited RAM and disk space, this variability has a direct impact on dataset selection and pipeline feasibility. **Table 2** provides representative examples of FASTQ file sizes from cancer-related datasets deposited in the NCBI Sequence Read Archive (SRA).
 
 **Table 2. Representative FASTQ file sizes from cancer-related SRA datasets**
@@ -68,7 +73,7 @@ V.	Bash shell scripting for NGS - DNA analysis
 
 ## Purpose of this tutorial
 
-This repository provides a minimal, reproducible guide for running a DNA-seq (NGS) analysis pipeline locally, from FASTQ files to variant calling and annotation, using modest computational resources.
+This tutorial provides a minimal, reproducible guide for running a DNA-seq (NGS) analysis pipeline locally, from FASTQ files to variant calling and annotation, using modest computational resources.
 
 > **Note:**  
 > This guide was developed and tested on macOS running on Intel processors. Users on Apple Silicon (M1/M2/…/M5) or Linux systems may need to adapt certain steps.
