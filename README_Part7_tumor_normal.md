@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In [Part IV](README_Part4_fullbash.md) we developed a single Bash pipeline for the full **tumor‑only** somatic analysis. Although tumor-only analysis help to identify somatic variants, this type of analysis is based on inference and, thus, provides an approximation. In contrast, a matched tumor‑normal pair comparison is **the gold‑standard approach recommended by GATK for maximum accuracy** and, thus, is preferred whenever possible.
+In [Part IV](README_Part4_fullbash.md) we developed a single Bash pipeline for the full **tumor‑only** somatic analysis. Although tumor-only analysis helps identify somatic variants, it relies on statistical inference and therefore provides only an approximation. In contrast, a matched tumor‑normal pair comparison is **the gold‑standard approach recommended by GATK for maximum accuracy** and, thus, is preferred whenever possible.
 
 We will use the same reference `GRCh38` files and the same sample `SRR30536566` (tumor - colorectal cancer biopsy), but now we also include its matched normal sample `SRR30536541` from the same patient (blood).
 The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colorectal Cancer Patients).
@@ -20,12 +20,12 @@ The differences between both approaches when doing somatic analysis? See **Table
 | **Core strategy**        | Statistical filtering                    | Biological comparison                    |
 | **Sensitivity**          | May miss some somatic variants,<br>especially low‑allelic‑fraction | Higher sensitivity and specificity |
 | **Specificity**          | Prone to false positives from sequencing artifacts and germline variants | Much higher specificity; germline variants are removed by subtraction |
-| **Resources required**   | PON, germline resource (e.g., gnomAD) | Normal BAM, PON optional but still recommended |
+| **Resources required**   | PON, germline resource (e.g., gnomAD) | Normal BAM, PON recommended (still useful for artifact filtering) |
 | **Reliability**          | Moderate                                 | High (gold standard)                     |
 
-👉 In tumor-only analysis, GATK must ***guess*** what is somatic.
+👉 In tumor-only analysis, GATK must ***infer*** what is somatic.
 
-👉 In tumor–normal analysis, GATK can ***observe*** the difference.
+👉 In tumor–normal analysis, GATK can ***directly observe*** tumor-specific variants by comparison.
 
 ---
 
@@ -38,7 +38,7 @@ The differences between both approaches when doing somatic analysis? See **Table
     - Sorting + MarkDuplicates + MD tags
     - BAM indexing
 
-This part is like running the script twice, once for the tumor sample and the second for the normal.
+This part is effectively running the same preprocessing pipeline twice: once for the tumor sample and once for the matched normal.
 
 - Post‑filtering (hard thresholds on depth, allele count, VAF) can be applied to the final somatic calls in the same way.
 
@@ -62,23 +62,30 @@ The main differences lie in the Mutect2 command (**Table 2**).
 
 ```bash
 gatk Mutect2 \
-  -R reference (hg38) \
+  -R reference.fasta \
   -I tumor.bam \
-  --tumor-sample TUMOR (Library Name)\
+  --tumor-sample TUMOR_SM \
   --panel-of-normals PON \
-  --germline-resource GNOMAD
+  --germline-resource GNOMAD \
+  -L intervals.bed \
+  --f1r2-tar-gz f1r2.tar.gz \
+  -O output.vcf.gz
 ```
 
 **Mutect2 command**: tumor–normal version
 
 ```bash
 gatk Mutect2 \
+  -R reference.fasta \
   -I tumor.bam \
   -I normal.bam \
-  --tumor-sample TUMOR \
-  --normal-sample NORMAL \
+  --tumor-sample TUMOR_SM \
+  --normal-sample NORMAL_SM \
+  --panel-of-normals PON \
   --germline-resource GNOMAD \
-  --panel-of-normals PON
+  -L intervals.bed \
+  --f1r2-tar-gz f1r2.tar.gz \
+  -O output.vcf.gz
 ```
 
 ### B. Read group requirement
@@ -98,7 +105,7 @@ RG_SM="DMBEL-EIDR-071"
 # Normal
 RG_SM="DMBEL-EIDR-096"  # Library Name normal // Run:
 ```
-👉 If both BAMs share the same sample name → Mutect2 will fail or behave incorrectly
+👉 The SM (sample name) must match the names provided to --tumor-sample and --normal-sample in Mutect2.
 
 
 ### C. Contamination estimation
@@ -128,6 +135,8 @@ gatk CalculateContamination \
 - detection of contamination in **both samples**
 - more accurate correction
 
+The contamination model becomes more accurate because allele frequencies can be compared between tumor and normal.
+
 ### D. Filtering (FilterMutectCalls)
 
 Command is the same:
@@ -138,7 +147,7 @@ gatk FilterMutectCalls ...
 But behavior differs:
 
 - Tumor-only → relies on statistical filters
-- Tumor–normal → pulls direct evidence from normal
+- Tumor–normal → uses direct evidence from the normal sample to identify germline variants and artifacts
 
 👉 Result: fewer false positives
 
@@ -149,7 +158,7 @@ But behavior differs:
 | Panel of Normals (PoN) | Essential  | Recommended               |
 | gnomAD                 | Essential  | Helpful but less critical |
 
-👉 The matched normal replaces much of their function.
+👉 The matched normal reduces reliance on these resources **but does not fully replace them**.
 
 ---
 
