@@ -1,13 +1,16 @@
 # Part VII – Matched Tumor‑Normal Somatic Analysis (Bash Pipeline)
 
-In [Part IV](README_Part4_fullbash.md) we developed a single Bash pipeline for the full tumor‑only somatic analysis. In general, although tumor-only analysis help to identify somatic variants, this type of analysis is based on inference and, thus, provides an approximation. In contrast, a matched tumor‑normal pair comparison is **the gold‑standard approach recommended by GATK for maximum accuracy** and, thus, is preferred whenever possible.
+## Introduction
+
+In [Part IV](README_Part4_fullbash.md) we developed a single Bash pipeline for the full **tumor‑only** somatic analysis. Although tumor-only analysis help to identify somatic variants, this type of analysis is based on inference and, thus, provides an approximation. In contrast, a matched tumor‑normal pair comparison is **the gold‑standard approach recommended by GATK for maximum accuracy** and, thus, is preferred whenever possible.
 
 We will use the same reference `GRCh38` files and the same sample `SRR30536566` (tumor - colorectal cancer biopsy), but now we also include its matched normal sample `SRR30536541` from the same patient (blood).
 The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colorectal Cancer Patients).
 ***The normal sample allows us to subtract germline variants and greatly reduce false positives.***
-In more details, what are the differences between both approaches when doing somatic analysis? See **Table 1**.
 
-### Table 1: Tumor‑Only vs. Matched Tumor‑Normal Somatic Analysis – Overview
+The differences between both approaches when doing somatic analysis? See **Table 1**.
+
+### Table 1: Tumor‑Only vs. Tumor‑Normal Somatic Analysis – Overview
 
 | Feature                  | Tumor‑Only                               | Matched Tumor‑Normal |
 |--------------------------|------------------------------------------|----------------------|
@@ -21,7 +24,10 @@ In more details, what are the differences between both approaches when doing som
 | **Reliability**          | Moderate                                 | High (gold standard)                     |
 
 👉 In tumor-only analysis, GATK must ***guess*** what is somatic.
+
 👉 In tumor–normal analysis, GATK can ***observe*** the difference.
+
+---
 
 ## Where the Pipelines Are Similar
 
@@ -37,11 +43,13 @@ This part is like running the script twice, once for the tumor sample and the se
 - Post‑filtering (hard thresholds on depth, allele count, VAF) can be applied to the final somatic calls in the same way.
 
 
-## Differences in Variant Calling with Mutect2
+## Where the Pipelines Are Different
 
-### A. The main differences lie in the Mutect2 command (**Table 2**), contamination estimation, and how the matched normal is leveraged to remove germline variants.
+### A. Mutect2
 
-### Table 2: Differences in Variant Calling with Mutect2 between Tumor-Only and Matched Tumor‑Normal
+The main differences lie in the Mutect2 command (**Table 2**).
+
+### Table 2: Differences in Variant Calling with Mutect2 between Tumor-Only and Tumor‑Normal
 
 | Aspect | Tumor‑Only | Matched Tumor‑Normal |
 |--------|------------|----------------------|
@@ -61,7 +69,7 @@ gatk Mutect2 \
   --germline-resource GNOMAD
 ```
 
-**Mutect2 command: tumor–normal version**
+**Mutect2 command**: tumor–normal version
 
 ```bash
 gatk Mutect2 \
@@ -81,7 +89,7 @@ gatk Mutect2 \
 RG_SM="DMBEL-EIDR-071"  # Library Name tumor  // Run: SRR30536566
 ```
 
-**Tumor-normal**, the samples must be distinguished:
+**Tumor-normal**: the samples must be distinguished
 
 ```bash
 # Tumor
@@ -143,7 +151,7 @@ But behavior differs:
 
 👉 The matched normal replaces much of their function.
 
-
+---
 
 ### Summary of Advantages or why matched tumor–normal is the gold standard
 
@@ -156,78 +164,48 @@ But behavior differs:
 | **Higher confidence** | Final call set is smaller but more reliable. |
 
 
+---
 
+## Getting the matched tumor-normal dataset
 
+1. Go to [SRA](https://www.ncbi.nlm.nih.gov/sra)
 
+2. Type "SRR30536566"
 
+3. Click on "All runs". This will send you to th "SRA RUN SELECTOR"
 
+4...
 
+8. 
 
+## Folder structure
 
+This time, the folder structure will be slightly changed. The datasets `SRR30536566` (tumor) and `SRR30536541` (matched normal) will be in the folder `~/data/PRJNA1156316_tumor_normal`. 
 
+In addition, the subfolders `aligned`, `annotation`, `logs`, `qc`, `trimmed`, `variants` must be created for `~/SRR30536566` and `~/SRR30536541`.
 
-## 9. Outputted files `~/Genomics_cancer/data/SRR30536566_full_nf/`
+In terminal, move to `~/SRR30536566`
 
-```code
+```bash
+mkdir -p aligned annotation logs qc trimmed variants
+```
+Continue with `~/SRR30536541`
+
+Activate environment `DNA2`
+
+```bash
 Genomics_cancer/
 ├── data/
-│   ├── SRR30536566/          
-│   │   └── raw_fastq/       
-│   │         ├── SRR30536566_1.fastq.gz
-│   │         └── SRR30536566_2.fastq.gz
-│   │
-│   ├── SRR30536566_full_nf/   # Used by the nextflow script
-│   │   ├── qc/
-│   │   │     ├── raw
-│   │   │     │     ├── multiqc_data
-│   │   │     │     ├── multiqc_report.html
-│   │   │     │     ├── SRR30536566_1_fastqc.html
-│   │   │     │     └── SRR30536566_1_fastqc.html
-│   │   │     ├── md_flagstat
-│   │   │     │     ├── multiqc_data
-│   │   │     │     └── multiqc_report.html
-│   │   │     └── trimmed
-│   │   │           ├── multiqc_data
-│   │   │           ├── multiqc_report.html
-│   │   │           ├── SRR30536566_full_nf_R1.trimmed.fastqc.html
-│   │   │           └── SRR30536566_full_nf_R2.trimmed.fastqc.html
-│   │   ├── trimmed/
-│   │   │     ├── SRR30536566_full_nf_R1.trimmed.fastq.gz
-│   │   │     └── SRR30536566_full_nf_R2.trimmed.fastq.gz
-│   │   │
-│   │   ├── logs/
-│   │   │     ├── cutadapt_SRR30536566_full_nf.log
-│   │   │     ├── bwa_mem.log
-│   │   │     ├── markduplicates.log
-│   │   │     ├── SRR30536566_full_nf.flagstat.txt
-│   │   │     ├── mutect2.stderr.log
-│   │   │     ├── mutect2.stdout.log
-│   │   │     ├── learn_read_orientation_model.log   
-│   │   │     ├── get_pileup_summaries.log 
-│   │   │     ├── calculate_contamination.log
-│   │   │     ├── filter_mutect_calls.log
-│   │   │     └── SRR30536566.postfilter.log  
-│   │   ├── aligned/
-│   │   │     ├── SRR30536566_full_nf.sorted.markdup.md.bam
-│   │   │     ├── SRR30536566_full_nf.sorted.markdup.md.bam.bai
-│   │   │     └── SRR30536566_full_nf.markdup.metrics.txt
-│   │   ├── variants/
-│   │   │     ├── SRR30536566_full_nf.unfiltered.vcf.gz.stats
-│   │   │     ├── SRR30536566_full_nf.f1r2.tar.gz
-│   │   │     ├── SRR30536566_full_nf.unfiltered.vcf.gz
-│   │   │     ├── SRR30536566_full_nf.unfiltered.vcf.gz.tbi
-│   │   │     ├── SRR30536566_full_nf.read-orientation-model.tar.gz
-│   │   │     ├── SRR30536566_full_nf.pileups.table
-│   │   │     ├── SRR30536566_full_nf.contamination.table
-│   │   │     ├── SRR30536566_full_nf.filtered.vcf.gz.filteringStats.tsv
-│   │   │     ├── SRR30536566_full_nf.filtered.vcf.gz
-│   │   │     ├── SRR30536566_full_nf.filtered.vcf.gz.tbi
-│   │   │     ├── SRR30536566_full_nf.filtered.PASS.vcf.gz
-│   │   │     ├── SRR30536566_full_nf.filtered.PASS.vcf.gz.tbi
-│   │   │     ├── SRR30536566_full_nf.postfiltered.vcf.gz
-│   │   │     ├── SRR30536566_full_nf.postfiltered.vcf.gz.tbi
-│   │   │     └── SRR30536566_full_nf.postfilter_summary.txt
-│   │   └── annotation/
+│   ├── PRJNA1156316_tumor_normal/          
+│   │   └── SRR30536566                                 # TUMOR          
+│   │       └── raw_fastq/
+│   │           └── SRR30536566_1.fastq.gz
+│   │           └── SRR30536566_2.fastq.gz           
+│   │   └── SRR30536541                                 # NORMAL          
+│   │       └── raw_fastq/
+│   │           └── SRR30536541_1.fastq.gz
+│   │           └── SRR30536541_2.fastq.gz        
+│   │            
 │   │
 ├── reference/
 │   └── GRCh38/
@@ -236,10 +214,9 @@ Genomics_cancer/
 │       └── somatic_resources/    
 │   
 ├── scripts/    
-│   └── 09_full_somatic_SRR30536566_nextflow.nf 
+│   └── 09_full_somatic_PRJNA1156316_tumor_normal.nf 
 │
 └── logs/
-
 
 ```
 
