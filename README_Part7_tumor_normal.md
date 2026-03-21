@@ -175,32 +175,63 @@ But behavior differs:
 
 ---
 
-## Getting the matched tumor-normal dataset
+## Getting the matched tumor-normal datasets
 
 1. Go to [SRA](https://www.ncbi.nlm.nih.gov/sra)
 
 2. Type "SRR30536566"
 
-3. Click on "All runs". This will send you to th "SRA RUN SELECTOR"
+>[!NOTE]
+> The dataset "SRR30536566" is one of the "few" available in SRA database. Many requiere an authorised access by **dbGaP**. Details on how this dataset was found, go to chapter "**Find & download small-sized FASTQ datasets for cancer gene panels**" in  👉  [Part I - Preparation & setup](README_setup_Part1-3.md) 
 
-4...
+3. Click on "**All runs**". This will send you to the "**SRA RUN SELECTOR**"
 
-8. 
+4. Copy the Run accession of only the match tumor-normal: `SRR30536566` & `SRR30536541`
+
+>[!NOTE]
+> The datasets `SRR30536566` & `SRR30536541` must be from same patient based on "Age", "Collection_Date", "Sample Name", "sex", and "source_material_identifier"
+
+5. Paste the Run accession in **[ENA](https://www.ebi.ac.uk/ena/browser/home)** "Search" pane.
+
+6. Select the pairs "**_1**" and "**_2**" one one dataset 
+
+7. Retrieve the `wget` by clicking in "**Get download script**"
+
+You'll get the `wget` in a file, for example `ena-file-download-selected-files-DATE_PROJECT.sh`
+
+7. Make `ena-file-download-selected-files-DATE_PROJECT.sh` file executable with: `chmod u+x ena-file-download-selected-files-DATE_PROJECT.sh`
+
+---
 
 ## Folder structure
 
-This time, the folder structure will be slightly changed. The datasets `SRR30536566` (tumor) and `SRR30536541` (matched normal) will be in the folder `~/data/PRJNA1156316_tumor_normal`. 
+This time, the folder structure will be slightly different. The datasets `SRR30536566` (tumor) and `SRR30536541` (matched normal) will be in the folder `~/data/PRJNA1156316_tumor_normal`. 
 
-In addition, the subfolders `aligned`, `annotation`, `logs`, `qc`, `trimmed`, `variants` must be created for `~/SRR30536566` and `~/SRR30536541`.
+1. In Terminal, move to `~/Genomics_cancer/data/` and create folder `PRJNA1156316_tumor_normal` with the subfolders `SRR30536566` and `SRR30536541`:
+
+```bash
+mkdir -p PRJNA1156316_tumor_normal/{SRR30536566,SRR30536541}
+```
+
+2. In addition, the subfolder `raw_fastq` must be created for each folder `~/SRR30536566` and `~/SRR30536541`.
 
 In terminal, move to `~/SRR30536566`
 
 ```bash
-mkdir -p aligned annotation logs qc trimmed variants
+mkdir -p raw_fastq
 ```
-Continue with `~/SRR30536541`
+Continue the same with `~/SRR30536541` 
 
-Activate environment `DNA2`
+3. Download the datasets: `./ena-file-download-selected-files-DATE_PROJECT.sh` in its corresponding folder:
+
+- `~/data/PRJNA1156316_tumor_normal/SRR30536566/raw_fastq`
+- `~/data/PRJNA1156316_tumor_normal/SRR30536541/raw_fastq`
+
+
+4. Activate environment `DNA2`
+
+
+### View of folder structure for tumor-normal somatic analysis
 
 ```bash
 Genomics_cancer/
