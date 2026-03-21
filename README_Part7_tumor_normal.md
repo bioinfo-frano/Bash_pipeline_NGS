@@ -8,14 +8,14 @@ We will use the same reference `GRCh38` files and the same sample `SRR30536566` 
 The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colorectal Cancer Patients).
 ***The normal sample allows us to subtract germline variants and greatly reduce false positives.***
 
-The differences between both approaches when doing somatic analysis? See **Table 1**.
+What are the differences between these two approaches in somatic analysis? See **Table 1**.
 
 ### Table 1: Tumor‑Only vs. Tumor‑Normal Somatic Analysis – Overview
 
 | Feature                  | Tumor‑Only                               | Matched Tumor‑Normal |
 |--------------------------|------------------------------------------|----------------------|
 | **Input**                | One BAM (tumor)                          | Two BAMs (tumor + normal from same patient) |
-| **Germline handling**    | Estimated using population data (gnomAD) | Directly removed using the normal sample |
+| **Germline handling**    | Estimated using population data (gnomAD) | Identified and filtered using the matched normal sample |
 | **Normal sample**        | Not available; uses a panel of normals (PON) to filter common artifacts | Matched normal serves as a perfect baseline to subtract germline variants |
 | **Core strategy**        | Statistical filtering                    | Biological comparison                    |
 | **Sensitivity**          | May miss some somatic variants,<br>especially low‑allelic‑fraction | Higher sensitivity and specificity |
@@ -25,7 +25,7 @@ The differences between both approaches when doing somatic analysis? See **Table
 
 👉 In tumor-only analysis, GATK must ***infer*** what is somatic.
 
-👉 In tumor–normal analysis, GATK can ***directly observe*** tumor-specific variants by comparison.
+👉 In tumor–normal analysis, GATK can ***directly compare*** tumor and normal samples to identify tumor-specific variants.
 
 ---
 
@@ -38,7 +38,7 @@ The differences between both approaches when doing somatic analysis? See **Table
     - Sorting + MarkDuplicates + MD tags
     - BAM indexing
 
-This part is effectively running the same preprocessing pipeline twice: once for the tumor sample and once for the matched normal.
+👉 At this stage, the tumor and normal samples are processed completely independently. They are only combined during somatic variant calling (**Mutect2**).
 
 - Post‑filtering (hard thresholds on depth, allele count, VAF) can be applied to the final somatic calls in the same way.
 
@@ -57,6 +57,8 @@ The main differences lie in the Mutect2 command (**Table 2**).
 | **Orientation bias model** | Still needed; learned from tumor BAM f1r2 tar. | Still needed; learned from tumor BAM f1r2 tar. |
 | **Contamination estimation** | Estimated from tumor BAM using `GetPileupSummaries` and `CalculateContamination`. | Contamination is estimated **separately** for tumor and normal (both can be contaminated). You can run `GetPileupSummaries` on both BAMs and then `CalculateContamination` with `--matched-normal` flag. |
 | **Filtering** | `FilterMutectCalls` uses contamination table and orientation model. | Same, but contamination table may include both samples. The matched normal helps in filtering germline variants. |
+
+Below are simplified versions of the Mutect2 commands used in each approach:
 
 **Mutect2 command: tumor only**
 
@@ -88,6 +90,8 @@ gatk Mutect2 \
   -O output.vcf.gz
 ```
 
+👉 Mutect2 does not simply “subtract” variants found in the normal. Instead, it evaluates the likelihood that each variant is somatic given the evidence in both tumor and normal samples.
+
 ### B. Read group requirement
 
 **Tumor-only**
@@ -105,8 +109,9 @@ RG_SM="DMBEL-EIDR-071"
 # Normal
 RG_SM="DMBEL-EIDR-096"  # Library Name normal // Run:
 ```
-👉 The SM (sample name) must match the names provided to --tumor-sample and --normal-sample in Mutect2.
 
+👉 The SM (sample name) must match the names provided to `--tumor-sample` and `--normal-sample` in Mutect2.
+👉 If they do not match, Mutect2 will not correctly assign reads to tumor vs normal, leading to incorrect variant calls.
 
 ### C. Contamination estimation
 
@@ -135,7 +140,7 @@ gatk CalculateContamination \
 - detection of contamination in **both samples**
 - more accurate correction
 
-The contamination model becomes more accurate because allele frequencies can be compared between tumor and normal.
+The contamination model becomes more accurate because information from the matched normal helps distinguish true somatic variation from contamination and germline signals.
 
 ### D. Filtering (FilterMutectCalls)
 
@@ -186,41 +191,48 @@ But behavior differs:
 
 3. Click on "**All runs**". This will send you to the "**SRA RUN SELECTOR**"
 
-4. Copy the Run accession of only the match tumor-normal: `SRR30536566` & `SRR30536541`
+4. Copy the Run accession of only the matched tumor–normal pair: `SRR30536566` & `SRR30536541`
 
 >[!NOTE]
 > The datasets `SRR30536566` & `SRR30536541` must be from same patient based on "Age", "Collection_Date", "Sample Name", "sex", and "source_material_identifier"
 
-5. Paste the Run accession in **[ENA](https://www.ebi.ac.uk/ena/browser/home)** "Search" pane.
+5. Paste the Run accession, e.g. `SRR30536566` (tumor), in **[ENA](https://www.ebi.ac.uk/ena/browser/home)** "Search" pane.
 
-6. Select the pairs "**_1**" and "**_2**" one one dataset 
+6. Select the pairs "**_1**" and "**_2**" for the dataset 
 
 7. Retrieve the `wget` by clicking in "**Get download script**"
 
-You'll get the `wget` in a file, for example `ena-file-download-selected-files-DATE_PROJECT.sh`
+You'll get the `wget` in a script, for example `ena-file-download-selected-files-DATE_PROJECT.sh`
 
-7. Make `ena-file-download-selected-files-DATE_PROJECT.sh` file executable with: `chmod u+x ena-file-download-selected-files-DATE_PROJECT.sh`
+8. Make the script executable with: `chmod u+x ena-file-download-selected-files-DATE_PROJECT.sh`
+
+Repeat the download process of `wget` script for the matched normal sample.
 
 ---
 
 ## Folder structure
 
-This time, the folder structure will be slightly different. The datasets `SRR30536566` (tumor) and `SRR30536541` (matched normal) will be in the folder `~/data/PRJNA1156316_tumor_normal`. 
+This time, the folder structure will be slightly different.
 
 1. In Terminal, move to `~/Genomics_cancer/data/` and create folder `PRJNA1156316_tumor_normal` with the subfolders `SRR30536566` and `SRR30536541`:
 
 ```bash
+cd ~/Genomics_cancer/data
 mkdir -p PRJNA1156316_tumor_normal/{SRR30536566,SRR30536541}
 ```
 
 2. In addition, the subfolder `raw_fastq` must be created for each folder `~/SRR30536566` and `~/SRR30536541`.
 
-In terminal, move to `~/SRR30536566`
-
 ```bash
+cd ~/Genomics_cancer/data/PRJNA1156316_tumor_normal/SRR30536566
 mkdir -p raw_fastq
 ```
-Continue the same with `~/SRR30536541` 
+Repeat for the normal sample (`~/SRR30536541`)
+
+```bash
+cd ../SRR30536541
+mkdir -p raw_fastq
+```
 
 3. Download the datasets: `./ena-file-download-selected-files-DATE_PROJECT.sh` in its corresponding folder:
 
@@ -236,17 +248,16 @@ Continue the same with `~/SRR30536541`
 ```bash
 Genomics_cancer/
 ├── data/
-│   ├── PRJNA1156316_tumor_normal/          
-│   │   └── SRR30536566                                 # TUMOR          
-│   │       └── raw_fastq/
-│   │           └── SRR30536566_1.fastq.gz
-│   │           └── SRR30536566_2.fastq.gz           
-│   │   └── SRR30536541                                 # NORMAL          
-│   │       └── raw_fastq/
-│   │           └── SRR30536541_1.fastq.gz
-│   │           └── SRR30536541_2.fastq.gz        
-│   │            
-│   │
+│   └── PRJNA1156316_tumor_normal/
+│       ├── SRR30536566/        # TUMOR
+│       │   └── raw_fastq/
+│       │       ├── SRR30536566_1.fastq.gz
+│       │       └── SRR30536566_2.fastq.gz
+│       ├── SRR30536541/        # NORMAL
+│           └── raw_fastq/
+│               ├── SRR30536541_1.fastq.gz
+│               └── SRR30536541_2.fastq.gz
+│   
 ├── reference/
 │   └── GRCh38/
 │       ├── fasta/
@@ -254,7 +265,7 @@ Genomics_cancer/
 │       └── somatic_resources/    
 │   
 ├── scripts/    
-│   └── 09_full_somatic_PRJNA1156316_tumor_normal.nf 
+│   └── 09_full_somatic_PRJNA1156316_tumor_normal.sh
 │
 └── logs/
 
