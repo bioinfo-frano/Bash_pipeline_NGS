@@ -613,7 +613,9 @@ Check:
 >
 > - **Read length distribution**. A high proportion of short reads (<50 bp) in ENA data may indicate preprocessing or filtering.
 >
-> **Best practice**: Although ENA is faster and more convenient, the recommended standard for reproducible and high-integrity analysis is: `fasterq-dump → gzip → downstream analysis`
+> **Best practice** 
+>
+> Although ENA is faster and more convenient, the recommended standard for reproducible and high-integrity analysis is: `fasterq-dump → gzip → downstream analysis`
 > 
 > This ensures that:
 >
