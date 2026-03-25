@@ -596,21 +596,25 @@ Check:
 
 > [!WARNING]
 > Downloading FASTQ files from ENA is fast and convenient, but it is important to understand that these files **are not always identical to the original raw sequencing data stored in SRA**. In practice, ENA FASTQ files may differ from those obtained via `fasterq-dump` in several ways:
-> -**Amount of read counts**: Some reads might be missing in **ENA** files.
+>
+> - **Amount of read counts**: Some reads might be missing in **ENA** files.
 > 
-> -**Quality (Phread) scoremay be altered**: ENA files can contain binned or recalibrated Phred scores, leading to lower apparent base quality in tools like FastQC compared to SRA-derived FASTQ.
+> - **Quality (Phread) scoremay be altered**: ENA files can contain binned or recalibrated Phred scores, leading to lower apparent base quality in tools like FastQC compared to SRA-derived FASTQ.
 >
 > **How to detect inconsistencies**
 >
 > To verify dataset integrity, always compare:
 >
-> -**Read counts (spots)**. Compare the number of reads reported in SRA with the downloaded dataset from **ENA**: `zcat sample.fastq.gz | wc -l | awk '{print $1/4}'`
+> - **Read counts (spots)**. Compare the number of reads reported in SRA with the downloaded dataset from **ENA**:
 >
-> -**Quality profiles (FastQC)**. Check whether the per-base quality matches expectations from SRA metadata.
+> `zcat sample.fastq.gz | wc -l | awk '{print $1/4}'`
 >
-> -**Read length distribution**. A high proportion of short reads (<50 bp) in ENA data may indicate preprocessing or filtering.
+> - **Quality profiles (FastQC)**. Check whether the per-base quality matches expectations from SRA metadata.
+>
+> - **Read length distribution**. A high proportion of short reads (<50 bp) in ENA data may indicate preprocessing or filtering.
 >
 > **Best practice**: Although ENA is faster and more convenient, the recommended standard for reproducible and high-integrity analysis is: `fasterq-dump → gzip → downstream analysis`
+> 
 > This ensures that:
 >
 > - You are working with the original, unmodified sequencing data
