@@ -178,6 +178,17 @@ But behavior differs:
 | **Higher confidence** | Final call set is smaller but more reliable. |
 
 
+### Visual workflow
+
+A small diagram showing tumor and normal BAMs going through pre-processing independently, then merging in Mutect2
+
+```bash
+Tumor FASTQ --> Trim/Align/BAM prep \
+                                   --> Mutect2 --> FilterMutectCalls --> Somatic VCF
+Normal FASTQ --> Trim/Align/BAM prep /
+```
+
+
 ---
 
 ## Getting the matched tumor-normal datasets
@@ -214,33 +225,37 @@ Repeat the download process of `wget` script for the matched normal sample.
 
 This time, the folder structure will be slightly different.
 
-1. In Terminal, move to `~/Genomics_cancer/data/` and create folder `PRJNA1156316_tumor_normal` with the subfolders `SRR30536566` and `SRR30536541`:
+1. In Terminal, move to `~/Genomics_cancer/data/` and create folder `PRJNA1156316` with the subfolders `SRR30536566_tumor` and `SRR30536541_normal`:
 
 ```bash
 cd ~/Genomics_cancer/data
-mkdir -p PRJNA1156316_tumor_normal/{SRR30536566,SRR30536541}
+mkdir -p PRJNA1156316/{SRR30536566_tumor,SRR30536541_normal}
 ```
 
-2. In addition, the subfolder `raw_fastq` must be created for each folder `~/SRR30536566` and `~/SRR30536541`.
+2. In addition, the subfolder `raw_fastq` must be created for each folder `~/SRR30536566_tumor` and `~/SRR30536541_normal`.
 
 ```bash
-cd ~/Genomics_cancer/data/PRJNA1156316_tumor_normal/SRR30536566
+cd ~/Genomics_cancer/data/PRJNA1156316/SRR30536566_tumor
 mkdir -p raw_fastq
 ```
-Repeat for the normal sample (`~/SRR30536541`)
+Repeat for the normal sample (`~/SRR30536541_normal`)
 
 ```bash
-cd ../SRR30536541
+cd ../SRR30536541_normal
 mkdir -p raw_fastq
 ```
 
 3. Download the datasets: `./ena-file-download-selected-files-DATE_PROJECT.sh` in its corresponding folder:
 
-- `~/data/PRJNA1156316_tumor_normal/SRR30536566/raw_fastq`
-- `~/data/PRJNA1156316_tumor_normal/SRR30536541/raw_fastq`
+- `~/data/PRJNA1156316/SRR30536566_tumor/raw_fastq`
+- `~/data/PRJNA1156316/SRR30536541_normal/raw_fastq`
 
 
-4. Activate environment `DNA2`
+4. Activate Conda environment `DNA2`
+
+```bash
+conda activate DNA2
+```
 
 
 ### View of folder structure for tumor-normal somatic analysis
@@ -248,12 +263,12 @@ mkdir -p raw_fastq
 ```bash
 Genomics_cancer/
 ├── data/
-│   └── PRJNA1156316_tumor_normal/
-│       ├── SRR30536566/        # TUMOR
+│   └── PRJNA1156316/
+│       ├── SRR30536566_tumor/
 │       │   └── raw_fastq/
 │       │       ├── SRR30536566_1.fastq.gz
 │       │       └── SRR30536566_2.fastq.gz
-│       ├── SRR30536541/        # NORMAL
+│       ├── SRR30536541_normal
 │           └── raw_fastq/
 │               ├── SRR30536541_1.fastq.gz
 │               └── SRR30536541_2.fastq.gz
@@ -265,11 +280,15 @@ Genomics_cancer/
 │       └── somatic_resources/    
 │   
 ├── scripts/    
-│   └── 09_full_somatic_PRJNA1156316_tumor_normal.sh
+│   └── 09_full_somatic_DNA2_PRJNA1156316_tn.sh
 │
 └── logs/
 
 ```
+
+---
+
+
 
 
 ## Conclusion
