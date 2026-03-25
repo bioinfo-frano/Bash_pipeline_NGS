@@ -615,7 +615,9 @@ Check:
 >
 > **Best practice** 
 >
-> Although ENA is faster and more convenient, the recommended standard for reproducible and high-integrity analysis is: `fasterq-dump → gzip → downstream analysis`
+> Although ENA is faster and more convenient, the recommended standard for reproducible and high-integrity analysis is: 
+>
+> `fasterq-dump → gzip → downstream analysis`
 > 
 > This ensures that:
 >
