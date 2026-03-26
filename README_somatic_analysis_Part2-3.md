@@ -17,6 +17,7 @@
 - [Contamination estimation](#contamination-estimation--06b_calculate_contaminationsh)
 - [Variant filtering](#variant-filtering--07_filter_mutect_callssh)
     - [Inspection of VCF file variants](#5-inspection-of-vcf-file-variants)
+    - [Which variants PASS?](#which-variants-pass)
 - [Post-filter (amplicon-specific)](#post-filter-amplicon-specific--08_postfiltersh)
     - [Folder structure: after running Post-Filter of filtered variants](#folder-structure-after-running-post-filter-of-filtered-variants)
 - [Variant annotation](#variant-annotation--vep-online)
