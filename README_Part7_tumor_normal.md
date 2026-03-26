@@ -4,10 +4,6 @@
 
 In [Part IV](README_Part4_fullbash.md) we developed a single Bash pipeline for the full **tumor‑only** somatic analysis. Although tumor-only analysis helps identify somatic variants, it relies on statistical inference and therefore provides only an approximation. In contrast, a matched tumor‑normal pair comparison is **the gold‑standard approach recommended by GATK for maximum accuracy** and, thus, is preferred whenever possible.
 
-We will use the same reference `GRCh38` files and the same sample `SRR30536566` (tumor - colorectal cancer biopsy), but now we also include its matched normal sample `SRR30536541` from the same patient (blood).
-The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colorectal Cancer Patients).
-***The normal sample allows us to subtract germline variants and greatly reduce false positives.***
-
 What are the differences between these two approaches in somatic analysis? See **Table 1**.
 
 ### Table 1: Tumor‑Only vs. Tumor‑Normal Somatic Analysis – Overview
@@ -57,6 +53,7 @@ The main differences lie in the Mutect2 command (**Table 2**).
 | **Orientation bias model** | Still needed; learned from tumor BAM f1r2 tar. | Still needed; learned from tumor BAM f1r2 tar. |
 | **Contamination estimation** | Estimated from tumor BAM using `GetPileupSummaries` and `CalculateContamination`. | Contamination is estimated **separately** for tumor and normal (both can be contaminated). You can run `GetPileupSummaries` on both BAMs and then `CalculateContamination` with `--matched-normal` flag. |
 | **Filtering** | `FilterMutectCalls` uses contamination table and orientation model. | Same, but contamination table may include both samples. The matched normal helps in filtering germline variants. |
+
 
 Below are simplified versions of the Mutect2 commands used in each approach:
 
@@ -188,10 +185,15 @@ Tumor FASTQ --> Trim/Align/BAM prep \
 Normal FASTQ --> Trim/Align/BAM prep /
 ```
 
-
 ---
 
-## Getting the matched tumor-normal datasets
+## Matched tumor-normal: Project `PRJNA1156316`
+
+We will use the same reference `GRCh38` files and the same sample `SRR30536566` (tumor - colorectal cancer biopsy), but now we also include its matched normal sample `SRR30536541` from the same patient (blood).
+The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colorectal Cancer Patients).
+***The normal sample allows us to subtract germline variants and greatly reduce false positives.***
+
+### Getting the matched tumor-normal datasets
 
 1. Go to [SRA](https://www.ncbi.nlm.nih.gov/sra)
 
@@ -280,7 +282,7 @@ Genomics_cancer/
 │       └── somatic_resources/    
 │   
 ├── scripts/    
-│   └── 09_full_somatic_DNA2_PRJNA1156316_tn.sh
+│   └── 09_full_somatic_DNA2_PRJNA1156316_TN.sh
 │
 └── logs/
 

@@ -395,11 +395,17 @@ As shown in Table 3 and Table 4, both raw and aligned FASTQ datasets can be used
 - Go to working directory `~/data/SRR30536566`
 
 ```bash
-fasterq-dump SRR30536566 \    # SRA Run accession ID
->   --split-files \		      	# Splits paired-end reads into two separate FASTQ files: SRR30536566_1.fastq → forward reads | SRR30536566_2.fastq → reverse reads
->   --threads 4 \		        	# Uses 4 CPU threads for parallel processing.
->   --outdir raw_fastq	  		# Specifies the output directory where the FASTQ files will be saved. Alternatively, use the full absolute path and download the dataset from any directory.
+fasterq-dump SRR30536566 \    
+  --split-files \		      	  
+  --threads 4 \		        	  
+  --outdir raw_fastq	  	  	
 ```
+- `fasterq-dump SRR30536566` → SRA Run accession ID
+- `--split-files`            → Splits paired-end reads into two separate FASTQ files: SRR30536566_1.fastq → forward reads | SRR30536566_2.fastq → reverse reads
+- `--threads 4`              → Uses 4 CPU threads for parallel processing.
+- `--outdir raw_fastq`       → Specifies the output directory where the FASTQ files will be saved. Alternatively, use the full absolute path and download the dataset from any directory.
+
+
 
 Expected output:
 
@@ -450,7 +456,7 @@ SRR30536566_2.fastq.gz
 | FASTQ (gzipped)    | ~530 MB (both) |
 
 
-Alternatively, compress during download with `fastq-dump` (but it's slow, not recommended for large data)
+Alternatively, compress during download with `fastq-dump` (but it's slow, not recommended for large data, probably deprecated)
 
 ```bash
 fastq-dump SRR15506490 \
