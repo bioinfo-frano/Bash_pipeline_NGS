@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In [Part IV](README_Part4_fullbash.md) we developed a single Bash pipeline for the full **tumor‑only** somatic analysis. Although tumor-only analysis helps identify somatic variants, it relies on statistical inference and therefore provides only an approximation. In contrast, a matched tumor‑normal pair comparison is **the gold‑standard approach recommended by GATK for maximum accuracy** and, thus, is preferred whenever possible.
+In [Part IV](README_Part4_fullbash.md) we developed a single Bash pipeline for the full **tumor‑only** somatic analysis. Although tumor-only analysis helps identify somatic variants, it relies on statistical inference and therefore provides only an approximation. In contrast, a matched tumor‑normal pair comparison is **the gold‑standard approach recommended by GATK for maximum accuracy** and, thus, is preferred whenever possible. ***The normal sample allows us to subtract germline variants and greatly reduce false positives.***
 
 What are the differences between these two approaches in somatic analysis? See **Table 1**.
 
@@ -189,9 +189,10 @@ Normal FASTQ --> Trim/Align/BAM prep /
 
 ## Matched tumor-normal: Project `PRJNA1156316`
 
-We will use the same reference `GRCh38` files and the same sample `SRR30536566` (tumor - colorectal cancer biopsy), but now we also include its matched normal sample `SRR30536541` from the same patient (blood).
+We will use the sample `SRR30536566` (tumor - colorectal cancer biopsy) from [Part II – Somatic analysis](README_somatic_analysis_Part2-3.md), but now we also include its matched normal sample `SRR30536541` from the same patient (blood).
 The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colorectal Cancer Patients).
-***The normal sample allows us to subtract germline variants and greatly reduce false positives.***
+- <https://www.ncbi.nlm.nih.gov/sra/?term=PRJNA1156316>
+
 
 ### Getting the matched tumor-normal datasets
 
@@ -223,7 +224,7 @@ Repeat the download process of `wget` script for the matched normal sample.
 
 ---
 
-## Folder structure
+### Folder structure
 
 This time, the folder structure will be slightly different.
 
@@ -259,7 +260,6 @@ mkdir -p raw_fastq
 conda activate DNA2
 ```
 
-
 ### View of folder structure for tumor-normal somatic analysis
 
 ```bash
@@ -270,7 +270,7 @@ Genomics_cancer/
 │       │   └── raw_fastq/
 │       │       ├── SRR30536566_1.fastq.gz
 │       │       └── SRR30536566_2.fastq.gz
-│       ├── SRR30536541_normal
+│       └── SRR30536541_normal
 │           └── raw_fastq/
 │               ├── SRR30536541_1.fastq.gz
 │               └── SRR30536541_2.fastq.gz
@@ -290,16 +290,116 @@ Genomics_cancer/
 
 ---
 
+### View of folder structure after running tumor-normal somatic analysis bash script 👉 [09_full_somatic_DNA2_PRJNA1156316_TN.sh](bash_scripts/09_full_somatic_DNA2_PRJNA1156316_TN.sh)
 
+```bash
+Genomics_cancer/
+├── data/
+│   └── PRJNA1156316/
+│       ├── SRR30536566_tumor/
+│       │   └── raw_fastq/
+│       │   │    ├── SRR30536566_1.fastq.gz
+│       │   │    └── SRR30536566_2.fastq.gz
+│       │   │
+│       │   ├── aligned/SRR30536566_tumor.markdup.metrics.txt, SRR30536566_tumor.sorted.markdup.md.bam, SRR30536566_tumor.sorted.markdup.md.bam.bai
+│       │   ├── logs/bwa_mem.log, cutadapt_SRR30536566_tumor.log, markduplicates_SRR30536566_tumor.log, SRR30536566_tumor.flagstat.txt, SRR30536566_tumor.idxstats.txt
+│       │   ├── qc/md_flagstat/, raw/, trimmed/
+│       │   └── trimmed/SRR30536566_tumor_R1.trimmed.fastq.gz, SRR30536566_tumor_R2.trimmed.fastq.gz
+│       │
+│       └── SRR30536541_normal
+│       │   └── raw_fastq/
+│       │   │    ├── SRR30536541_1.fastq.gz
+│       │   │    └── SRR30536541_2.fastq.gz
+│       │   │
+│       │   ├── aligned/SRR30536541_normal.markdup.metrics.txt, SRR30536541_normal.sorted.markdup.md.bam, SRR30536541_normal.sorted.markdup.md.bam.bai
+│       │   ├── logs/bwa_mem.log, cutadapt_SRR30536541_normal.log, markduplicates_SRR30536541_normal.log, SRR30536541_normal.flagstat.txt, SRR30536541_normal.idxstats.txt
+│       │   ├── qc/md_flagstat/, raw/, trimmed/
+│       │   └── trimmed/SRR30536541_tumor_R1.trimmed.fastq.gz, SRR30536541_normal_R2.trimmed.fastq.gz
+│       │
+│       └── logs/mutect2.stderr.log, mutect2.stdout.log, PRJNA1156316_calculate_contamination.log, PRJNA1156316_filter_mutect_calls.log, PRJNA1156316_learn_read_orientation_model.log, PRJNA1156316_SRR30536566_tumor_get_pileup_summaries.log, PRJNA1156316.postfilter.log
+│       │
+│       └── variants/PRJNA1156316.f1r2.tar.gz, PRJNA1156316.filtered.PASS.vcf.gz, PRJNA1156316.filtered.PASS.vcf.gz.tbi, PRJNA1156316.postfiltered.vcf.gz, PRJNA1156316.postfiltered.vcf.gz.tbi, PRJNA1156316.segments.table, PRJNA1156316_normal.pileups.table, PRJNA1156316_tumor.pileups.table, PRJNA1156316.contamination.table, PRJNA1156316_tumor_normal.unfiltered.vcf.gz, PRJNA1156316.postfilter_summary.txt
+│
+├── reference/
+│   └── GRCh38/
+│       ├── fasta/
+│       ├── intervals/     
+│       └── somatic_resources/    
+│   
+└── scripts/    
+    └── 09_full_somatic_DNA2_PRJNA1156316_TN.sh
+
+```
+
+### Results
+
+1. Amount of post-filtered variants: **two**
+
+```bash
+cd ~/Genomics_cancer/data/PRJNA1156316/variants
+
+cat PRJNA1156316.postfilter_summary.txt
+```
+
+Expected output:
+```bash
+Post-filter summary
+========================
+Project: PRJNA1156316
+Date: Mon Mar 23 20:51:18 CET 2026
+
+Library type: Amplicon (PCR)
+Sequencing: Tumor-Normal (paired)
+Post-filtering applied on tumor sample only, normal sample retained for paired analysis
+
+Tumor sample: EIDR_55_tumor
+Normal sample: EIDR_55_blood
+
+Input VCF: /Users/Frano/Desktop/Bioinfo_2026/Genomics_cancer/data/PRJNA1156316/variants/PRJNA1156316.filtered.vcf.gz
+
+Thresholds:
+  DP >= 200
+  ALT reads >= 10
+  VAF >= 0.02
+
+PASS variants before post-filtering: 2
+Variants retained: 2
+```
+
+2. Type of somatic variant - genes
+
+```bash
+cd ~/Genomics_cancer/data/PRJNA1156316/variants
+
+bcftools view -H -f PASS PRJNA1156316.postfiltered.vcf.gz
+```
+
+Expected output:
+```bash
+chr1	114713909	.	G	T	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=1153,1189|61,53;DP=2594;ECNT=1;ECNTH=1;GERMQ=93;MBQ=41,41;MFRL=198,157;MMQ=60,60;MPOS=25;NALOD=-3.255;NLOD=478.11;POPAF=6;ROQ=93;TLOD=318.08;AC=1;AN=4	GT:AD:AF:DP:F1R2:F2R1:FAD:SB	0/1:645,114:0.154:759:240,52:289,43:567,103:327,318,61,53	0/0:1697,0:0.0006186:1697:701,0:837,0:1590,0:826,871,0,0
+chr3	179218294	.	G	A	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=929,1006|163,184;DP=2378;ECNT=1;ECNTH=1;GERMQ=93;MBQ=41,41;MFRL=191,174;MMQ=60,60;MPOS=24;NALOD=-2.988;NLOD=284.19;POPAF=6;ROQ=93;TLOD=1028.89;AC=1;AN=4	GT:AD:AF:DP:F1R2:F2R1:FAD:SB	0/1:906,347:0.28:1253:358,138:378,149:775,301:451,455,163,184	0/0:1029,0:0.001039:1029:416,0:491,0:945,0:478,551,0,0
+```
+The exactly same output was observed in `PRJNA1156316.filtered.vcf.gz`
+
+
+**Summary of postfiltered-variants**
+
+| Variant | Gene | Change | VAF | Depth | TLOD | Passed? | Reason |
+|---------|------|--------|-----|-------|------|---------|--------|
+| **chr1:114713909** | **NRAS** | G>T | 15.4% | 763 | 323.24 | ✅ PASS | Meets all thresholds |
+| **chr3:179218294** | **PIK3CA** | G>A | 27.7% | 1262 | 1026.18 | ✅ PASS | Meets all thresholds |
 
 
 ## Conclusion
 
+In **tumor-only** analysis, the amount of variants after filtering were 4, after the postfiltering 3, and finally 2 after variant annotation. Similarly, the **matched tumor-normal** analysis outputted also two variables at the variant filtering level. These two variants corresponded, for both analyses were: **NRAS** 181G>T / Gln61Lys and **PIK3CA** 1624G>A / Glu542Lys. Therefore, the **matched tumor-normal** analysis could detect better false positive variants and provide more reliable variant outputs.
+
+
 ---
 
-Back to the top  👉 [Part VI – Nextflow: Fully Automated Somatic DNA-NGS Pipeline](#part-vi-nextflow-pipeline-fully-automated-somatic-dna-ngs-pipeline-single-nextflow-script) 
+Back to the top  👉 [Part VII](#part-vii-matched-tumor-normal-somatic-analysis-bash-pipeline)
 
-Visit the Bash script here 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
+[Back to the top](#part-vii--matched-tumor-normal-somatic-analysis-bash-pipeline)
 
 Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
 
