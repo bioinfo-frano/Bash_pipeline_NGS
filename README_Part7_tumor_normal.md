@@ -386,20 +386,20 @@ The exactly same output was observed in `PRJNA1156316.filtered.vcf.gz`
 
 | Variant | Gene | Change | VAF | Depth | TLOD | Passed? | Reason |
 |---------|------|--------|-----|-------|------|---------|--------|
-| **chr1:114713909** | **NRAS** | G>T | 15.4% | 763 | 323.24 | ✅ PASS | Meets all thresholds |
-| **chr3:179218294** | **PIK3CA** | G>A | 27.7% | 1262 | 1026.18 | ✅ PASS | Meets all thresholds |
-
-
-## Conclusion
-
-In **tumor-only** analysis, the amount of variants after filtering were 4, after the postfiltering 3, and finally 2 after variant annotation. Similarly, the **matched tumor-normal** analysis outputted also two variables at the variant filtering level. These two variants corresponded, for both analyses were: **NRAS** 181G>T / Gln61Lys and **PIK3CA** 1624G>A / Glu542Lys. Therefore, the **matched tumor-normal** analysis could detect better false positive variants and provide more reliable variant outputs.
+| **chr1:114713909** | **NRAS** | G>T | 15.4% | 759 | 318.08 | ✅ PASS | Meets all thresholds |
+| **chr3:179218294** | **PIK3CA** | G>A | 28.0% | 1262 | 1253 | ✅ PASS | Meets all thresholds |
 
 
 ---
 
-Back to the top  👉 [Part VII](#part-vii-matched-tumor-normal-somatic-analysis-bash-pipeline)
+## Conclusion
 
-[Back to the top](#part-vii--matched-tumor-normal-somatic-analysis-bash-pipeline)
+In **tumor-only** analysis (see 👉 [Part II - Variant filtering / Which variants PASS?](README_somatic_analysis_Part2-3.md)), the amount of variants after filtering were 4, after the postfiltering 3, and finally 2 after variant annotation. Similarly, the **matched tumor-normal** analysis resulted in also two variables; however, at the variant filtering level. These two variants corresponded, for both analyses: **NRAS** 181G>T / Gln61Lys and **PIK3CA** 1624G>A / Glu542Lys. Therefore, the **matched tumor-normal** analysis could detect better false positive variants and provide more reliable variant outputs.
+
+
+---
+
+👉 [Back to the top](#part-vii--matched-tumor-normal-somatic-analysis-bash-pipeline)
 
 Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
 
