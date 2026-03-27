@@ -399,6 +399,87 @@ In **tumor-only** analysis (see 👉 [Part II - Variant filtering / Which varian
 
 ---
 
+## Matched tumor-normal: Project `PRJNA955019`
+
+- **Web address**: 
+    - <https://www.ncbi.nlm.nih.gov/sra/?term=PRJNA955019>
+    - <https://www.ncbi.nlm.nih.gov/sra/SRX19950043[accn]>
+
+- **Title**: DNA-seq of H. sapiens: ovarian cancer patients
+
+- **Study**: Germline and somatic variants in candidate therapy resistance biomarker genes in ovarian cancer by targeted sequencing
+
+- datasets:
+
+```bash
+Sample: R144 tumor
+SAMN34163643 • SRS17298003 • All experiments • All runs
+Organism: Homo sapiens
+Library:
+Name: R144T
+Instrument: Illumina NovaSeq 6000
+Strategy: Targeted-Capture
+Source: GENOMIC
+Selection: Hybrid Selection
+Layout: PAIRED
+RUN: SRR24151892 
+
+Sample: R144 normal
+SAMN34163642 • SRS17298004 • All experiments • All runs
+Organism: Homo sapiens
+Library:
+Name: R144K
+Instrument: Illumina NovaSeq 6000
+Strategy: Targeted-Capture
+Source: GENOMIC
+Selection: Hybrid Selection
+Layout: PAIRED
+RUN: SRR24151891	
+```
+
+- **ABSTRACT**:
+High-grade serous ovarian carcinoma (HGSC) is the most common subtype of ovarian cancer and is among the most fatal gynecological carcinomas in the world. This is due to the late diagnosis at advanced stages and frequent therapy resistance. In 47 HGSC patients, we assessed somatic and germline genetic variability of a custom panel of 144 known or suspected HGSC-related genes by targeted DNA sequencing and identify the genetic determinants associated with resistance to platinum-based therapy. In the germline, the most mutated genes were DNAH14 (17%), RAD51B (17%), CFTR (13%), BRCA1 (11%), and RAD51 (11%). **Somatically**, ***the most mutated gene was TP53 (98%), followed by CSMD1/2/3 (19/19/36%), and CFTR (23%)***. Targeted sequencing results were compared with those from whole exome sequencing of a similar set 35 HGSC patients. Candidate somatic variants in TP53 were also validated using a targeted sequencing GENIE dataset of 1209 HGSC samples. Our high-coverage targeted approach showed higher prevalence of high impact somatic and germline mutations, mainly splice site variants of TP53, when compared to validation datasets. Furthermore, nonsense TP53 somatic mutations were negatively associated with patient survival. Elevated TP53 transcript levels were associated with platinum resistance and presence of TP53 missense mutations. We show that targeted DNA sequencing of TP53 combined with transcript quantification may contribute to the concept of precision oncology of HGSC. Future analyses should include intersections between the expression and mutational profile of other crucial genes and explore targeting the p53 pathway based on specific mutation types.
+
+- **Design**: DNA from tumor tissue samples was isolated by AllPrep DNA/RNA/Protein Mini Kit (Qiagen, Hilden, Germany) following manufacturers protocol. DNA from peripheral blood lymphocytes was isolated and stored according to the published procedure (Topic and Gluhak 1991, PMID 1892954). DNA was quantified using Quant-iT PicoGreen dsDNA Assay Kit for DNA samples (Invitrogen, Waltham, MA, USA) on plate reader Infinite M200 (Tecan Group ltd., Switzerland). Purity of DNA samples was verified by Nanodrop 2000 (ThermoFisher Scientific, Waltham, MA, USA) and calculation of ratios A260/A230. DNA was stored at -20C until further use. Library preparation was performed using the SureSelect XT low input kit (Agilent Technologies, Inc.) with enzymatic fragmentation according to the manufacturers protocol. Targeted sequencies were captured (design 1.3 Mb, custom panel of 100+ OVC-relevant genes) from the individual pools of libraries of 8 for tumors and 24 for normals. **Pooling of libraries for sequencing was done at 5:1 ratio of tumors vs. blood to ensure approximately 5 times higher coverage for tumors**. Sequencing was performed on the Illumina NovaSeq 6000 platform in 150 bp paired-end mode (Illumina Inc.). **"T" in sample name signifies a tumor sample, "K" signifies a normal sample**.
+
+## Pipeline: Analysis was performed using the same bash script for matched tumor-normal, sample `PRJNA1156316`, with some adaptations in variables PROJECT, SAMPLE among others.
+
+## Results
+
+### 1. Post-filtered variants: 4 variants
+
+```bash
+bcftools view -H -f PASS PRJNA955019.postfiltered.vcf.gz
+chr8	113314497	.	GC	TT	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=560,270|79,28;DP=973;ECNT=1;ECNTH=1;GERMQ=93;MBQ=20,38;MFRL=193,203;MMQ=60,60;MPOS=28;NALOD=-2.31;NLOD=59.6;POPAF=6;ROQ=93;TLOD=379.59;AC=1;AN=4	GT:AD:AF:DP:F1R2:F2R1:FAD:SB	0/1:556,107:0.176:663:208,41:168,40:393,83:373,183,79,28	0/0:274,0:0.004948:274:110,0:78,0:198,0:187,87,0,0
+chr10	99797228	.	G	A	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=161,168|7,15;DP=365;ECNT=1;ECNTH=1;GERMQ=93;MBQ=27,40;MFRL=208,222;MMQ=60,60;MPOS=30;NALOD=-1.937;NLOD=25.09;POPAF=3.76;ROQ=57;TLOD=53.26;AC=1;AN=4	GT:AD:AF:DP:F1R2:F2R1:FAD:SB	0/1:226,22:0.094:248:91,7:82,11:181,18:114,112,7,15	0/0:103,0:0.011:103:40,0:38,0:84,0:47,56,0,0
+chr17	7674894	.	G	A	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=268,178|55,34;DP=559;ECNT=1;ECNTH=1;GERMQ=93;MBQ=20,20;MFRL=172,175;MMQ=60,60;MPOS=41;NALOD=-2.172;NLOD=43.22;POPAF=6;ROQ=93;TLOD=217.85;AC=1;AN=4	GT:AD:AF:DP:F1R2:F2R1:FAD:SB	0/1:245,89:0.27:334:76,23:85,36:170,62:146,99,55,34	0/0:201,0:0.006707:201:66,0:68,0:144,0:122,79,0,0
+chr17	69182166	.	G	C	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=290,218|95,89;DP=702;ECNT=1;ECNTH=1;GERMQ=93;MBQ=20,20;MFRL=170,165;MMQ=60,60;MPOS=40;NALOD=-2.136;NLOD=40.7;POPAF=6;ROQ=93;TLOD=472.03;AC=1;AN=4	GT:AD:AF:DP:F1R2:F2R1:FAD:SB	0/1:316,184:0.369:500:114,66:101,59:220,128:175,141,95,89	0/0:192,0:0.007264:192:71,0:56,0:136,0:115,77,0,0
+```
+
+
+### 2. Somatic Ensembl Variant Annotation (VEP):
+
+Somatic Variant Annotation (VEP)
+
+| Location | Gene | Consequence | Impact | HGVSc | HGVSp | Protein Change | VAF Prediction | Clinical Significance | Known Variant | Notes |
+|----------|------|-------------|--------|--------|--------|----------------|----------------|------------------------|----------------|-------|
+| chr10:99797228 | ABCC2 | missense_variant | MODERATE | c.764G>A | p.Arg255Gln | R→Q | SIFT: tolerated (0.64), PolyPhen: benign (0.003) | Uncertain significance | rs139964853 | Associated with Dubin-Johnson syndrome |
+| chr17:7674894 | TP53 | stop_gained | HIGH | c.637C>T | p.Arg213Ter | R→* (STOP) | - | Pathogenic | rs397516436 | Classic tumor suppressor truncation; linked to Li-Fraumeni syndrome and multiple cancers |
+| chr17:69182166 | ABCA10 | missense_variant | MODERATE | c.2756C>G | p.Thr919Ser | T→S | SIFT: tolerated (1), PolyPhen: benign (0.003) | - | rs777417595 | Likely benign or passenger mutation |
+
+### 3. Interpretation table
+
+### Interpretation
+
+- **TP53 (chr17:7674894)**: High-impact *stop-gained* mutation leading to protein truncation. This is a well-known pathogenic variant associated with multiple cancers and likely represents a **driver mutation** in the tumor.
+- **ABCC2 (chr10:99797228)**: Missense variant with uncertain clinical significance. Likely not a primary driver.
+- **ABCA10 (chr17:69182166)**: Predicted benign missense variant, likely a **passenger mutation**.
+
+Overall, the variant profile suggests a tumor with a strong **TP53-driven component**, alongside additional low-impact variants.
+
+---
+
+
 👉 [Back to the top](#part-vii--matched-tumor-normal-somatic-analysis-bash-pipeline)
 
 Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
