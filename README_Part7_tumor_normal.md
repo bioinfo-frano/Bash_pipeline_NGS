@@ -456,7 +456,6 @@ chr17	7674894	.	G	A	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=268,178|55,34;DP=559
 chr17	69182166	.	G	C	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=290,218|95,89;DP=702;ECNT=1;ECNTH=1;GERMQ=93;MBQ=20,20;MFRL=170,165;MMQ=60,60;MPOS=40;NALOD=-2.136;NLOD=40.7;POPAF=6;ROQ=93;TLOD=472.03;AC=1;AN=4	GT:AD:AF:DP:F1R2:F2R1:FAD:SB	0/1:316,184:0.369:500:114,66:101,59:220,128:175,141,95,89	0/0:192,0:0.007264:192:71,0:56,0:136,0:115,77,0,0
 ```
 
-
 ### 2. Somatic Ensembl Variant Annotation (VEP):
 
 Somatic Variant Annotation (VEP)
@@ -476,6 +475,13 @@ Somatic Variant Annotation (VEP)
 - **ABCA10 (chr17:69182166)**: Predicted benign missense variant, likely a **passenger mutation**.
 
 Overall, the variant profile suggests a tumor with a strong **TP53-driven component**, alongside additional low-impact variants.
+
+| Gene   | Variant     | Type        | Verdict      |
+| ------ | ----------- | ----------- | ------------ |
+| TP53   | p.Arg213Ter | stop_gained | 🟥 DRIVER    |
+| ABCC2  | p.Arg255Gln | missense    | 🟨 passenger |
+| ABCA10 | p.Thr919Ser | missense    | 🟨 passenger |
+
 
 ---
 
