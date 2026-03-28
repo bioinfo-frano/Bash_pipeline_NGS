@@ -468,8 +468,6 @@ Somatic Variant Annotation (VEP)
 
 ### 3. Interpretation table
 
-### Interpretation
-
 - **TP53 (chr17:7674894)**: High-impact *stop-gained* mutation leading to protein truncation. This is a well-known pathogenic variant associated with multiple cancers and likely represents a **driver mutation** in the tumor.
 - **ABCC2 (chr10:99797228)**: Missense variant with uncertain clinical significance. Likely not a primary driver.
 - **ABCA10 (chr17:69182166)**: Predicted benign missense variant, likely a **passenger mutation**.
