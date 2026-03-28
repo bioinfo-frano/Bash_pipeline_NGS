@@ -490,5 +490,5 @@ Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in �
 
 Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
 
-Go to the main page 👉 [Bash_pipeline_NGS](README.md)
+Go to the main page 👉 [Bash_pipeline_NGS](README.md) 
 
