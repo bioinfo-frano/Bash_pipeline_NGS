@@ -298,28 +298,65 @@ Genomics_cancer/
 │   └── PRJNA1156316/
 │       ├── SRR30536566_tumor/
 │       │   └── raw_fastq/
-│       │   │    ├── SRR30536566_1.fastq.gz
-│       │   │    └── SRR30536566_2.fastq.gz
-│       │   │
-│       │   ├── aligned/SRR30536566_tumor.markdup.metrics.txt, SRR30536566_tumor.sorted.markdup.md.bam, SRR30536566_tumor.sorted.markdup.md.bam.bai
-│       │   ├── logs/bwa_mem.log, cutadapt_SRR30536566_tumor.log, markduplicates_SRR30536566_tumor.log, SRR30536566_tumor.flagstat.txt, SRR30536566_tumor.idxstats.txt
-│       │   ├── qc/md_flagstat/, raw/, trimmed/
-│       │   └── trimmed/SRR30536566_tumor_R1.trimmed.fastq.gz, SRR30536566_tumor_R2.trimmed.fastq.gz
+│       │   │    ├── SRR30536566_tumor_1.fastq.gz
+│       │   │    └── SRR30536566_tumor_2.fastq.gz
+│       │   └── aligned/
+│       │       ├── SRR30536566_tumor.markdup.metrics.txt
+│       │       ├── SRR30536566_tumor.sorted.markdup.md.bam
+│       │       └── SRR30536566_tumor.sorted.markdup.md.bam.bai
+│       │   └── logs
+│       │       └── bwa_mem.log
+│       │       └── cutadapt_SRR30536566_tumor.log
+│       │       └── markduplicates_SRR30536566_tumor.log
+│       │       └── SRR30536566_tumor.flagstat.txt
+│       │       └── SRR30536566_tumor.idxstats.txt
+│       │   └── qc
+│       │       └── md_flagstat /multiqc_report, multiqc_report.html
+│       │       └── raw  / multiqc_report.html, SRR30536566_tumor_1_fastqc.html, SRR30536566_tumor_2_fastqc.html ...
+│       │       └── trimmed  / multiqc_report.html, SRR30536566_tumor_R1.trimmed_fastqc.html, SRR30536566_tumor_R2.trimmed_fastqc.html ...
+│       │   └── trimmed
+│       │       └── SRR30536566_tumor_R1.trimmed.fastq.gz
+│       │       └── SRR30536566_tumor_R2.trimmed.fastq.gz
 │       │
 │       └── SRR30536541_normal
 │       │   └── raw_fastq/
-│       │   │    ├── SRR30536541_1.fastq.gz
-│       │   │    └── SRR30536541_2.fastq.gz
-│       │   │
-│       │   ├── aligned/SRR30536541_normal.markdup.metrics.txt, SRR30536541_normal.sorted.markdup.md.bam, SRR30536541_normal.sorted.markdup.md.bam.bai
-│       │   ├── logs/bwa_mem.log, cutadapt_SRR30536541_normal.log, markduplicates_SRR30536541_normal.log, SRR30536541_normal.flagstat.txt, SRR30536541_normal.idxstats.txt
-│       │   ├── qc/md_flagstat/, raw/, trimmed/
-│       │   └── trimmed/SRR30536541_tumor_R1.trimmed.fastq.gz, SRR30536541_normal_R2.trimmed.fastq.gz
+│       │   │    ├── SRR30536541_normal_1.fastq.gz
+│       │   │    └── SRR30536541_normal_2.fastq.gz
+│       │   └── aligned                                             # Same as paired tumor
+│       │   └── logs                                                # Same as paired tumor
+│       │   └── qc                                                  # Same as paired tumor
+│       │   └── trimmed
+│       │       └── SRR30536541_normal_R1.trimmed.fastq.gz
+│       │       └── SRR30536541_normal_R2.trimmed.fastq.gz
 │       │
-│       └── logs/mutect2.stderr.log, mutect2.stdout.log, PRJNA1156316_calculate_contamination.log, PRJNA1156316_filter_mutect_calls.log, PRJNA1156316_learn_read_orientation_model.log, PRJNA1156316_SRR30536566_tumor_get_pileup_summaries.log, PRJNA1156316.postfilter.log
+│       └── logs
+│       │   └── mutect2.stderr.log                                        
+│       │   └── mutect2.stdout.log
+│       │   └── PRJNA1156316_calculate_contamination.log
+│       │   └── PRJNA1156316_filter_mutect_calls.log
+│       │   └── PRJNA1156316_learn_read_orientation_model.log
+│       │   └── PRJNA1156316_SRR30536566_normal_get_pileup_summaries.log
+│       │   └── PRJNA1156316_SRR30536566_tumor_get_pileup_summaries.log
+│       │   └── PRJNA1156316.postfilter.log
 │       │
-│       └── variants/PRJNA1156316.f1r2.tar.gz, PRJNA1156316.filtered.PASS.vcf.gz, PRJNA1156316.filtered.PASS.vcf.gz.tbi, PRJNA1156316.postfiltered.vcf.gz, PRJNA1156316.postfiltered.vcf.gz.tbi, PRJNA1156316.segments.table, PRJNA1156316_normal.pileups.table, PRJNA1156316_tumor.pileups.table, PRJNA1156316.contamination.table, PRJNA1156316_tumor_normal.unfiltered.vcf.gz, PRJNA1156316.postfilter_summary.txt
-│
+│       └── variants
+│       │   └── PRJNA1156316_normal.pileups.table
+│       │   └── PRJNA1156316_tumor_normal.unfiltered.vcf.gz
+│       │   └── PRJNA1156316_tumor_normal.unfiltered.vcf.gz.stats
+│       │   └── PRJNA1156316_tumor_normal.unfiltered.vcf.gz.tbi
+│       │   └── PRJNA1156316_tumor.pileups.table
+│       │   └── PRJNA1156316.contamination.table
+│       │   └── PRJNA1156316.f1r2.tar.gz
+│       │   └── PRJNA1156316.filtered.PASS.vcf.gz
+│       │   └── PRJNA1156316.filtered.PASS.vcf.gz.tbi
+│       │   └── PRJNA1156316.filtered.vcf.gz
+│       │   └── PRJNA1156316.filtered.vcf.gz.filteringStats.tsv
+│       │   └── PRJNA1156316.filtered.vcf.gz.tbi
+│       │   └── PRJNA1156316.postfilter_summary.txt
+│       │   └── PRJNA1156316.postfiltered.vcf.gz
+│       │   └── PRJNA1156316.postfiltered.vcf.gz.tbi
+│       │   └── PRJNA1156316.read-orientation-model.tar.gz
+│       │   └── PRJNA1156316.segments.table
 ├── reference/
 │   └── GRCh38/
 │       ├── fasta/
@@ -442,7 +479,8 @@ High-grade serous ovarian carcinoma (HGSC) is the most common subtype of ovarian
 
 - **Design**: DNA from tumor tissue samples was isolated by AllPrep DNA/RNA/Protein Mini Kit (Qiagen, Hilden, Germany) following manufacturers protocol. DNA from peripheral blood lymphocytes was isolated and stored according to the published procedure (Topic and Gluhak 1991, PMID 1892954). DNA was quantified using Quant-iT PicoGreen dsDNA Assay Kit for DNA samples (Invitrogen, Waltham, MA, USA) on plate reader Infinite M200 (Tecan Group ltd., Switzerland). Purity of DNA samples was verified by Nanodrop 2000 (ThermoFisher Scientific, Waltham, MA, USA) and calculation of ratios A260/A230. DNA was stored at -20C until further use. Library preparation was performed using the SureSelect XT low input kit (Agilent Technologies, Inc.) with enzymatic fragmentation according to the manufacturers protocol. Targeted sequencies were captured (design 1.3 Mb, custom panel of 100+ OVC-relevant genes) from the individual pools of libraries of 8 for tumors and 24 for normals. **Pooling of libraries for sequencing was done at 5:1 ratio of tumors vs. blood to ensure approximately 5 times higher coverage for tumors**. Sequencing was performed on the Illumina NovaSeq 6000 platform in 150 bp paired-end mode (Illumina Inc.). **"T" in sample name signifies a tumor sample, "K" signifies a normal sample**.
 
-## Pipeline: Analysis was performed using the same bash script for matched tumor-normal, sample `PRJNA1156316`, with some adaptations in variables PROJECT, SAMPLE among others.
+> >[!NOTE]
+> Pipeline: Analysis was performed using the same bash script for matched tumor-normal, sample `PRJNA1156316`, with some adaptations in variables PROJECT, SAMPLE among others.
 
 ## Results
 
