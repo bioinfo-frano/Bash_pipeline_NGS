@@ -533,7 +533,7 @@ Somatic Variant Annotation (VEP)
 **Figure 2: Annotated variants from Online-VEP. Observe that variants with impact "MODIFIER" were filtered out (see arrow)**
 
 <p align="center">
-  <img src="images/tumor-normal_vep_2.png" alt="Figure 2" width="70%">
+  <img src="images/tumor-normal_vep_2.png" alt="Figure 2" width="80%">
 </p>
 
 ### 3. Interpretation table
