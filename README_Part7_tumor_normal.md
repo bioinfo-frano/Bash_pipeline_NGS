@@ -209,6 +209,24 @@ The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colore
 >[!NOTE]
 > The datasets `SRR30536566` & `SRR30536541` must be from same patient based on "Age", "Collection_Date", "Sample Name", "sex", and "source_material_identifier"
 
+The figure below shows the first 4 steps to get the pair tumor-normal.
+
+![Figure 1: Getting pair tumor-normal datasets from NCBI-SRA](images/tumor-normal_SRA_1.png)
+
+>[!IMPORTANT]
+> Once getting the Run accessions, the dataset "tumor" and "normal" can be download by:
+>
+> 1. `fasterq-dump`, for example:
+> 
+> fasterq-dump SRR30536566 \    
+  --split-files \		      	  
+  --threads 4 \		        	  
+  --outdir raw_fastq	  	  	
+>
+> 2. **ENA**
+>
+> **ENA** is probably the fastest way of downloading datasets; however, using `fasterq-dump` is more reliable.
+
 5. Paste the Run accession, e.g. `SRR30536566` (tumor), in **[ENA](https://www.ebi.ac.uk/ena/browser/home)** "Search" pane.
 
 6. Select the pairs "**_1**" and "**_2**" for the dataset 
@@ -369,7 +387,7 @@ Genomics_cancer/
 
 ```
 
-### 1. Amount of post-filtered variants: **two**
+### 1. Amount of post-filtered variants: 2 Variants
 
 ```bash
 cd ~/Genomics_cancer/data/PRJNA1156316/variants
@@ -478,7 +496,7 @@ High-grade serous ovarian carcinoma (HGSC) is the most common subtype of ovarian
 
 - **Design**: DNA from tumor tissue samples was isolated by AllPrep DNA/RNA/Protein Mini Kit (Qiagen, Hilden, Germany) following manufacturers protocol. DNA from peripheral blood lymphocytes was isolated and stored according to the published procedure (Topic and Gluhak 1991, PMID 1892954). DNA was quantified using Quant-iT PicoGreen dsDNA Assay Kit for DNA samples (Invitrogen, Waltham, MA, USA) on plate reader Infinite M200 (Tecan Group ltd., Switzerland). Purity of DNA samples was verified by Nanodrop 2000 (ThermoFisher Scientific, Waltham, MA, USA) and calculation of ratios A260/A230. DNA was stored at -20C until further use. Library preparation was performed using the SureSelect XT low input kit (Agilent Technologies, Inc.) with enzymatic fragmentation according to the manufacturers protocol. Targeted sequencies were captured (design 1.3 Mb, custom panel of 100+ OVC-relevant genes) from the individual pools of libraries of 8 for tumors and 24 for normals. **Pooling of libraries for sequencing was done at 5:1 ratio of tumors vs. blood to ensure approximately 5 times higher coverage for tumors**. Sequencing was performed on the Illumina NovaSeq 6000 platform in 150 bp paired-end mode (Illumina Inc.). **"T" in sample name signifies a tumor sample, "K" signifies a normal sample**.
 
-> >[!NOTE]
+>[!NOTE]
 > Pipeline: Analysis was performed using the same bash script for matched tumor-normal, sample `PRJNA1156316`, with some adaptations in variables PROJECT, SAMPLE among others.
 
 ### Results
