@@ -502,7 +502,7 @@ High-grade serous ovarian carcinoma (HGSC) is the most common subtype of ovarian
 - **Design**: DNA from tumor tissue samples was isolated by AllPrep DNA/RNA/Protein Mini Kit (Qiagen, Hilden, Germany) following manufacturers protocol. DNA from peripheral blood lymphocytes was isolated and stored according to the published procedure (Topic and Gluhak 1991, PMID 1892954). DNA was quantified using Quant-iT PicoGreen dsDNA Assay Kit for DNA samples (Invitrogen, Waltham, MA, USA) on plate reader Infinite M200 (Tecan Group ltd., Switzerland). Purity of DNA samples was verified by Nanodrop 2000 (ThermoFisher Scientific, Waltham, MA, USA) and calculation of ratios A260/A230. DNA was stored at -20C until further use. Library preparation was performed using the SureSelect XT low input kit (Agilent Technologies, Inc.) with enzymatic fragmentation according to the manufacturers protocol. Targeted sequencies were captured (design 1.3 Mb, custom panel of 100+ OVC-relevant genes) from the individual pools of libraries of 8 for tumors and 24 for normals. **Pooling of libraries for sequencing was done at 5:1 ratio of tumors vs. blood to ensure approximately 5 times higher coverage for tumors**. Sequencing was performed on the Illumina NovaSeq 6000 platform in 150 bp paired-end mode (Illumina Inc.). **"T" in sample name signifies a tumor sample, "K" signifies a normal sample**.
 
 >[!NOTE]
-> Pipeline: Analysis was performed using the same bash script for matched tumor-normal, sample `PRJNA1156316`, with some adaptations in variables PROJECT, SAMPLE among others.
+> Bash pipeline: Analysis of datsets from project `PRJNA955019` was performed using the same bash script for matched tumor-normal, project `PRJNA1156316`, with some adaptations in variables `$PROJECT`, `$SAMPLE` among others.
 
 ### Results
 
@@ -516,6 +516,7 @@ chr17	7674894	.	G	A	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=268,178|55,34;DP=559
 chr17	69182166	.	G	C	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=290,218|95,89;DP=702;ECNT=1;ECNTH=1;GERMQ=93;MBQ=20,20;MFRL=170,165;MMQ=60,60;MPOS=40;NALOD=-2.136;NLOD=40.7;POPAF=6;ROQ=93;TLOD=472.03;AC=1;AN=4	GT:AD:AF:DP:F1R2:F2R1:FAD:SB	0/1:316,184:0.369:500:114,66:101,59:220,128:175,141,95,89	0/0:192,0:0.007264:192:71,0:56,0:136,0:115,77,0,0
 ```
 
+
 ### 2. Somatic Ensembl Variant Annotation (VEP)
 
 Somatic Variant Annotation (VEP)
@@ -525,6 +526,15 @@ Somatic Variant Annotation (VEP)
 | chr10:99797228 | ABCC2 | missense_variant | MODERATE | c.764G>A | p.Arg255Gln | R→Q | SIFT: tolerated (0.64), PolyPhen: benign (0.003) | Uncertain significance | rs139964853 | Associated with Dubin-Johnson syndrome |
 | chr17:7674894 | TP53 | stop_gained | HIGH | c.637C>T | p.Arg213Ter | R→* (STOP) | - | Pathogenic | rs397516436 | Classic tumor suppressor truncation; linked to Li-Fraumeni syndrome and multiple cancers |
 | chr17:69182166 | ABCA10 | missense_variant | MODERATE | c.2756C>G | p.Thr919Ser | T→S | SIFT: tolerated (1), PolyPhen: benign (0.003) | - | rs777417595 | Likely benign or passenger mutation |
+
+>[!IMPORTANT]
+> Even though four variants were finally found, only three of them have impact "MODERATE" and "HIGH". The eliminated variant had an impact "MODIFIER", which most probably is not involved as driver nor as passenger of tumor development.
+
+**Figure 2: Annotated variants from Online-VEP. Observe that variants with impact "MODIFIER" were filtered out (see arrow)**
+
+<p align="center">
+  <img src="images/tumor-normal_vep_2.png" alt="Figure 2" width="70%">
+</p>
 
 ### 3. Interpretation table
 
