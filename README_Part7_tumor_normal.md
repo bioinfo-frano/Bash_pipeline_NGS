@@ -211,12 +211,16 @@ The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colore
 
 The figure below shows the first 4 steps to get the pair tumor-normal.
 
-![Figure 1: Getting pair tumor-normal datasets from NCBI-SRA](images/tumor-normal_SRA_1.png)
+<p align="center">
+  <img src="images/tumor-normal_SRA_1.png" alt="Figure 1: Getting pair tumor-normal datasets from NCBI-SRA" width="60%">
+</p>
+
+![Figure 1: Getting pair tumor-normal datasets from NCBI-SRA](images/tumXXor-normal_SRA_1.png)
 
 >[!IMPORTANT]
 > Once getting the Run accessions, the dataset "tumor" and "normal" can be download by:
 >
-> 1. `fasterq-dump`, for example:
+> 1. `fasterq-dump`. Use Terminal to download the dataset for "tumor" and its matched "normal":
 > 
 > fasterq-dump SRR30536566 \    
   --split-files \		      	  
