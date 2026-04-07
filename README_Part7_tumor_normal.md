@@ -43,17 +43,6 @@ What are the differences between these two approaches in somatic analysis? See *
 
 ### A. Mutect2
 
-The main differences lie in the Mutect2 command (**Table 2**).
-
-### Table 2: Differences in Variant Calling with Mutect2 between Tumor-Only and Tumor‑Normal
-
-| Aspect | Tumor‑Only | Matched Tumor‑Normal |
-|--------|------------|----------------------|
-| **Mutect2 command** | Uses `--tumor-sample` only, plus `--panel-of-normals` and `--germline-resource`. | Uses both `--tumor-sample` and `--normal-sample`. The normal BAM is provided with `-I` twice (once for each sample). The PON and germline resource are still used. |
-| **Orientation bias model** | Still needed; learned from tumor BAM f1r2 tar. | Still needed; learned from tumor BAM f1r2 tar. |
-| **Contamination estimation** | Estimated from tumor BAM using `GetPileupSummaries` and `CalculateContamination`. | Contamination is estimated **separately** for tumor and normal (both can be contaminated). You can run `GetPileupSummaries` on both BAMs and then `CalculateContamination` with `--matched-normal` flag. |
-| **Filtering** | `FilterMutectCalls` uses contamination table and orientation model. | Same, but contamination table may include both samples. The matched normal helps in filtering germline variants. |
-
 
 Below are simplified versions of the Mutect2 commands used in each approach:
 
@@ -94,17 +83,17 @@ gatk Mutect2 \
 **Tumor-only**
 
 ```bash
-RG_SM="DMBEL-EIDR-071"  # Library Name tumor  // Run: SRR30536566
+RG_SM="EIDR_55_tumor"  # Library Name tumor  // Run: SRR30536566
 ```
 
 **Tumor-normal**: the samples must be distinguished
 
 ```bash
 # Tumor
-RG_SM="DMBEL-EIDR-071"
+RG_SM="EIDR_55_tumor"  # Library Name tumor  // Run: SRR30536566
 
 # Normal
-RG_SM="DMBEL-EIDR-096"  # Library Name normal // Run:
+RG_SM="EIDR_55_blood"  # Library Name normal // Run: SRR30536541
 ```
 
 👉 The SM (sample name) must match the names provided to `--tumor-sample` and `--normal-sample` in Mutect2.
@@ -161,6 +150,16 @@ But behavior differs:
 | gnomAD                 | Essential  | Helpful but less critical |
 
 👉 The matched normal reduces reliance on these resources **but does not fully replace them**.
+
+
+### Table 2 (Summary): Differences in Variant Calling with Mutect2 between Tumor-Only and Tumor‑Normal
+
+| Aspect | Tumor‑Only | Matched Tumor‑Normal |
+|--------|------------|----------------------|
+| **Mutect2 command** | Uses `--tumor-sample` only, plus `--panel-of-normals` and `--germline-resource`. | Uses both `--tumor-sample` and `--normal-sample`. The normal BAM is provided with `-I` twice (once for each sample). The PON and germline resource are still used. |
+| **Orientation bias model** | Still needed; learned from tumor BAM f1r2 tar. | Still needed; learned from tumor BAM f1r2 tar. |
+| **Contamination estimation** | Estimated from tumor BAM using `GetPileupSummaries` and `CalculateContamination`. | Contamination is estimated **separately** for tumor and normal (both can be contaminated). You can run `GetPileupSummaries` on both BAMs and then `CalculateContamination` with `--matched-normal` flag. |
+| **Filtering** | `FilterMutectCalls` uses contamination table and orientation model. | Same, but contamination table may include both samples. The matched normal helps in filtering germline variants. |
 
 ---
 
