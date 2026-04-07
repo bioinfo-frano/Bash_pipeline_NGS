@@ -530,7 +530,7 @@ Somatic Variant Annotation (VEP)
 >[!IMPORTANT]
 > Even though four variants were finally found, only three of them have impact "MODERATE" and "HIGH". The eliminated variant had an impact "MODIFIER", which most probably is not involved as driver nor as passenger of tumor development.
 
-**Figure 2: Annotated variants from Online-VEP. Observe that variants with impact "MODIFIER" were filtered out (see arrow)**
+**Figure 2: Annotated variants from Online-VEP. Observe that variants with impact "MODIFIER" were filtered out (see arrow) considered "Canonical" were selected (see arrow)**
 
 <p align="center">
   <img src="images/tumor-normal_vep_2.png" alt="Figure 2" width="80%">
