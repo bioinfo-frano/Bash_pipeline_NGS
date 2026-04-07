@@ -152,7 +152,7 @@ But behavior differs:
 👉 The matched normal reduces reliance on these resources **but does not fully replace them**.
 
 
-### Table 2 (Summary): Differences in Variant Calling with Mutect2 between Tumor-Only and Tumor‑Normal
+### Table 2 (Summary): Differences in Variant Calling between Tumor-Only and Tumor‑Normal
 
 | Aspect | Tumor‑Only | Matched Tumor‑Normal |
 |--------|------------|----------------------|
@@ -289,7 +289,9 @@ Genomics_cancer/
 
 ---
 
-### View of folder structure after running tumor-normal somatic analysis bash script 👉 [09_full_somatic_DNA2_PRJNA1156316_TN.sh](bash_scripts/09_full_somatic_DNA2_PRJNA1156316_TN.sh)
+### Results
+
+View of folder structure after running tumor-normal somatic analysis bash script 👉 [09_full_somatic_DNA2_PRJNA1156316_TN.sh](bash_scripts/09_full_somatic_DNA2_PRJNA1156316_TN.sh)
 
 ```bash
 Genomics_cancer/
@@ -297,8 +299,8 @@ Genomics_cancer/
 │   └── PRJNA1156316/
 │       ├── SRR30536566_tumor/
 │       │   └── raw_fastq/
-│       │   │    ├── SRR30536566_tumor_1.fastq.gz
-│       │   │    └── SRR30536566_tumor_2.fastq.gz
+│       │        ├── SRR30536566_tumor_1.fastq.gz
+│       │        └── SRR30536566_tumor_2.fastq.gz
 │       │   └── aligned/
 │       │       ├── SRR30536566_tumor.markdup.metrics.txt
 │       │       ├── SRR30536566_tumor.sorted.markdup.md.bam
@@ -319,8 +321,8 @@ Genomics_cancer/
 │       │
 │       └── SRR30536541_normal
 │       │   └── raw_fastq/
-│       │   │    ├── SRR30536541_normal_1.fastq.gz
-│       │   │    └── SRR30536541_normal_2.fastq.gz
+│       │        ├── SRR30536541_normal_1.fastq.gz
+│       │        └── SRR30536541_normal_2.fastq.gz
 │       │   └── aligned                                             # Same as paired tumor
 │       │   └── logs                                                # Same as paired tumor
 │       │   └── qc                                                  # Same as paired tumor
@@ -367,9 +369,7 @@ Genomics_cancer/
 
 ```
 
-### Results
-
-1. Amount of post-filtered variants: **two**
+### 1. Amount of post-filtered variants: **two**
 
 ```bash
 cd ~/Genomics_cancer/data/PRJNA1156316/variants
@@ -402,7 +402,7 @@ PASS variants before post-filtering: 2
 Variants retained: 2
 ```
 
-2. Type of somatic variant - genes
+### 2. Type of somatic variant - genes
 
 ```bash
 cd ~/Genomics_cancer/data/PRJNA1156316/variants
@@ -481,7 +481,7 @@ High-grade serous ovarian carcinoma (HGSC) is the most common subtype of ovarian
 > >[!NOTE]
 > Pipeline: Analysis was performed using the same bash script for matched tumor-normal, sample `PRJNA1156316`, with some adaptations in variables PROJECT, SAMPLE among others.
 
-## Results
+### Results
 
 ### 1. Post-filtered variants: 4 variants
 
