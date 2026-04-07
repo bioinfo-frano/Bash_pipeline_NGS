@@ -211,11 +211,12 @@ The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colore
 
 The figure below shows the first 4 steps to get the pair tumor-normal.
 
+**Figure 1: Getting pair tumor-normal datasets from NCBI-SRA**
+
 <p align="center">
-  <img src="images/tumor-normal_SRA_1.png" alt="Figure 1: Getting pair tumor-normal datasets from NCBI-SRA" width="60%">
+  <img src="images/tumor-normal_SRA_1.png" alt="Figure 1: Getting pair tumor-normal datasets from NCBI-SRA" width="70%">
 </p>
 
-![Figure 1: Getting pair tumor-normal datasets from NCBI-SRA](images/tumXXor-normal_SRA_1.png)
 
 >[!IMPORTANT]
 > Once getting the Run accessions, the dataset "tumor" and "normal" can be download by:
