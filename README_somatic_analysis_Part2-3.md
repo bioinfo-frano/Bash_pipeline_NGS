@@ -933,7 +933,7 @@ gunzip -c gencode.v38.annotation.gtf.gz > gencode.v38.annotation.gtf
 >
 >"**Design**: Targeted sequencing of full-length, KRAS NRAS BRAF PIK3CA PTEN RRAS and MEK1 including UTR, exons, and introns.".
 >
-> Therefore, these genes can be check whether they exist or not in the **.gtf** file.
+> Therefore, these genes can be checked whether they exist or not in the **.gtf** file.
 
   - Use this code to verify genes individually from **.gtf** file:
 
