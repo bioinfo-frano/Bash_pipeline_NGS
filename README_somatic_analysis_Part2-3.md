@@ -929,17 +929,19 @@ gunzip -c gencode.v38.annotation.gtf.gz > gencode.v38.annotation.gtf
   - 4.4. Verify the presence of gene targets KRAS, NRAS, BRAF, PIK3CA, PTEN, RRAS, and MAP2K1 (MEK1) in **.gtf** file
 
 >[!NOTE] 
-> The authors of dataset Run [SRR30536566](https://www.ncbi.nlm.nih.gov/sra/SRX25960056) point out in the following: 
+> The authors of dataset Run [SRR30536566](https://www.ncbi.nlm.nih.gov/sra/SRX25960056) point out the following: 
 >
->"**Design**: Targeted sequencing of full-length, KRAS NRAS BRAF PIK3CA PTEN RRAS and MEK1 including UTR, exons, and introns."
+>"**Design**: Targeted sequencing of full-length, KRAS NRAS BRAF PIK3CA PTEN RRAS and MEK1 including UTR, exons, and introns.".
+>
+> Therefore, these genes can be check whether they exist or not in the **.gtf** file.
 
-  - Use this code to verify genes individually:
+  - Use this code to verify genes individually from **.gtf** file:
 
 ```bash
 zless gencode.v38.annotation.gtf.gz | grep "chr*" | grep -w "KRAS" | head -n1     # Copy/Paste the gene target in "gene" and hit Enter
 ```
 
-  - **Alternative**: Use a for-loop to retrieve all target genes at once for .gtf file 👉 [04_for_loop_gtf.sh](bash_scripts/04_for_loop_gtf.sh)
+  - **Alternative**: Use a for-loop to retrieve all target genes at once for **.gtf** file 👉 [04_for_loop_gtf.sh](bash_scripts/04_for_loop_gtf.sh)
 
 
 5. **Generation of BED file (if authors provided no BED)**
