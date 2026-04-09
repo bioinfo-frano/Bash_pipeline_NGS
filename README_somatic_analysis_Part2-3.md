@@ -876,14 +876,14 @@ mkdir somatic_resources intervals
     
   - Location of **gnomad** and **PoN** files:
     - Go to: [Google Cloud Buckets - gatk-best-practices ](https://console.cloud.google.com/storage/browser/gatk-best-practices/)
-    - Find **gnomad** and **PoN** links to download in: `gatk-best-practices/somatic-hg38`
+    - Find **gnomad** and **PoN** links to download in: `Buckets/gatk-best-practices/somatic-hg38`
     
 >[!NOTE]
 > Alternatively, **gnomad** can be found in:
 >
 > [Google Cloud Buckets - gcp-public-data--broad-references](https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references/hg38/v0)
 >
-> **gnomAD** links to download in: `gcp-public-data--broad-references/hg38/v0/somatic-hg38`
+> **gnomAD** links to download in: `Buckets/gcp-public-data--broad-references/hg38/v0/somatic-hg38`
     
 
 4. **Download GTF file to ~/reference/GRCh38/intervals**
