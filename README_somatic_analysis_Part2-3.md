@@ -875,13 +875,13 @@ mkdir somatic_resources intervals
   - Run 👉 [0_wget_gnomad_PoN.sh](bash_scripts/0_wget_gnomad_PoN.sh)
     
   - Location of **gnomad** and **PoN** files:
-    - Go to: Google Cloud Best Practices folder [Buckets - gatk-best-practices ](https://console.cloud.google.com/storage/browser/gatk-best-practices/)
+    - Go to: [Google Cloud Buckets - gatk-best-practices ](https://console.cloud.google.com/storage/browser/gatk-best-practices/)
     - Find **gnomad** and **PoN** links to download in: `gatk-best-practices/somatic-hg38`
     
 >[!NOTE]
 > Alternatively, **gnomad** can be found in:
 >
-> [Buckets - gcp-public-data--broad-references](https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references/hg38/v0)
+> [Google Cloud Buckets - gcp-public-data--broad-references](https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references/hg38/v0)
 >
 > **gnomAD** links to download in: `gcp-public-data--broad-references/hg38/v0/somatic-hg38`
     
