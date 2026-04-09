@@ -639,15 +639,13 @@ Check:
 
 The reference human genome is actually a bundle of files and it can be found on the GATK [website](https://gatk.broadinstitute.org/hc/en-us/articles/360035890811-Resource-bundle), specifically in the link provided in the Resource Bundle hosted on [Google Cloud Buckets - gcp-public-data--broad-references ](https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references/hg38/v0)
 
-In Google Cloud: ***Buckets/genomics-public-data/resources/broad/hg38/v0*** is possible to find part of the reference human genome bundle (called **hg38** (informal name) or **GRCh38** (Genome Reference Consortium human build 38)). There you can find the following files:
+In Google Cloud: ***Buckets/gcp-public-data--broad-references/hg38/v0*** is possible to find the whole reference human genome bundle (called **hg38** (informal name) or **GRCh38** (Genome Reference Consortium human build 38)). There you can find the following files:
 
 - Homo_sapiens_assembly38.fasta 
 
 - Homo_sapiens_assembly38.dict 
 
 - Homo_sapiens_assembly38.fasta.fai
-
-The other part of the hg38 bundle can be found in Google Cloud [Buckets - gcp-public-data--broad-references](https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references/hg38/v0)
 
 - Homo_sapiens_assembly38.fasta.64.alt
 
