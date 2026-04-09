@@ -872,7 +872,17 @@ mkdir somatic_resources intervals
 
 3. **Download Germline variant resource (gnomAD) and Panel of Normals (PoN) files to ~/somatic_resources**. 
 
-    Run 👉 [0_wget_gnomad_PoN.sh](bash_scripts/0_wget_gnomad_PoN.sh) 
+  - Run 👉 [0_wget_gnomad_PoN.sh](bash_scripts/0_wget_gnomad_PoN.sh)
+    
+  - Location of **gnomad** and **PoN** files:
+    - Go to: Google Cloud Best Practices folder [Buckets - gatk-best-practices ](https://console.cloud.google.com/storage/browser/gatk-best-practices/)
+    - Find **PoN** links to download in: `gatk-best-practices/somatic-hg38`
+    
+>[!NOTE]
+> Alternatively, **gnomad** can be found in:
+> [Buckets - gcp-public-data--broad-references](https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references/hg38/v0)
+> **gnomAD** links to download in: `gcp-public-data--broad-references/hg38/v0/somatic-hg38`
+    
 
 4. **Download GTF file to BED file generation (if authors provided no BED)**
 
@@ -883,9 +893,16 @@ mkdir somatic_resources intervals
 ```bash
 wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.annotation.gtf.gz
 ```
->**Note**: Do not download the 'GGF3' (from <https://www.gencodegenes.org/human/release_38.html>) nor the `Homo_sapiens_assembly38.contam.bed` (from <https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references/hg38/v0?>) as BED files.
+  - Location of **GTF** file: 
+    - Go to: [GENCODE](https://www.gencodegenes.org/human/release_38.html)
+    - Download **GTF**:  Regions: **CHR** ("This is the main annotation file for most users")
+    - Link: <https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.annotation.gtf.gz>
 
->**Note2**: GTF file structure <http://www.ensembl.org/info/website/upload/gff.html>:
+>[!NOTE]
+> Do not download the 'GGF3' (from <https://www.gencodegenes.org/human/release_38.html>) nor the `Homo_sapiens_assembly38.contam.bed` (from <https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references/hg38/v0?>) as BED files.
+
+
+**GTF file structure**: <http://www.ensembl.org/info/website/upload/gff.html>
 ```bash
 field 1  chrom
 field 2  source - name of the program that generated this feature, or the data source (database or project name)
@@ -898,15 +915,22 @@ field 8  frame
 field 9  attributes - a single long string semicolon-separated.
 ```
 
-  - 4.3. Decompress
+  - 4.3. Decompress (path: ~/reference/GRCh38/intervals)
 
 ```bash
-gunzip gencode.v38.annotation.gtf.gz
+gzip -dc gencode.v38.annotation.gtf.gz > gencode.v38.annotation.gtf
 ```
+  Alternatively:
+  
+```bash
+gunzip -c gencode.v38.annotation.gtf.gz > gencode.v38.annotation.gtf
+```
+
   - 4.4. Verify the presence of gene targets KRAS, NRAS, BRAF, PIK3CA, PTEN, RRAS, and MAP2K1 (MEK1) in **.gtf** file
 
->**Note**: The authors of dataset "SRR15506490" in <https://www.ncbi.nlm.nih.gov/sra/SRX25960056> point out in the following: 
-
+>[!NOTE] 
+> The authors of dataset "SRR15506490" in <https://www.ncbi.nlm.nih.gov/sra/SRX25960056> point out in the following: 
+>
 >"**Design**: Targeted sequencing of full-length, KRAS NRAS BRAF PIK3CA PTEN RRAS and MEK1 including UTR, exons, and introns."
 
   - Use this code to verify genes individually:
