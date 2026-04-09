@@ -862,33 +862,33 @@ Mutect2 compares tumor sequencing data against a reference genome and multiple e
 
 2. **Create folders**
 
-Go to: /Genomics_cfDNA_SRR15506490/Somatic_SRR15506490/reference/GRCh38
+Go to: /Genomics_cancer/reference/GRCh38
 
-Create these folders "somatic_resources" and "intervals":
+Create the folders "somatic_resources" and "intervals":
 
 ```bash
 mkdir somatic_resources intervals
 ```
 
-3. **Download Germline variant resource (gnomAD) and Panel of Normals (PoN) files to ~/somatic_resources**. 
+3. **Download Germline variant resource (gnomAD) and Panel of Normals (PoN) files to ~/reference/GRCh38/somatic_resources**. 
 
   - Run 👉 [0_wget_gnomad_PoN.sh](bash_scripts/0_wget_gnomad_PoN.sh)
     
   - Location of **gnomad** and **PoN** files:
     - Go to: Google Cloud Best Practices folder [Buckets - gatk-best-practices ](https://console.cloud.google.com/storage/browser/gatk-best-practices/)
-    - Find **PoN** links to download in: `gatk-best-practices/somatic-hg38`
+    - Find **gnomad** and **PoN** links to download in: `gatk-best-practices/somatic-hg38`
     
 >[!NOTE]
 > Alternatively, **gnomad** can be found in:
+>
 > [Buckets - gcp-public-data--broad-references](https://console.cloud.google.com/storage/browser/gcp-public-data--broad-references/hg38/v0)
+>
 > **gnomAD** links to download in: `gcp-public-data--broad-references/hg38/v0/somatic-hg38`
     
 
-4. **Download GTF file to BED file generation (if authors provided no BED)**
+4. **Download GTF file to ~/reference/GRCh38/intervals**
 
-  - 4.1. Go to /Genomics_cfDNA_SRR15506490/Somatic_SRR15506490/reference/GRCh38/intervals
-
-  - 4.2. Download **GTF** file with `wget`
+  - 4.1. Download **GTF** file with `wget`
 
 ```bash
 wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.annotation.gtf.gz
