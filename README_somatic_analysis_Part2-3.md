@@ -929,7 +929,7 @@ gunzip -c gencode.v38.annotation.gtf.gz > gencode.v38.annotation.gtf
   - 4.4. Verify the presence of gene targets KRAS, NRAS, BRAF, PIK3CA, PTEN, RRAS, and MAP2K1 (MEK1) in **.gtf** file
 
 >[!NOTE] 
-> The authors of dataset "SRR15506490" in <https://www.ncbi.nlm.nih.gov/sra/SRX25960056> point out in the following: 
+> The authors of dataset Run [SRR30536566](https://www.ncbi.nlm.nih.gov/sra/SRX25960056) point out in the following: 
 >
 >"**Design**: Targeted sequencing of full-length, KRAS NRAS BRAF PIK3CA PTEN RRAS and MEK1 including UTR, exons, and introns."
 
