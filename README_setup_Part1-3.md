@@ -39,8 +39,8 @@ Therefore, for learners who prefer to work locally — typically with 8–16 GB 
 
 Before we talk about FASTQ files, which contain the raw sequenced fragments (known as **reads**) of a DNA sample produced by a sequencer, I recommend reading more about them on these websites:
 
-- [FASTQ files explained](https://knowledge.illumina.com/software/general/software-general-reference_material-list/000002211)
-- [FASTQ format](https://en.wikipedia.org/wiki/FASTQ_format#:~:text=FASTQ%20format%20is%20a%20text%2Dbased%20format%20for,instruments%20such%20as%20the%20Illumina%20Genome%20Analyzer.)
+- [FASTQ files explained](https://support.illumina.com.cn/bulletins/2016/04/fastq-files-explained.html)
+- [FASTQ format](https://en.wikipedia.org/wiki/FASTQ_format)
 
 In practice, FASTQ file sizes vary widely depending on the sequencing strategy and target region. Small targeted sequencing panels may generate FASTQ files smaller than 1 GB, whereas larger experiments such as whole-exome sequencing (WES) or whole-genome sequencing (WGS) can easily produce tens to hundreds of gigabytes per sample. For users working on local machines with limited RAM and disk space, this variability has a direct impact on dataset selection and pipeline feasibility. **Table 2** provides representative examples of FASTQ file sizes from cancer-related datasets deposited in the NCBI Sequence Read Archive (SRA).
 
