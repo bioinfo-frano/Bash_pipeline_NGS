@@ -849,17 +849,21 @@ N : 0
 
 Observations:
 
-   - G is the major allele: 563 reads (~61%)
-   - C is the minor allele: 358 reads (~39%)
+   - G is the major allele: 563 reads (~61%), but it has higher amount of forward reads (431+) than reverse (132-)
+   - C is the minor allele: 358 reads (~39%), showing also higher amount of forward reads (275+) than reverse (83-)
    - A and T are negligible noise (4 reads each)
 
-This looks like a clean biallelic site (heterozygous), with: High depth, strong support for both alleles, balanced strand representation for both C and G.
+This looks like a clean biallelic site (heterozygous), with: High depth, strong support for both alleles, but unbalanced strand representation for both C and G.
 
-**Why isn't a SNV?** because of the **genomic context**:
-- Located between exon 15 and exon 16 of PIK3CA
-- Not within coding sequence
+**Why isn't a SNV?**: Observe the **genomic context**, **nature of reads** and **biology**:
+- Located between exon 15 and exon 16 of PIK3CA (intronic, non-coding sequence)
 - Not at canonical splice sites (±1–2 bp, sometimes ±8 bp depending on filters)
 - Even deep intronic variants can be retained if they are in known regulatory or splice-enhancer regions — but this is not the case here.
+- Additionally, the mutation is within a region saturated with homopolymer runs (A-repeats and T-repeats): `...TTTTAAAATAAATTTC*AGGGTAAAATAATAATAAA...`
+- Some reads are F1F2: wrong pair orientation, signaling a chimeric PCR artifact.
+- Some reads show soft and hard clipping, e.g. Cigar = 46M44H (hard clipping), Cigar = 75M15S (soft clipping), Cigar = 68M15S, etc.)
+- Extreme Strand and Position Bias: Both the Ref and Alt counts are heavily skewed toward the positive (+) strand in around ~3:1. This "Strand Bias" is a classic indicator of a systematic sequencing error.
+- Since there's a split 60 (G)/ 40 (C), a 61% VAF is actually a **red flag**. If a tumor is heterogeneous or has normal cell contamination, we expect somatic VAFs to be lower (e.g., 5–30%). A 61% VAF suggests either a germline variant, a loss-of-heterozygosity (LOH) event, or—as in this case—technical noise where the artifact is out-competing the real signal. 
 
 Most somatic pipelines (including Mutect2 + post-filtering):
 ❌ Do not retain deep intronic variants
@@ -869,8 +873,9 @@ This SNP has:
 - No predicted effect on protein
 - No established disease association
 - Not reportable in a clinical context
+- Not reliable read alignment
 
->**Interpretation**: A high-confidence intronic SNV was observed in PIK3CA between exons 15 and 16 with ~39% alternate allele fraction; however, this variant lies outside coding and splice regions and is predicted to have no functional impact (MODIFIER). It was therefore not considered clinically relevant and was excluded from downstream reporting.
+>**Interpretation**: Despite the high depth (929x) and high VAF (61%), this variant was rejected. The combination of hard and soft clipping, meaning that the aligner could not fully "trust" on those reads; illegal read orientation (F1F2), which violates the "inward-facing" rule of Illumina paired-end sequencing (F1R2/F2R1); and its location in a Low Complexity Region (LCR) deep within an intron identifies this as systematic noise. It lacks both the technical "cleanliness" and the biological "relevance" required for clinical reporting.
 
 2. Right side: Is this insertion an artifact?
 
