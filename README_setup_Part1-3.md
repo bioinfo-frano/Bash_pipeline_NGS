@@ -683,10 +683,10 @@ done
 ```
 
 | Command           | Function |  Benefit  |
-| ----------------- | --------------- |
+| ----------------- | -------- |-------- |
 | `prefetch`        | Downloads `.sra` file to cache        | Resume support, separates download from conversion   |
 | `vdb-validate`    | Checks integrity of `.sra` file       | Prevents conversion of corrupted data   |
-| `fasterq-dump`    | Converts .sra → FASTQ <br>(and can also directly download)   |Final step, generates usable FASTQ files |
+| `fasterq-dump`    | Converts `.sra` → FASTQ <br>(and can also directly download)   |Final step, generates usable FASTQ files |
 
 
 ---
