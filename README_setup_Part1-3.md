@@ -291,7 +291,7 @@ fasterq-dump : 3.2.1			# If output is 'fasterq-dump : 2.9.6', SRA-tools won't wo
 ```
 
 > [!NOTE]
-> The next step is configuring the SRA Toolkit in order to "***access public and, optionally, controlled-access data in the cloud***"    
+> The next step is configuring the **SRA Toolkit** in order to "***access public and, optionally, controlled-access data in the cloud***"    
 > To do so, follow the steps in <https://www.uvm.edu/vacc/docs/beyond_basics/sratoolkit/>, which tells you how to configure the **SRA Toolkit** via the interactive menu.    
 > The interactive menu can be reached with the command `vdb-config --interactive` or `vdb-config -i` through Terminal. Here, navigate through **SRA configuration** to set up, for example, the cache directory (default is `~/ncbi/public/sra/`).  
 >
@@ -646,14 +646,14 @@ Check:
 > - No hidden preprocessing steps affect your analysis
 
 
-### 7. Using a Bash script when downloading more than 1 FASTQ file using SRA Toolkit, including evaluation of data integrity
+### 7. Using a Bash script for downloading more than one FASTQ file using SRA Toolkit, including evaluation of data integrity
 
 ```bash
 #!/bin/bash
 
 set -euo pipefail
 
-DATASETS=("SRR6815993" "SRR6816017" "SRR6816003")
+DATASETS=("SRR6815...1" "SRR6816...2" "SRR6816...3")  # EXAMPLES!!
 
 for DATASET in "${DATASETS[@]}"; do
   echo
@@ -676,7 +676,7 @@ for DATASET in "${DATASETS[@]}"; do
   rm -f "$DATASET/$DATASET.sra"  # If SRA Tools wasn't configured, then removed *.sra with 'rm -f', otherwise comment this out
   echo "Evaluating integrity"
   zgrep -c "@" "$DATASET"/raw_fastq/*.fastq.gz   # Alternative: zcat "$DATASET"/raw_fastq/*_1.fastq.gz | wc -l | awk '{print $1/4}'
-  echo "Integity evaluation finished"
+  echo "Integrity evaluation finished"
   echo
 
 done
