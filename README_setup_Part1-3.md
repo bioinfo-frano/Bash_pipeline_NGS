@@ -648,7 +648,7 @@ Check:
 
 ### 7. Using a Bash script for downloading more than one FASTQ file using SRA Toolkit, including evaluation of data integrity
 
-```bash
+```text
 #!/bin/bash
 
 set -euo pipefail
@@ -681,6 +681,13 @@ for DATASET in "${DATASETS[@]}"; do
 
 done
 ```
+
+| Command           | Function |  Benefit  |
+| ----------------- | --------------- |
+| `prefetch`        | Downloads `.sra` file to cache        | Resume support, separates download from conversion   |
+| `vdb-validate`    | Checks integrity of `.sra` file       | Prevents conversion of corrupted data   |
+| `fasterq-dump`    | Converts .sra → FASTQ <br>(and can also directly download)   |Final step, generates usable FASTQ files |
+
 
 ---
 
