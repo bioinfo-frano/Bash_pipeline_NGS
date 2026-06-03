@@ -290,6 +290,18 @@ Expected output:
 fasterq-dump : 3.2.1			# If output is 'fasterq-dump : 2.9.6', SRA-tools won't work. Update!
 ```
 
+> [!NOTE]
+> The next step is configuring the SRA Toolkit in order to "***access public and, optionally, controlled-access data in the cloud***"    
+> To do so, follow the steps in <https://www.uvm.edu/vacc/docs/beyond_basics/sratoolkit/>, which tells you how to configure the **SRA Toolkit** via the interactive menu.    
+> The interactive menu can be reached with the command `vdb-config --interactive` or `vdb-config -i` through Terminal. Here, navigate through **SRA configuration** to set up, for example, the cache directory (default is `~/ncbi/public/sra/`).  
+>
+> By configuring the cache, tools like `prefetch` will store the downloaded `*.sra` files in `~/ncbi/public/sra/`. Later, `fasterq-dump` can read from the cache to split into R1 and R2 FASTQ files.  
+> The cache can be cleared with `cache-mgr -c` or `cache-mgr --clear`. Use with caution, as this removes all cached `.sra` files.   
+>
+> If this configuration is **not** set up, the `~/ncbi/public/sra/` won't exist or be used, and `cache-mgr` will be appear disabled. Despite this, `prefetch`, `vdb-validate`, `fasterq-dump` and other tools from **SRA Toolkit** will still work. However, each time you use `prefetch`, the `.sra` files will be placed in your **current working directory** instead of the cache (`~/ncbi/public/sra/`).  
+
+
+
 ### 2. Find small FASTQ files from [SRA](https://www.ncbi.nlm.nih.gov/sra)
 
 > [!IMPORTANT]  
@@ -632,6 +644,43 @@ Check:
 > - Results are fully reproducible
 > 
 > - No hidden preprocessing steps affect your analysis
+
+
+### 7. Using a Bash script when downloading more than 1 FASTQ file using SRA Toolkit, including evaluation of data integrity
+
+```bash
+#!/bin/bash
+
+set -euo pipefail
+
+DATASETS=("SRR6815993" "SRR6816017" "SRR6816003")
+
+for DATASET in "${DATASETS[@]}"; do
+  echo
+  echo "processing dataset: $DATASET"
+  echo
+  prefetch "$DATASET"
+  vdb-validate "$DATASET" || { echo "Validation failed for $DATASET"; exit 1; }
+  echo "downloading dataset: $DATASET"
+
+  fasterq-dump "$DATASET" \
+  --split-files \
+  --threads 4 \
+  --outdir "$DATASET"/raw_fastq
+
+  echo "Dataset $DATASET downloaded successfully in $PWD"
+  echo "Compressing"
+  pigz -p 4 "$DATASET"/raw_fastq/*.fastq
+  echo "Compression of $DATASET done!"
+  echo "Removing $DATASET.sra file"
+  rm -f "$DATASET/$DATASET.sra"  # If SRA Tools wasn't configured, then removed *.sra with 'rm -f', otherwise comment this out
+  echo "Evaluating integrity"
+  zgrep -c "@" "$DATASET"/raw_fastq/*.fastq.gz   # Alternative: zcat "$DATASET"/raw_fastq/*_1.fastq.gz | wc -l | awk '{print $1/4}'
+  echo "Integity evaluation finished"
+  echo
+
+done
+```
 
 ---
 
