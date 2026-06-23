@@ -15,7 +15,7 @@ This repository shows how to build and understand a complete somatic DNA-NGS ana
 - Filtering and biological post-processing
 - Visualization and interpretation
 
-Although the tutorial preferentially presents a step-by-step **tumor-only variant calling** analysis, the final part shifts the focus to **matched tumor-normal pair variant calling**. Additionally, the tutorial will present a **Nextflow** pipeline adapted from Bash scripts for somatic analysis.
+Although the tutorial preferentially presents a step-by-step **tumor-only variant calling** analysis, the final part shifts the focus to **matched tumor-normal pair variant calling**. Additionally, the tutorial will present a **Nextflow** pipeline adapted from Bash scripts for somatic analysis. 
 
 The focus is on educational clarity, reproducibility, and transparency.
 
