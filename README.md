@@ -1,6 +1,4 @@
-# Bash_pipeline_NGS
-
-Welcome to my **DNA-NGS tutorial** 👋  
+# Welcome to my **NGS Workflow Tutorial** 👋  
 
 This repository provides a step-by-step guide to analyzing **DNA sequencing datasets** using primarily **Bash script pipelines**, starting from raw FASTQ data and running the complete workflow on a **standard workstation or laptop**.
 
