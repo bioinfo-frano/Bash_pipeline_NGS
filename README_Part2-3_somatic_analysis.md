@@ -3623,11 +3623,11 @@ In a **certified clinical laboratory**, the variants identified in this tutorial
 
 This concludes Part II of the tutorial, which covered end-to-end somatic variant analysis and clinical annotation from raw FASTQ sequencing data.
 
-**Click** here 👉 [Part III – Variant Visualization](README_igv_Part3-3.md) to learn how to visualize the reads of variants using **IGV** software, explained step-by-step.
+**Click** here 👉 [Part III – Variant Visualization](README_Part3-3_igv.md) to learn how to visualize the reads of variants using **IGV** software, explained step-by-step.
 
-Go back to the top of 👉 [Part II – Somatic analysis](README_somatic_analysis_Part2-3.md#part-ii--somatic-analysis-bash-pipelines)
+Go back to the top of 👉 [Part II – Somatic analysis](README_Part2-3_somatic_analysis.md#part-ii--somatic-analysis-bash-pipelines)
 
-Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
+Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_Part1-3_setup.md)
 
 Go to the main page 👉 [Bash_pipeline_NGS](README.md)
 
