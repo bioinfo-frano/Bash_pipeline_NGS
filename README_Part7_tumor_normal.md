@@ -188,7 +188,7 @@ Normal FASTQ --> Trim/Align/BAM prep /
 
 ## Matched tumor-normal: Project `PRJNA1156316`
 
-We will use the sample `SRR30536566` (tumor - colorectal cancer biopsy) from [Part II – Somatic analysis](README_somatic_analysis_Part2-3.md), but now we also include its matched normal sample `SRR30536541` from the same patient (blood).
+We will use the sample `SRR30536566` (tumor - colorectal cancer biopsy) from [Part II – Somatic analysis](README_Part2-3_somatic_analysis.md), but now we also include its matched normal sample `SRR30536541` from the same patient (blood).
 The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colorectal Cancer Patients).
 - <https://www.ncbi.nlm.nih.gov/sra/?term=PRJNA1156316>
 
@@ -200,7 +200,7 @@ The dataset comes from the project `PRJNA1156316` (Filipino Young‑Onset Colore
 2. Type "SRR30536566"
 
 >[!NOTE]
-> The dataset "SRR30536566" is one of the "few" available in SRA database. Many requiere an authorised access by **dbGaP**. Details on how this dataset was found, go to chapter "**Find & download small-sized FASTQ datasets for cancer gene panels**" in  👉  [Part I - Preparation & setup](README_setup_Part1-3.md) 
+> The dataset "SRR30536566" is one of the "few" available in SRA database. Many requiere an authorised access by **dbGaP**. Details on how this dataset was found, go to chapter "**Find & download small-sized FASTQ datasets for cancer gene panels**" in  👉  [Part I - Preparation & setup](README_Part1-3_setup.md) 
 
 3. Click on "**All runs**". This will send you to the "**SRA RUN SELECTOR**"
 
@@ -453,7 +453,7 @@ The exactly same output was observed in `PRJNA1156316.filtered.vcf.gz`
 
 ## Conclusion
 
-In **tumor-only** analysis (see 👉 [Part II - Variant filtering / Which variants PASS?](README_somatic_analysis_Part2-3.md)), the amount of variants after filtering were 4, after the postfiltering 3, and finally 2 after variant annotation. Similarly, the **matched tumor-normal** analysis resulted in also two variables; however, at the variant filtering level. These two variants corresponded, for both analyses: **NRAS** 181G>T / Gln61Lys and **PIK3CA** 1624G>A / Glu542Lys. Therefore, the **matched tumor-normal** analysis could detect better false positive variants and provide more reliable variant outputs.
+In **tumor-only** analysis (see 👉 [Part II - Variant filtering / Which variants PASS?](README_Part2-3_somatic_analysis.md)), the amount of variants after filtering were 4, after the postfiltering 3, and finally 2 after variant annotation. Similarly, the **matched tumor-normal** analysis resulted in also two variables; however, at the variant filtering level. These two variants corresponded, for both analyses: **NRAS** 181G>T / Gln61Lys and **PIK3CA** 1624G>A / Glu542Lys. Therefore, the **matched tumor-normal** analysis could detect better false positive variants and provide more reliable variant outputs.
 
 
 ---
