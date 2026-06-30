@@ -410,11 +410,11 @@ Genomics_cancer/
 
 ## Conclusion
 
-The nextflow script [09_full_somatic_SRR30536566_nextflow.nf](nextflow_scripts/09_full_somatic_SRR30536566_nextflow.nf) contains a single pipeline that runs end-to-end, performing the complete somatic analysis and producing all expected files exactly as the individual Bash scripts in [Part II – Somatic analysis](README_somatic_analysis_Part2-3.md#part-ii--somatic-analysis-bash-pipelines) and the unified Bash scripts in [Part IV](README_Part4_fullbash.md) and [Part V](README_Part5_DNA2_pipeline_update.md). The Nextflow pipeline could also output the same three expected variants, confirming reproducibility.
+The nextflow script [09_full_somatic_SRR30536566_nextflow.nf](nextflow_scripts/09_full_somatic_SRR30536566_nextflow.nf) contains a single pipeline that runs end-to-end, performing the complete somatic analysis and producing all expected files exactly as the individual Bash scripts in [Part II – Somatic analysis](README_Part2-3_somatic_analysis.md#part-ii--somatic-analysis-bash-pipelines) and the unified Bash scripts in [Part IV](README_Part4_fullbash.md) and [Part V](README_Part5_DNA2_pipeline_update.md). The Nextflow pipeline could also output the same three expected variants, confirming reproducibility.
 
 ---
 
-Back to the top  👉 [Part VI – Nextflow: Fully Automated Somatic DNA-NGS Pipeline](#part-vi-nextflow-pipeline-fully-automated-somatic-dna-ngs-pipeline-single-nextflow-script) 
+Back to the top  👉 [Part VI – Nextflow: Fully Automated Somatic DNA-NGS Pipeline](README_Part6_Nextflow.md#part-vi-nextflow-pipeline-fully-automated-somatic-dna-ngs-pipeline-single-nextflow-script) 
 
 Visit the Bash script here 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
 
