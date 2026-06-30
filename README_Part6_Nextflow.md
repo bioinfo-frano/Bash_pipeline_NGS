@@ -414,7 +414,7 @@ The nextflow script [09_full_somatic_SRR30536566_nextflow.nf](nextflow_scripts/0
 
 ---
 
-Back to the top  👉 [Part VI – Nextflow: Fully Automated Somatic DNA-NGS Pipeline](README_Part6_Nextflow.md#part-vi-nextflow-pipeline-fully-automated-somatic-dna-ngs-pipeline-single-nextflow-script) 
+Back to the top  👉 [Part VI – Nextflow: Fully Automated Somatic DNA-NGS Pipeline](README_Part6_Nextflow.md#part-vi--nextflow-pipeline-fully-automated-somatic-dna-ngs-pipeline-single-nextflow-script) 
 
 Visit the Bash script here 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
 
