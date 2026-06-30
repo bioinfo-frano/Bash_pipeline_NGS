@@ -970,7 +970,7 @@ Top of page 👉 [Part V: Pipeline maintenance and Environment Validation](READM
 
 Previous analysis in `DNA` environment (with legacy samtools) 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
 
-Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
+Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_Part1-3_setup.md)
 
 Main page 👉 [Bash_pipeline_NGS](README.md)
 
