@@ -1,3 +1,4 @@
+<a name="top"></a>
 # Part VII – Matched Tumor‑Normal Somatic Analysis (Bash Pipeline)
 
 ## Introduction
@@ -555,6 +556,8 @@ Overall, the variant profile suggests a tumor with a strong **TP53-driven compon
 
 
 👉 [Back to the top](README_Part7_tumor_normal.md#part-vii--matched-tumor-normal-somatic-analysis-bash-pipeline)
+
+👉 [Back to the top](#top)
 
 Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
 
