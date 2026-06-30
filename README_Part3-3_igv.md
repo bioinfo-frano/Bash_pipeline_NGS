@@ -1034,7 +1034,7 @@ In **Part IV**, we will focus on automation and reproducibility by running the e
 
 Go back to the top of 👉 [Part III – Variant Visualization](#part-iii--variant-visualization)
 
-Go to automated workflow: 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_fullbash.md)
+Go to automated workflow: 👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md)
 
 Go to the main page 👉 [Bash_pipeline_NGS](README.md)
 
