@@ -558,7 +558,7 @@ Overall, the variant profile suggests a tumor with a strong **TP53-driven compon
 
 Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
 
-Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
+Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_Part1-3_setup.md)
 
 Go to the main page 👉 [Bash_pipeline_NGS](README.md) 
 
