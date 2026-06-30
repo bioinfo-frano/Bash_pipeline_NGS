@@ -2,7 +2,7 @@
 
 ## Single Bash Script Implementation
 
-In [Part II](README_somatic_analysis_Part2-3.md), the public SRA dataset `SRR30536566` (7-gene amplicon panel) was analyzed step by step using eight consecutive Bash scripts, covering:
+In [Part II](README_Part2-3_somatic_analysis.md), the public SRA dataset `SRR30536566` (7-gene amplicon panel) was analyzed step by step using eight consecutive Bash scripts, covering:
 
 - Quality control
 
@@ -405,11 +405,11 @@ The bash script [09_full_somatic_NGS_bash_script.sh](bash_scripts/09_full_somati
 
 ---
 
-Go back to the top of  👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md.md#part-iv--bash-script-fully-automated-somatic-dna-ngs-pipeline)
+Go back to the top of  👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md#part-iv--bash-script-fully-automated-somatic-dna-ngs-pipeline)
 
 Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
 
-Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
+Jump to the first part of this tutorial 👉 [Part I – Preparation & setup](README_Part1-3_setup.md)
 
 Go to the main page 👉 [Bash_pipeline_NGS](README.md)
 
