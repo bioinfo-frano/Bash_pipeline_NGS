@@ -405,7 +405,7 @@ The bash script [09_full_somatic_NGS_bash_script.sh](bash_scripts/09_full_somati
 
 ---
 
-Go back to the top of  👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md#part-iv--bash-script-fully-automated-somatic-dna-ngs-pipeline)
+Go back to the top of  👉 [Part IV – Bash script: Fully Automated Somatic DNA-NGS Pipeline](README_Part4_fullbash.md#part-iv--bash-script-fully-automated-somatic-dna-ngs-pipeline-single-bash-script)
 
 Go and see somatic NGS analysis in `DNA2` **samtools-updated** environment in 👉 [Part V: Pipeline maintenance and Environment Validation](README_Part5_DNA2_pipeline_update.md)
 
