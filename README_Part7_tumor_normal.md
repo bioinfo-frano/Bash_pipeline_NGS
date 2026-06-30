@@ -555,7 +555,7 @@ Overall, the variant profile suggests a tumor with a strong **TP53-driven compon
 ---
 
 
-👉 [Back to the top](README_Part7_tumor_normal.md#part-vii--matched-tumor-normal-somatic-analysis-bash-pipeline)
+👉 [Back to the top](README_Part7_tumor_normal.md#part-vii---matched-tumor-normal-somatic-analysis-bash-pipeline)
 
 👉 [Back to the top](#top)
 
