@@ -1,4 +1,3 @@
-<a name="top"></a>
 # Part VII – Matched Tumor‑Normal Somatic Analysis (Bash Pipeline)
 
 ## Introduction
