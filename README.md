@@ -39,7 +39,7 @@ Learn how to create a clean and reproducible environment:
 - Conda environments and tool installation
 
 ➡️ **Start here:**  
-👉 [Part I – Preparation & setup](README_setup_Part1-3.md)
+👉 [Part I – Preparation & setup](README_Part1-3_setup.md)
 
 ---
 
@@ -51,7 +51,7 @@ Perform a **somatic DNA-NGS analysis** following GATK best practices:
 - Variant filtering and annotation
 
 ➡️ **Go to analysis:**  
-👉 [Part II – Somatic analysis](README_somatic_analysis_Part2-3.md)
+👉 [Part II – Somatic analysis](README_Part2-3_somatic_analysis.md)
 
 ---
 
@@ -60,7 +60,7 @@ Perform a **somatic DNA-NGS analysis** following GATK best practices:
 - Check potential artifacts and confirm annotated variant calls
 
 ➡️ **Go to analysis:**  
-👉 [Part III – Variant Visualization](README_igv_Part3-3.md)
+👉 [Part III – Variant Visualization](README_Part3-3_igv.md)
 
 ---
 
