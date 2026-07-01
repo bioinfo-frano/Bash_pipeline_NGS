@@ -441,13 +441,12 @@ chr3	179218294	.	G	A	.	PASS	AS_FilterStatus=SITE;AS_SB_TABLE=929,1006|163,184;DP
 The exactly same output was observed in `PRJNA1156316.filtered.vcf.gz`
 
 
-**Summary of postfiltered-variants**
+**Summary of postfiltered-variants (clinically actionable)**
 
-| Variant | Gene | Change | VAF | Depth | TLOD | Passed? | Reason |
-|---------|------|--------|-----|-------|------|---------|--------|
-| **chr1:114713909** | **NRAS** | G>T | 15.4% | 759 | 318.08 | ✅ PASS | Meets all thresholds |
-| **chr3:179218294** | **PIK3CA** | G>A | 28.0% | 1262 | 1253 | ✅ PASS | Meets all thresholds |
-
+| Location       | Gene       | HGVSc     | HGVSp       | Consequence | Exon   |  VAF      | TLOD   | SIFT        | PolyPhen          | ClinVar            | ClinPred  | Evidence   |
+|----------------|------------|-----------|-------------|-------------|--------|-----------|--------|-------------|-------------------|--------------------|-----------|------------|
+|**1:114713909** | **NRAS**   | c.181C>A  |  p.Gln61Lys | Missense    | 3/7    | 0.154     | 318.08 | Deleterious | -                 | Pathogenic         | 0.984     | ✅ Hotspot |
+|**3:179218294** | **PIK3CA** | c.1624G>A |  p.Glu542Lys| Missense    | 10/21  | 0.277     | 1253   | Deleterious | Probably damaging | Likely pathogenic  | 0.880     | ✅ Hotspot |
 
 ---
 
