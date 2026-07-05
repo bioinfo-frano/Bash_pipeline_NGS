@@ -176,4 +176,10 @@ The Nextflow pipeline presented in **Part VI** was developed with the assistance
 
 © 2026 **bioinfo-frano**
 
-This project is licensed under the **MIT License**. See the full license [here](LICENSE).
+This project is licensed under the **MIT License**. See the full license [here](LICENSE).  
+
+---
+![License](https://img.shields.io/badge/license-MIT-green)
+![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-blue)
+![Status](https://img.shields.io/badge/status-work_in_progress-orange)
+
