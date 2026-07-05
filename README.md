@@ -1,5 +1,9 @@
 # Welcome to my **NGS Workflow Tutorial** 👋  
 
+![License](https://img.shields.io/badge/license-MIT-green)
+![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-blue)
+![Status](https://img.shields.io/badge/status-work_in_progress-orange)
+
 This repository provides a step-by-step guide to analyzing **DNA sequencing datasets** using primarily **Bash script pipelines**, starting from raw FASTQ data and running the complete workflow on a **standard workstation or laptop**.
 
 The tutorial can be followed sequentially for learning purposes or modularly depending on your goals.
@@ -178,8 +182,4 @@ The Nextflow pipeline presented in **Part VI** was developed with the assistance
 
 This project is licensed under the **MIT License**. See the full license [here](LICENSE).  
 
----
-![License](https://img.shields.io/badge/license-MIT-green)
-![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-blue)
-![Status](https://img.shields.io/badge/status-work_in_progress-orange)
 
