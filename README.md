@@ -124,7 +124,7 @@ This tutorial is intended for:
 
 ---
 
-*Happy sequencing analysis!
+### **Happy sequencing analysis!**
 
 ---
 
