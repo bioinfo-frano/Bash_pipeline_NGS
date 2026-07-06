@@ -25,7 +25,7 @@ The focus is on educational clarity, reproducibility, and transparency.
 Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this repository.
 
 <p align="center">
-  <img src="images/Gemini_Generated_Image_2hszdp2hszdp2hsz" 
+  <img src="images/Gemini_Generated_Image_2hszdp2hszdp2hsz.png" 
        alt="Tumor-only somatic DNA-NGS workflow" 
        width="65%">
 </p>
