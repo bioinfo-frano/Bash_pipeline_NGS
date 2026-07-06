@@ -31,6 +31,7 @@ Overview of the tumor-only somatic DNA-NGS analysis pipeline implemented in this
 </p>
 
 - *Image generated in collaboration with Gemini (Google AI) via iterative prompting.*
+
 ---
 
 ## Tutorial structure
