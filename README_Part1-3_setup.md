@@ -75,13 +75,25 @@ V.	Bash shell scripting for NGS - DNA analysis
 
 This tutorial provides a minimal, reproducible guide for running a DNA-seq (NGS) analysis pipeline locally, from FASTQ files to variant calling and annotation, using modest computational resources.
 
-> **Note:**  
+> [!NOTE]*  
 > This guide was developed and tested on macOS running on Intel processors. Users on Apple Silicon (M1/M2/…/M5) or Linux systems may need to adapt certain steps.
 
 
-> **IMPORTANT – Conda prerequisites:**  
-> This guide assumes that Miniconda3 is already installed on your computer. If not, please consult the official [documentation](https://docs.conda.io/projects/conda/en/stable/user-guide/install/macos.html) or watch this [YouTube](https://www.youtube.com/watch?v=OH0E7FIHyQo) video.
+> [!IMPORTANT]
+> **Conda prerequisites:**   
+> This guide assumes that Miniconda3 is already installed on your computer. If not, please consult the official [documentation](https://docs.conda.io/projects/conda/en/stable/index.html) or watch this [YouTube](https://www.youtube.com/watch?v=hDGSZMLS5F4&t=67s) video.
+  
+<br>  
 
+> [!IMPORTANT]
+> **For Windows Users**: This tutorial relies on a Linux environment. I would **strongly** recommend that you install **Windows Subsystem for Linux (WSL2) with Ubuntu** to follow along with this tutorial. Once you open the WSL2 Ubuntu terminal on Windows, all steps from installing Miniconda (**Linux version**), creating conda environments, to running the bash scripts and Nextflow pipelines, must be performed inside your WSL2 Ubuntu terminal.  
+>  
+> Please, watch this [YouTube](https://www.youtube.com/watch?v=1XuoUlaIEFo) video to learn how to install **WSL2** on your Windows.  
+> There are other alternatives like Git Bash or Cygwin are **not sufficient** for running the full pipelines in this tutorial.   
+>  
+> Once you finish have completed the **WSL2** installation, you can continue following this tutorial.  
+
+<br>  
 
 When Miniconda is already installed, you should see the `(base)` environment activated in your Terminal.
 
