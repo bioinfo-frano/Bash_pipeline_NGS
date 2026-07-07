@@ -90,15 +90,17 @@ This tutorial provides a minimal, reproducible guide for running a DNA-seq (NGS)
 > [!IMPORTANT]
 > **For Windows Users**: This tutorial relies on a Linux environment. If you are using Windows, the recommended approach is to install **Windows Subsystem for Linux (WSL2) with Ubuntu** to follow along with this tutorial. Once you open the WSL2 Ubuntu terminal on Windows, all steps from installing Miniconda (**Linux version**), creating conda environments, to running the bash scripts and Nextflow pipelines, must be performed within your WSL2 Ubuntu terminal.  
 >  
-> Do not use a Windows installation of Conda inside WSL2. Install the **Linux version** of Miniconda directly within the Ubuntu environment.
+> **Do not use a Windows installation of Conda inside WSL2**. Install the **Linux version** of Miniconda directly within the Ubuntu environment.
 >  
 >  WSL2 provides a genuine Linux environment inside Windows, ensuring compatibility with Conda, Bash scripts, bioinformatics software, and Nextflow workflows used throughout this tutorial.  
 >
-> Please, watch this [YouTube](https://www.youtube.com/watch?v=1XuoUlaIEFo) video to learn how to install **WSL2** on your Windows. >  
+> Please watch this [YouTube](https://www.youtube.com/watch?v=1XuoUlaIEFo) video to learn how to install **WSL2** on your Windows.
+>  
 > Alternatives such as **Git Bash** or **Cygwin** may work for some basic commands, but **they are not recommended** for running the complete pipelines described in this tutorial.  
 >  
 > Once you have completed the **WSL2** installation, you can continue following this tutorial.  
-
+>
+> **For Windows 7 or 8 users**: Upgrading to Windows 10 (version 2004, Build 19041 or higher, Home or Pro) or Windows 11 is strongly recommended to use WSL2. The upgrade is free, and you will need a valid Windows license key for activation. Please also ensure your system meets the minimum hardware requirements.
 
 <br>  
 
