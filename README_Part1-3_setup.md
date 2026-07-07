@@ -81,7 +81,8 @@ This tutorial provides a minimal, reproducible guide for running a DNA-seq (NGS)
 
 > [!IMPORTANT]
 > **Conda prerequisites:**   
-> This guide assumes that Miniconda3 is already installed on your computer. If not, please consult the official [documentation](https://docs.conda.io/projects/conda/en/stable/index.html) or watch this [YouTube](https://www.youtube.com/watch?v=hDGSZMLS5F4&t=67s) video.
+> This guide assumes that Miniconda3 is already installed on your computer. If not, please consult the official [documentation](https://docs.conda.io/projects/conda/en/stable/index.html) or watch this [YouTube](https://www.youtube.com/watch?v=hDGSZMLS5F4&t=67s) video.  
+> When Miniconda is already installed, you should see the `(base)` environment activated in your Terminal.
   
 <br>  
 
@@ -95,7 +96,7 @@ This tutorial provides a minimal, reproducible guide for running a DNA-seq (NGS)
 
 <br>  
 
-When Miniconda is already installed, you should see the `(base)` environment activated in your Terminal.
+
 
 
 ## I. Create a specific conda environment called `DNA`
