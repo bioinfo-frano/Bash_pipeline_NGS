@@ -75,7 +75,7 @@ V.	Bash shell scripting for NGS - DNA analysis
 
 This tutorial provides a minimal, reproducible guide for running a DNA-seq (NGS) analysis pipeline locally, from FASTQ files to variant calling and annotation, using modest computational resources.
 
-> [!NOTE]*  
+> [!NOTE]  
 > This guide was developed and tested on macOS running on Intel processors. Users on Apple Silicon (M1/M2/…/M5) or Linux systems may need to adapt certain steps.
 
 
