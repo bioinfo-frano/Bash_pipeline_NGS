@@ -103,8 +103,8 @@ This tutorial provides a minimal, reproducible guide for running a DNA-seq (NGS)
 
 ### a) Create the environment with these dependencies.
 
-> **IMPORTANT**
-You don't need to deactivate from `(base)` when creating a new Conda environment.
+> [!IMPORTANT]  
+> You don't need to deactivate from `(base)` when creating a new Conda environment.
 
 ```bash
 conda create -n DNA \
