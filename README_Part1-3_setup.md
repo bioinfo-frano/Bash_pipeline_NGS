@@ -77,7 +77,8 @@ This tutorial provides a minimal, reproducible guide for running a DNA-seq (NGS)
 
 > [!NOTE]  
 > This guide was developed and tested on macOS running on Intel processors. Users on Apple Silicon (M1/M2/…/M5) or Linux systems may need to adapt certain steps.
-
+  
+<br> 
 
 > [!IMPORTANT]
 > **Conda prerequisites:**   
