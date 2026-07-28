@@ -37,7 +37,7 @@ However, **cloud services incur financial costs**. See below **Table 1** showing
 
 Therefore, for learners who prefer to work locally — typically with 8–16 GB RAM and limited disk storage (<60 GB) — it becomes essential to carefully select small sequencing datasets and design lightweight Conda environments. Equally important is the creation of a simple and efficient analysis pipeline and a well-defined folder structure.
 
-Before we talk about FASTQ files, which contain the raw sequenced fragments (known as **reads**) of a DNA sample produced by a sequencer, I recommend reading more about them on these websites:
+Before we talk about FASTQ files, which contain the raw sequenced fragments (known as **reads**) with its corresponding quality information of a DNA sample produced by a sequencer, I recommend reading more about them on these websites:
 
 - [FASTQ files explained](https://support.illumina.com.cn/bulletins/2016/04/fastq-files-explained.html)
 - [FASTQ format](https://en.wikipedia.org/wiki/FASTQ_format)
